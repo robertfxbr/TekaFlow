@@ -80,6 +80,10 @@ function createOverlayWindow({ isDev }) {
     // mostrar de novo.
     type: process.platform === 'win32' ? 'toolbar' : undefined,
     resizable: true,
+    // Menor que isso o cabeçalho e os botões se atropelam. A altura mínima
+    // cabe o modo mini (210 px).
+    minWidth: 360,
+    minHeight: 200,
     hasShadow: false,
     // marca do Teka no Alt+Tab (o ícone do .exe vem do instalador)
     icon: path.join(__dirname, '..', 'assets', 'icon.png'),

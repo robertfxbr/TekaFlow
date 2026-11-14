@@ -9,6 +9,7 @@ const fs = require('fs');
 const os = require('os');
 const { composePrompt } = require('./vocabulary');
 const { PACKS, serverFor, parseBackend } = require('./GpuRuntime');
+const log = require('electron-log');
 
 const MAX_BUFFER_BYTES = 16 * 1024 * 1024; // equivalente ao CappedAudioBuffer
 // TEKA_STT_PORT só para testes: uma cópia de teste não pode cair no servidor
@@ -350,7 +351,7 @@ class WhisperService {
     // No PT+EN o prompt é montado em cada fala, depois de saber o idioma.
     this.sessions.set(sessionId, {
       source, language, userPrompt: prompt, prompt: composePrompt(prompt, language),
-      fast: Boolean(fast), port, detectPort, lastLang: null, pcmChunks: [], bytes: 0, active: true,
+      fast: Boolean(fast), port, detectPort, modelPath, lastLang: null, pcmChunks: [], bytes: 0, active: true,
     });
     return { sessionId, port };
   }
@@ -401,6 +402,10 @@ class WhisperService {
     if (isSilent(pcm)) return null; // trecho mudo: o Whisper só inventaria texto
 
     const wav = pcmToWav(pcm, 16000);
+    // O whisper-server pode ter caído no meio da escuta (driver da placa,
+    // falta de memória, processo encerrado). Sobe de novo antes de mandar a
+    // fala, em vez de toda fala dali em diante falhar com "fetch failed".
+    await this._revive(session);
     const form = new FormData();
     form.append('file', new Blob([wav], { type: 'audio/wav' }), 'audio.wav');
     form.append('response_format', 'json');
@@ -424,7 +429,18 @@ class WhisperService {
     const audioCtx = session.fast ? fastAudioCtx(pcm.length) : null;
     if (audioCtx) form.append('audio_ctx', String(audioCtx));
 
-    const res = await fetch(`http://127.0.0.1:${session.port}/inference`, { method: 'POST', body: form });
+    let res;
+    try {
+      res = await fetch(`http://127.0.0.1:${session.port}/inference`, { method: 'POST', body: form });
+    } catch (err) {
+      // Caiu durante esta fala: espera o processo sair, sobe de novo e tenta
+      // uma vez (o FormData pode ser reenviado: o corpo é um Blob na memória)
+      log.warn('whisper-server não respondeu; subindo de novo', err?.cause?.code || err?.message);
+      // o aviso de saída do processo chega logo depois do erro de conexão
+      for (let i = 0; i < 20 && this.servers.main.ready; i++) await new Promise((r) => setTimeout(r, 100));
+      await this._revive(session);
+      res = await fetch(`http://127.0.0.1:${session.port}/inference`, { method: 'POST', body: form });
+    }
     if (!res.ok) throw new Error(`whisper inference: HTTP ${res.status}`);
     const data = await res.json();
     const text = cleanTranscript(data.text);
@@ -435,6 +451,21 @@ class WhisperService {
       lang: language === 'auto' ? null : language,
     });
     return text;
+  }
+
+  // Garante o whisper-server da sessão de pé. Não derruba processo vivo: a
+  // escuta do mic e a do PC usam o mesmo servidor, e uma pode estar no meio
+  // de um pedido. Processo que morreu já limpou a vaga (evento "exit").
+  async _revive(session) {
+    const main = this.servers.main;
+    // Outra fonte (mic ou PC) pode já ter mandado subir: espera carregar
+    if (main.ready) await main.ready.catch(() => {});
+    if (!main.ready) session.port = await this.ensureServer(session.modelPath);
+    if (session.language === 'pten' && session.detectPort) {
+      const det = this.servers.detector;
+      const sharedWithMain = this.servers.main.model === det.model || session.detectPort === session.port;
+      if (!sharedWithMain && !det.ready) session.detectPort = await this.ensureDetector().catch(() => session.detectPort);
+    }
   }
 
   async stopSession(sessionId) {

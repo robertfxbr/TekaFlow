@@ -19,6 +19,7 @@ import { contextToText, normalizeContext } from './assistants/context.mjs';
 import { BUILTIN_ASSISTANTS, findAssistant } from './assistants/presets';
 import { createListenReminder } from './audio/listenReminder.mjs';
 import { findEcho, ECHO_WINDOW_MS } from './audio/echo';
+import { createVad, VAD_DEFAULTS } from './audio/vad.mjs';
 import { formatClock } from './util/time';
 import { prettyAccelerator } from './util/accelerator';
 import {
@@ -53,29 +54,13 @@ const TRANSLATE_QUEUE_MAX = 8;   // fila de tradução: descarta as mais velhas
 const TRANSLATE_ERROR_GAP_MS = 30000; // não repete o mesmo aviso de erro toda fala
 const DEFAULT_TRANSLATE = { enabled: false, target: 'en', sources: 'system' };
 
-// ---- VAD (voice activity detection) por energia ----
-// Em vez de flush fixo a cada 5s (que cortava frases e gerava alucinações do
-// Whisper em silêncio), o flush acontece no FIM da fala: 1,1s de silêncio após
-// voz detectada, com teto de 15s por janela.
-const VAD_THRESHOLD = 0.012;     // RMS mínimo p/ considerar fala
+// Detector de fala (fim da fala, limites): src/audio/vad.mjs
+const VAD_THRESHOLD = VAD_DEFAULTS.threshold; // RMS mínimo p/ considerar fala
 const SYS_SOUND_RMS = 0.002;     // qualquer som do PC (o loopback mudo entrega zeros)
 const SYS_SILENT_MS = 90000;     // tempo sem som do PC antes do aviso
 const SYS_SILENT_MIC_MS = 15000; // e você já falou isso nesse meio tempo
-const VAD_SILENCE_MS = 1100;     // silêncio que encerra o enunciado
-const VAD_MAX_WINDOW_MS = 15000; // força flush em falas muito longas
 const STT_SLOW_MS = 20000;       // fala que demora mais que isso para sair: avisa
 
-// AudioWorklet inline (substitui o depreciado ScriptProcessorNode)
-const WORKLET_CODE = `
-class PcmWorklet extends AudioWorkletProcessor {
-  process(inputs) {
-    const ch = inputs[0] && inputs[0][0];
-    if (ch && ch.length) this.port.postMessage(ch.slice(0));
-    return true;
-  }
-}
-registerProcessor('pcm-worklet', PcmWorklet);
-`;
 
 const ASSIST_MODES = [
   ['interview', 'Entrevista'],
@@ -100,7 +85,7 @@ const INTERVIEW_REFINE_CHIPS = [
 
 const WHISPER_MODELS = [
   ['ggml-tiny.bin', 'Tiny — mais rápido, menos preciso (75 MB)'],
-  ['ggml-base.bin', 'Base — equilíbrio (148 MB)'],
+  ['ggml-base.bin', 'Base — equilíbrio (142 MB)'],
   ['ggml-small.bin', 'Small — bem mais preciso em PT-BR (466 MB) · recomendado'],
 ];
 
@@ -157,7 +142,12 @@ function App() {
   const [transcript, setTranscript] = useState([]);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const [error, setError] = useState('');
+  const [error, setErrorRaw] = useState('');
+  // O Electron embrulha o erro do processo principal ("Error invoking remote
+  // method 'llm:chat': Error: ..."); na tela só vale a mensagem de verdade.
+  const setError = (msg) => setErrorRaw(typeof msg === 'string'
+    ? msg.replace(/Error invoking remote method '[^']+': (Error: )?/g, '')
+    : msg);
   const [listening, setListening] = useState(false);
   const [starting, setStarting] = useState(false); // preparando escuta (download de modelo etc.)
   const [modelProgress, setModelProgress] = useState(null); // { received, total }
@@ -198,6 +188,9 @@ function App() {
   const [elapsedMs, setElapsedMs] = useState(0);
   const [autoScroll, setAutoScroll] = useState(true);
   const [newBelow, setNewBelow] = useState(false); // há falas novas abaixo da área visível
+  // Falas já cortadas que o Whisper ainda está transcrevendo, por fonte: a
+  // lista mostra "…" no lugar delas, para a tela não parecer parada
+  const [sttPending, setSttPending] = useState({ mic: 0, sys: 0 });
 
   // ---- contexto colado e análise de tela ----
   const [attached, setAttached] = useState(null);       // { text } anexado à próxima pergunta
@@ -279,6 +272,11 @@ function App() {
   const toggleListenRef = useRef(null); // p/ atalho global sem closure obsoleta
   const entryIdRef = useRef(0);          // id de cada fala (tradução e eco mexem nelas)
   const pendingMicWritesRef = useRef(new Map()); // falas do mic esperando a checagem de eco
+  // Início de cada transcrição em andamento, por fonte (fila: a mais antiga
+  // é a próxima a responder). Serve para reconhecer eco antes de mostrar.
+  const flushStartsRef = useRef({ mic: [], sys: [] });
+  const lastFlushStartRef = useRef({ mic: 0, sys: 0 });
+  const heldMicRef = useRef([]); // falas do mic seguradas até a do PC chegar
   const memoryRef = useRef({ text: '', uptoTs: 0, session: null });
   const compactingRef = useRef(false);
   const compactEnabledRef = useRef(compactEnabled);
@@ -339,8 +337,12 @@ function App() {
     api.settings.get('stt.language').then((l) => l && setSttLang(l));
     api.settings.get('stt.prompt').then((p) => p && setSttPrompt(p));
     api.settings.get('ui.theme').then((t) => t && setTheme({ ...DEFAULT_THEME, ...t }));
-    api.settings.get('onboarding.done').then((done) => {
-      if (!done) setOnboarding(0);
+    api.settings.get('onboarding.done').then(async (done) => {
+      if (done) return;
+      // Primeira vez: já vem marcado o modelo recomendado (Small), não o Base.
+      // Quem já usa o app sem ter escolhido continua no Base que baixou.
+      if (!(await api.settings.get('stt.model'))) selectSttModel('ggml-small.bin');
+      setOnboarding(0);
     });
     api.settings.get('ui.autoScroll').then((v) => {
       if (v !== undefined && v !== null) setAutoScroll(Boolean(v));
@@ -373,6 +375,7 @@ function App() {
 
     const unsubDelta = api.stt.onDelta(({ source, text }) => {
       if (!text?.trim()) return;
+      if (source === 'mic' && holdPossibleEcho(text)) return;
       handleTranscription(source, text);
     });
     const unsubUpdate = api.update.onAvailable(handleUpdateResult);
@@ -461,6 +464,34 @@ function App() {
     }
     maybeTranslate(entry);
     maybeCompact();
+  }
+
+  // Sem fone, a fala da reunião sai pela caixa, entra no mic e as duas fontes
+  // cortam a mesma fala quase no mesmo instante. O mic costuma voltar do
+  // Whisper primeiro: a fala aparecia como "Você" e sumia segundos depois,
+  // quando a versão do PC chegava. Se o PC cortou uma fala junto com esta
+  // (até 1,2 s de diferença) e ainda está transcrevendo, a do mic espera.
+  // Fala cruzada de verdade que caia nessa janela só atrasa, não some.
+  const ECHO_HOLD_GAP_MS = 1200; // eco medido: 0,2 a 0,35 s entre os cortes
+  const ECHO_HOLD_MAX_MS = 8000;
+  function holdPossibleEcho(text) {
+    if (!echoFilterRef.current) return false;
+    // a fala pode chegar logo depois do pedido terminar: vale o último corte
+    const micStart = flushStartsRef.current.mic[0] || lastFlushStartRef.current.mic;
+    const sysStarts = flushStartsRef.current.sys;
+    if (!micStart || !sysStarts.some((t) => Math.abs(t - micStart) <= ECHO_HOLD_GAP_MS)) return false;
+    const timer = setTimeout(releaseHeldMic, ECHO_HOLD_MAX_MS);
+    heldMicRef.current.push({ text, timer });
+    return true;
+  }
+
+  function releaseHeldMic() {
+    const held = heldMicRef.current;
+    heldMicRef.current = [];
+    for (const h of held) {
+      clearTimeout(h.timer);
+      handleTranscription('mic', h.text);
+    }
   }
 
   // Com o filtro de eco ligado, a fala do mic espera alguns segundos antes de
@@ -714,6 +745,15 @@ function App() {
     }
   }, [transcript]);
 
+  // A bolha de "transcrevendo" também acompanha o fim da lista (sem o aviso
+  // de novas falas: ela ainda não é uma fala)
+  const anySttPending = sttPending.mic + sttPending.sys > 0;
+  useEffect(() => {
+    if (anySttPending && autoScroll && nearBottomRef.current) {
+      transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [anySttPending]); // eslint-disable-line react-hooks/exhaustive-deps
+
   function onTranscriptScroll(e) {
     const el = e.currentTarget;
     const near = el.scrollHeight - el.scrollTop - el.clientHeight < NEAR_BOTTOM_PX;
@@ -890,7 +930,11 @@ function App() {
     setTranscript(transcriptRef.current);
     setSuggestion(null);
     setSummary(null);
-    setResumeTarget({ id: session.id, subject: session.subject });
+    // "Sessão overlay" é o nome antigo de sessão sem título: mostra como a
+    // conversa começou, como no histórico
+    const titled = session.subject && session.subject !== 'Sessão overlay';
+    const first = transcriptions[0]?.text;
+    setResumeTarget({ id: session.id, subject: titled ? session.subject : first ? `“${first.slice(0, 50)}${first.length > 50 ? '…' : ''}”` : null });
     setView('live');
     nearBottomRef.current = true;
     toggleListening({ resumeId: session.id });
@@ -1261,37 +1305,22 @@ function App() {
     stopCapture('sys');
   }
 
-  // VAD por energia: converte o chunk em PCM, envia ao Whisper e decide o
-  // flush no fim da fala (silêncio de 1,1s) — não mais por relógio fixo.
+  // O detector de fala (src/audio/vad.mjs) decide o que vai para o Whisper
+  // (só a fala, sem o silêncio entre falas) e quando a fala acabou (flush).
   function handleAudioChunk(slot, sttId, float) {
     if (!sessionRef.current) return;
-
-    let sum = 0;
-    for (let i = 0; i < float.length; i++) sum += float[i] * float[i];
-    const rms = Math.sqrt(sum / float.length);
-
-    const pcm = new Int16Array(float.length);
-    for (let i = 0; i < float.length; i++) {
-      pcm[i] = Math.max(-32768, Math.min(32767, float[i] * 32768));
+    const vad = vadRef.current[slot];
+    if (!vad) return;
+    const { send, flush, rms } = vad.push(float);
+    for (const chunk of send) {
+      const pcm = new Int16Array(chunk.length);
+      for (let i = 0; i < chunk.length; i++) {
+        pcm[i] = Math.max(-32768, Math.min(32767, chunk[i] * 32768));
+      }
+      api.stt.sendAudio(sttId, pcm.buffer);
     }
-    api.stt.sendAudio(sttId, pcm.buffer);
-
-    const frameMs = (float.length / 16000) * 1000;
-    watchSystemAudio(slot, rms, frameMs);
-
-    const v = vadRef.current[slot];
-    if (!v) return;
-    if (rms > VAD_THRESHOLD) {
-      v.speaking = true;
-      v.hasSpeech = true;
-      v.silenceMs = 0;
-    } else if (v.speaking) {
-      v.silenceMs += frameMs;
-      if (v.silenceMs >= VAD_SILENCE_MS) flushSlot(slot, sttId);
-    }
-    if (v.hasSpeech && Date.now() - v.lastFlushAt >= VAD_MAX_WINDOW_MS) {
-      flushSlot(slot, sttId);
-    }
+    watchSystemAudio(slot, rms, (float.length / 16000) * 1000);
+    if (flush) flushSlot(slot, sttId);
   }
 
   // Avisa quando você fala há um tempo e nenhum som do PC chega há 90 s.
@@ -1315,12 +1344,6 @@ function App() {
   }
 
   function flushSlot(slot, sttId) {
-    const v = vadRef.current[slot];
-    if (!v?.hasSpeech) return;
-    v.hasSpeech = false;
-    v.speaking = false;
-    v.silenceMs = 0;
-    v.lastFlushAt = Date.now();
     // Falha na transcrição aparece na tela (antes sumia em silêncio e a
     // escuta parecia ligada sem transcrever nada). Mesmo erro repetido não
     // pisca de novo.
@@ -1328,12 +1351,24 @@ function App() {
     // para trás (modelo grande no processador, PC ocupado) e parece não
     // funcionar. Avisa uma vez por escuta, dizendo o que fazer.
     const slowTimer = setTimeout(warnSlowStt, STT_SLOW_MS);
+    const bump = (d) => setSttPending((p) => ({ ...p, [slot]: Math.max(0, (p[slot] || 0) + d) }));
+    bump(1);
+    const starts = flushStartsRef.current[slot];
+    starts.push(Date.now());
+    lastFlushStartRef.current[slot] = Date.now();
     api.stt.flush(sttId).catch((e) => {
-      const msg = String(e?.message || e).replace(/^Error invoking remote method '[^']+': (Error: )?/, '');
+      const msg = String(e?.message || e).replace(/Error invoking remote method '[^']+': (Error: )?/g, '');
       if (lastSttErrorRef.current === msg) return;
       lastSttErrorRef.current = msg;
       setError(`a transcrição falhou: ${msg}`);
-    }).finally(() => clearTimeout(slowTimer));
+    }).finally(() => {
+      clearTimeout(slowTimer);
+      bump(-1);
+      starts.shift();
+      // a fala do PC já chegou (ou não veio): o mic segurado passa pelo
+      // filtro de eco agora, já comparando com ela
+      if (slot === 'sys' && heldMicRef.current.length) releaseHeldMic();
+    });
   }
 
   async function warnSlowStt() {
@@ -1362,14 +1397,13 @@ function App() {
     const analyser = audioCtx.createAnalyser();
     analyser.fftSize = 512;
     source.connect(analyser);
-    vadRef.current[slot] = { speaking: false, hasSpeech: false, silenceMs: 0, lastFlushAt: Date.now() };
+    vadRef.current[slot] = createVad();
 
     let node = null;
     let processor = null;
     try {
-      const url = URL.createObjectURL(new Blob([WORKLET_CODE], { type: 'application/javascript' }));
-      await audioCtx.audioWorklet.addModule(url);
-      URL.revokeObjectURL(url);
+      // public/pcm-worklet.js (a CSP bloqueia módulo vindo de blob:)
+      await audioCtx.audioWorklet.addModule(new URL('pcm-worklet.js', document.baseURI).href);
       node = new AudioWorkletNode(audioCtx, 'pcm-worklet');
       node.port.onmessage = (e) => handleAudioChunk(slot, sttId, e.data);
       source.connect(node);
@@ -1695,6 +1729,7 @@ function App() {
               {listening ? 'Ouvindo. As falas e sugestões aparecem aqui.' : 'Toque em ouvir para começar, ou pergunte abaixo.'}
             </div>
           )}
+          {listening && anySttPending && <span className="typing compact-typing" title="Transcrevendo"><i /><i /><i /></span>}
           {error && <div className="compact-error">{error}</div>}
         </div>
         <div className="compact-ask">
@@ -1771,7 +1806,7 @@ function App() {
       <div className="header">
         <div className="logo">
           <TekaMark size={24} />
-          <span className="logo-name">teka</span>
+          <span className="logo-name brand-name">teka</span>
         </div>
         <div className={`status-pill ${listening ? 'on' : ''}`} title={resumeTarget ? `continuando: ${resumeTarget.subject || 'sessão anterior'}` : undefined}>
           <span className="dot" />
@@ -1796,7 +1831,11 @@ function App() {
               <button
                 key={id}
                 className={`settings-tab ${settingsTab === id ? 'active' : ''}`}
-                onClick={() => setSettingsTab(id)}
+                onClick={(e) => {
+                  setSettingsTab(id);
+                  // aba nova começa do topo, não na rolagem da anterior
+                  e.currentTarget.closest('.theme-panel')?.scrollTo({ top: 0 });
+                }}
               >
                 {label}
               </button>
@@ -2048,7 +2087,10 @@ function App() {
         )}
       </div>
 
-      {error && <div className="error-banner">{error}</div>}
+      {error && <div className="error-banner">
+        <span>{error}</span>
+        <button className="mini-link error-close" title="Fechar" onClick={() => setError('')}>✕</button>
+      </div>}
 
       {updateInfo && (
         <div className="update-banner">
@@ -2243,6 +2285,11 @@ function App() {
             </span>
             {t.text}
             {t.translation && <span className="translation">{t.translation}</span>}
+          </div>
+        ))}
+        {listening && ['sys', 'mic'].map((slot) => sttPending[slot] > 0 && (
+          <div key={`pending-${slot}`} className={`bubble ${slot === 'mic' ? 'mic' : 'system'} stt-pending`} aria-label="transcrevendo" title="Transcrevendo esta fala">
+            <span className="typing"><i /><i /><i /></span>
           </div>
         ))}
         <div ref={transcriptEndRef} />

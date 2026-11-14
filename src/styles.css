@@ -278,7 +278,12 @@ html, body, #root {
   line-height: 1.45;
   flex-shrink: 0;
   user-select: text;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
 }
+.error-banner > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.error-banner .error-close { color: var(--danger); flex-shrink: 0; }
 
 /* ---------- transcrição ---------- */
 .transcript {
@@ -702,7 +707,8 @@ html, body, #root {
   text-transform: uppercase;
   letter-spacing: 0.6px;
   color: var(--text-dim);
-  width: 64px;
+  /* cabe o rótulo mais longo ("vocabulário", "diagnóstico") sem invadir o campo */
+  width: 84px;
   flex-shrink: 0;
 }
 .mode-pills.slim { flex: 1; }
@@ -1024,7 +1030,8 @@ html, body, #root {
 }
 .detail-title .pencil { font-size: 11px; color: var(--text-dim); opacity: 0; transition: opacity 0.13s; }
 .detail-title:hover .pencil { opacity: 1; }
-.detail-actions { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.detail-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; }
+.detail-actions .chip { white-space: nowrap; }
 .chip:disabled { opacity: 0.4; cursor: default; }
 .chip:disabled:hover { color: var(--text-dim); border-color: var(--border); }
 
@@ -1688,7 +1695,7 @@ svg.lucide { flex-shrink: 0; }
 .prompter-source {
   -webkit-app-region: no-drag;
   flex: 1;
-  min-width: 0;
+  min-width: 96px;
   max-width: 260px;
   margin-left: auto;
 }
@@ -1722,7 +1729,9 @@ svg.lucide { flex-shrink: 0; }
   min-height: 0;
   margin: 0 10px;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.28);
+  /* palco um tom acima do fundo, nos dois temas */
+  background: var(--surface);
+  border: 1px solid var(--border);
   cursor: pointer;
   overflow: clip;
 }
@@ -1792,6 +1801,7 @@ svg.lucide { flex-shrink: 0; }
   transition: opacity 0.3s;
 }
 .prompter-play {
+  flex-shrink: 0;
   width: 38px; height: 38px;
   border-radius: 50%;
   border: none;
@@ -1811,7 +1821,7 @@ svg.lucide { flex-shrink: 0; }
   border: 1px solid var(--border);
   background: var(--surface);
 }
-.prompter-stepper .theme-label { margin-right: 4px; }
+.prompter-stepper .theme-label { width: auto; margin-right: 4px; }
 .prompter-value {
   min-width: 26px;
   text-align: center;
@@ -1824,3 +1834,44 @@ svg.lucide { flex-shrink: 0; }
 .prompter-view.running .prompter-controls { opacity: 0.25; }
 .prompter-view.running .prompter-bar:hover,
 .prompter-view.running .prompter-controls:hover { opacity: 1; }
+
+/* abas das configurações sempre visíveis ao rolar o painel */
+.theme-panel > .settings-tabs {
+  position: sticky;
+  top: -11px;              /* o padding de cima do painel */
+  z-index: 2;
+  margin: -11px -13px 0;
+  padding: 11px 13px 8px;
+  background: rgb(from var(--bg) r g b / 1);
+  background-image: linear-gradient(var(--surface), var(--surface));
+}
+
+/* janela estreita: o nome some e fica só a marca, para o selo de status caber */
+@media (max-width: 460px) {
+  .header .brand-name { display: none; }
+  .header { gap: 6px; }
+}
+
+/* teleprompter em janela estreita: sem o título e sem os rótulos dos ajustes */
+@media (max-width: 460px) {
+  .prompter-title,
+  .prompter-stepper .theme-label { display: none; }
+  .prompter-controls { gap: 6px; }
+}
+
+/* fala sendo transcrita: reticências no lado de quem falou */
+.bubble.stt-pending { padding: 9px 14px; opacity: 0.75; animation: slide-in 0.15s ease-out; }
+.typing { display: inline-flex; gap: 4px; align-items: center; height: 10px; }
+.typing i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  animation: typing-dot 1.2s infinite ease-in-out;
+}
+.typing i:nth-child(2) { animation-delay: 0.15s; }
+.typing i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes typing-dot { 30% { opacity: 1; transform: translateY(-2px); } }
+.bubble.mic.stt-pending { color: var(--mint); }
+.bubble.system.stt-pending { color: var(--text-dim); }
+.mini-link svg { vertical-align: -2px; }
+.compact-typing { color: var(--text-dim); margin-top: 4px; }

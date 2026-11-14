@@ -36,8 +36,9 @@ function cleanTranscript(text) {
   if (!/\p{L}{2,}/u.test(t)) return ''; // sobrou só pontuação ou letra solta
   if (NORMALIZED.has(normalize(t))) return '';
   // A fala inteira é só um "endereço" (o modelo base devolveu
-  // "www.sup.com.com.au" num trecho mudo)
-  if (/^(www\.)?[\w-]+(\.[\w-]+)*\.(com|org|net|br|au|io)(\.[\w-]+)*\.?$/i.test(t)) return '';
+  // "www.sup.com.com.au" num trecho mudo; o Small devolve ".com.br" e
+  // ".com.uk" para tosse, teclado e batida na mesa)
+  if (/^(www\.)?\.?([\w-]+\.)*(com|org|net|gov|edu|br|uk|au|io|pt|us)(\.[\w-]+)*\.?$/i.test(t)) return '';
   return t;
 }
 

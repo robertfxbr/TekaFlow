@@ -131,7 +131,9 @@ class DatabaseManager {
     return this.db.prepare(`
       SELECT s.*,
         (SELECT COUNT(*) FROM transcriptions t WHERE t.session_id = s.id) AS transcription_count,
-        (SELECT COUNT(*) FROM messages m WHERE m.session_id = s.id) AS message_count
+        (SELECT COUNT(*) FROM messages m WHERE m.session_id = s.id) AS message_count,
+        -- sessão sem título: a lista mostra como a conversa começou
+        (SELECT substr(t.text, 1, 90) FROM transcriptions t WHERE t.session_id = s.id ORDER BY t.ts LIMIT 1) AS first_line
       FROM sessions s
       ORDER BY s.started_at DESC
       LIMIT ? OFFSET ?

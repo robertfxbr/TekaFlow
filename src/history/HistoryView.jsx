@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { cleanForCopy } from '../assist/cleanCopy.mjs';
 import { formatDuration } from '../util/time';
+import { ArrowLeft, Copy, Check, EyeOff, Pencil, Trash2 } from 'lucide-react';
 
 const api = window.teka;
 const PAGE_SIZE = 50;
@@ -12,6 +13,14 @@ const MAX_DOC_LINES = 300; // falas mandadas ao gerar resumo/e-mail de uma sess�
 // plural(1, 'fala') -> "1 fala"; plural(3, 'fala') -> "3 falas"
 function plural(n, singular, pluralForm = `${singular}s`) {
   return `${n} ${n === 1 ? singular : pluralForm}`;
+}
+
+// Título na lista: o que a pessoa (ou o resumo) deu; sem título, como a
+// conversa começou ("Sessão overlay" é o nome antigo de sessão sem título)
+function listTitle(s) {
+  if (s.subject && s.subject !== DEFAULT_SUBJECT) return s.subject;
+  if (s.first_line) return `“${s.first_line.trim()}${s.first_line.length >= 90 ? '…' : ''}”`;
+  return s.kind === 'interview' ? 'Entrevista sem falas' : 'Sessão sem falas';
 }
 
 function sessionDuration(s) {
@@ -27,7 +36,7 @@ function formatDate(ts) {
 // Markdown da sessão para colar em notas (Obsidian, Notion, e-mail)
 function sessionToMarkdown({ session, transcriptions, messages }) {
   const dt = new Date(session.started_at).toLocaleString('pt-BR');
-  const title = session.subject || DEFAULT_SUBJECT;
+  const title = listTitle({ ...session, first_line: transcriptions[0]?.text?.slice(0, 90) });
   const lines = [`# ${title} — ${dt}`, ''];
   const duration = formatDuration(sessionDuration(session));
   if (duration) lines.push(`Duração: ${duration}`, '');
@@ -202,7 +211,7 @@ export function HistoryView({ notice, onBack, onResume, onError, copyText, liste
       onClick={(e) => { e.stopPropagation(); removeSession(id); }}
       disabled={id === activeSessionId}
     >
-      {confirmDelete === id ? 'confirmar?' : '🗑'}
+      {confirmDelete === id ? 'confirmar?' : <Trash2 size={13} />}
     </button>
   );
 
@@ -210,16 +219,16 @@ export function HistoryView({ notice, onBack, onResume, onError, copyText, liste
     <div className="app">
       {notice}
       <div className="header">
-        <button className="icon-btn" title="Voltar" onClick={() => (detail ? setDetail(null) : onBack())}>←</button>
+        <button className="icon-btn" title="Voltar" onClick={() => (detail ? setDetail(null) : onBack())}><ArrowLeft size={16} /></button>
         <div className="logo">
           <span className="logo-name">{detail ? 'Sessão' : 'Histórico'}</span>
         </div>
         {detail && (
           <button className="icon-btn" title="Copiar como Markdown" onClick={exportMarkdown}>
-            {copied ? '✓' : '⧉'}
+            {copied ? <Check size={15} /> : <Copy size={15} />}
           </button>
         )}
-        <button className="icon-btn" title="Esconder" onClick={() => api.overlay.toggle()}>—</button>
+        <button className="icon-btn" title="Esconder" onClick={() => api.overlay.toggle()}><EyeOff size={16} /></button>
       </div>
 
       {!detail ? (
@@ -252,7 +261,7 @@ export function HistoryView({ notice, onBack, onResume, onError, copyText, liste
                 <div className="history-main">
                   {editing?.id === s.id
                     ? titleEditor(s)
-                    : <span className="history-subject">{s.subject || DEFAULT_SUBJECT}</span>}
+                    : <span className="history-subject">{listTitle(s)}</span>}
                   <span className="history-meta">
                     {s.id === activeSessionId ? 'em andamento · ' : ''}
                     {formatDuration(sessionDuration(s)) || (s.status === 'active' ? '' : '—')}
@@ -265,7 +274,7 @@ export function HistoryView({ notice, onBack, onResume, onError, copyText, liste
                     title="Renomear"
                     onClick={(e) => { e.stopPropagation(); setEditing({ id: s.id, value: s.subject || '' }); }}
                   >
-                    ✎
+                    <Pencil size={13} />
                   </button>
                   {deleteButton(s.id)}
                 </div>
@@ -294,7 +303,7 @@ export function HistoryView({ notice, onBack, onResume, onError, copyText, liste
                   title="Clique para renomear"
                   onClick={() => setEditing({ id: detail.session.id, value: detail.session.subject || '' })}
                 >
-                  {detail.session.subject || DEFAULT_SUBJECT} <span className="pencil">✎</span>
+                  {listTitle({ ...detail.session, first_line: detail.transcriptions?.[0]?.text?.slice(0, 90) })} <span className="pencil">✎</span>
                 </button>
               )}
             <span className="history-meta">
