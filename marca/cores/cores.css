@@ -1,0 +1,9 @@
+:root{
+  /* Cores da marca TekaFlow. Fonte: marca/README.md */
+  --teka-limao: #C5EF6B;            /* cor de assinatura: ícone no escuro, botão, destaque */
+  --teka-grafite-neutro: #1A1B1E;   /* fundo escuro, texto, botão sobre o limão */
+  --teka-verde-escuro: #5C7F10;     /* ícone no fundo claro */
+  --teka-branco: #FFFFFF;           /* texto sobre o grafite, cabeça do gato no fundo claro */
+  --teka-superficie-escura: #25262A;/* card sobre o grafite neutro (proposta, não aprovada) */
+  --teka-azul-ceu: #5BC0FF;         /* secundária: degradês e destaques, em contraste com o verde */
+}

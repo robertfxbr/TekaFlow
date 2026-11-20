@@ -1,0 +1,25 @@
+{
+  "name": "tekaflow-app",
+  "productName": "TekaFlow",
+  "version": "1.0.0",
+  "description": "TekaFlow, o companheiro discreto de reunião",
+  "author": "Carlos Henrique",
+  "private": true,
+  "main": "electron/bootstrap.cjs",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "start": "electron .",
+    "build:ui": "npm --prefix ../design-system run build:app",
+    "empacotar": "npm run build:ui && node scripts/empacotar.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "pdf-parse": "^2.4.5"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "@electron/rebuild": "^4.2.1",
+    "electron": "^38.8.6"
+  },
+  "shellMin": "1.0.0"
+}

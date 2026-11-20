@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleIdentifier</key><string>com.carloshenrique.tekaflow.fala</string>
+<key>CFBundleName</key><string>TekaFlow</string>
+<key>NSSpeechRecognitionUsageDescription</key><string>O TekaFlow usa o reconhecimento de voz do Mac para transcrever.</string>
+<key>NSMicrophoneUsageDescription</key><string>O TekaFlow usa o microfone para gravar a sua fala e transcrever.</string>
+</dict></plist>
