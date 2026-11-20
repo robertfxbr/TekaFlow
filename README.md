@@ -1,7 +1,14 @@
-# Teka
+# TekaFlow
 
-> Antes chamado **OpenPerssua**. Instalações antigas continuam usando a pasta
-> de dados `%APPDATA%/openperssua`, sem perder histórico nem login.
+> O app instalado se chama **Teka**. Antes o projeto se chamava
+> **OpenPerssua**; o endereço antigo `github.com/robertfxbr/openPerssua`
+> redireciona para cá. Instalações antigas continuam usando a pasta de dados
+> `%APPDATA%/openperssua`, sem perder histórico nem login.
+
+**Download:** instalador para Windows em
+[Releases](https://github.com/robertfxbr/TekaFlow/releases/latest). Quem está
+na versão 0.4.16 ou anterior precisa baixar o instalador uma vez; daí em
+diante o app se atualiza sozinho.
 
 > **Autor e mantenedor:** [Robert](https://github.com/robertfxbr) —
 > desenvolvido com assistência de IA (Kimi). Contribuições são bem-vindas;
@@ -123,8 +130,8 @@ lógicas (274 canais IPC mapeados, 245 módulos analisados).
   som; a fala repetida sai da transcrição. Supressão de ruído configurável
 - **Diagnóstico** de microfone, áudio do sistema, transcrição e cérebro, no
   onboarding e na aba "sistema"
-- **Atualização leve** pelo GitHub Releases: a versão nova baixa só o código
-  do app (~500 KB), confere o SHA-512 e reinicia, sem reinstalar. Se o pacote
+- **Atualização leve** pelo GitHub Releases do TekaFlow: a versão nova baixa
+  só o código do app (~2,5 MB), confere o SHA-512 e reinicia, sem reinstalar. Se o pacote
   novo não abrir, o app volta sozinho para o código do instalador. O
   instalador completo só volta quando a release troca o Electron ou um módulo
   nativo; ele também só roda se o SHA-512 conferir com o `latest.yml`
@@ -228,7 +235,7 @@ npm run dist:win   # gera release/Teka Setup X.Y.Z.exe (NSIS)
    `dependencies` mudou desde o último instalador, o script recusa: aí rode
    `npm run dist:win`, que grava a nova casca mínima (`teka.shellMin` e
    `teka.shellDeps` no `package.json`) e gera o instalador.
-3. Crie a release `vX.Y.Z` no GitHub com os dois arquivos acima. Inclua
+3. Crie a release `vX.Y.Z` em `robertfxbr/TekaFlow` com os dois arquivos acima. Inclua
    também o `Teka Setup X.Y.Z.exe` e o `latest.yml`, para quem ainda não tem
    a casca mínima.
 
