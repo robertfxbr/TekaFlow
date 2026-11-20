@@ -32,7 +32,7 @@ class McpClient {
       try {
         if (this.config.type === 'stdio') this.startChild();
         const result = await this.request('initialize', {
-          protocolVersion: VERSIONS[0], capabilities: {}, clientInfo: { name: 'Teka', version: '1.0' },
+          protocolVersion: VERSIONS[0], capabilities: {}, clientInfo: { name: 'TekaFlow', version: '1.0' },
         }, { signal, timeout: this.connectTimeout });
         if (!VERSIONS.includes(result?.protocolVersion)) throw new Error('Versão MCP não suportada');
         if (!result.capabilities?.tools) throw new Error('Servidor MCP não oferece ferramentas');

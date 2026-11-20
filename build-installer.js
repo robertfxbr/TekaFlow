@@ -17,7 +17,13 @@ const sharedConfig = {
     oneClick: false,
     allowToChangeInstallationDirectory: true,
     createDesktopShortcut: true,
-    shortcutName: 'Teka',
+    // O app passou a se chamar TekaFlow. productName (e com ele o Teka.exe,
+    // a pasta de instalação e a pasta de dados %APPDATA%/Teka) continua
+    // "Teka": trocar mudaria a pasta de dados e quem já usa perderia login
+    // e histórico. Só o que aparece para a pessoa muda de nome.
+    shortcutName: 'TekaFlow',
+    uninstallDisplayName: 'TekaFlow ${version}',
+    artifactName: 'TekaFlow Setup ${version}.${ext}',
   },
 };
 

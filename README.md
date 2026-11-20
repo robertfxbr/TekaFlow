@@ -1,9 +1,10 @@
 # TekaFlow
 
-> O app instalado se chama **Teka**. Antes o projeto se chamava
-> **OpenPerssua**; o endereço antigo `github.com/robertfxbr/openPerssua`
-> redireciona para cá. Instalações antigas continuam usando a pasta de dados
-> `%APPDATA%/openperssua`, sem perder histórico nem login.
+> Antes chamado **Teka** e, antes disso, **OpenPerssua**; o endereço antigo
+> `github.com/robertfxbr/openPerssua` redireciona para cá. O executável
+> (`Teka.exe`) e a pasta de dados (`%APPDATA%/Teka`, ou `%APPDATA%/openperssua`
+> em instalações antigas) mantêm o nome de antes, para ninguém perder
+> histórico nem login.
 
 **Download:** instalador para Windows em
 [Releases](https://github.com/robertfxbr/TekaFlow/releases/latest). Quem está
@@ -166,7 +167,7 @@ usam objetos JSON. Também é possível colar ou escolher um arquivo no formato
 Os servidores novos/importados começam desligados: ligue e teste para listar
 suas ferramentas. Instale o runtime do comando, como Node/npx ou uv/uvx, no PC.
 
-Cada ferramenta começa em **pedir confirmação**: o Teka mostra seu nome e
+Cada ferramenta começa em **pedir confirmação**: o TekaFlow mostra seu nome e
 argumentos e só chama após permitir. Sem resposta em até 45 segundos, nega.
 Você pode trocar para **automático** ou **desligada**. Em **assistentes**,
 abra o contexto ou editor e selecione os servidores permitidos; nenhum vem
@@ -178,12 +179,12 @@ Funciona pelo provedor escolhido para resposta/tela, sem exigir tool calling
 nativo. Só perguntas manuais e sobre a tela consultam MCP; sugestões ao vivo
 não consultam. Há até 3 chamadas em 60 segundos de preparação (incluindo
 confirmações), conexão de até 10 s por etapa e chamada de até 20 s. Depois,
-o Teka responde com o que conseguiu e indica as ferramentas usadas. O resultado
+o TekaFlow responde com o que conseguiu e indica as ferramentas usadas. O resultado
 enviado ao modelo fica limitado a 12.000 caracteres por chamada. Essas etapas
 adicionam chamadas ao provedor e podem consumir sua cota/cobrança habitual.
 
 Ambiente e cabeçalhos são cifrados com `safeStorage` do sistema; se a cifra
-não estiver disponível, o Teka recusa salvar segredos. Cadastre só servidores
+não estiver disponível, o TekaFlow recusa salvar segredos. Cadastre só servidores
 que você confia: comandos locais executam com seu usuário e ferramentas podem
 ler ou alterar dados conforme suas permissões. OAuth de servidores MCP,
 prompts, resources e sampling não são suportados.
@@ -224,7 +225,7 @@ src/audio/echo.js          filtro de eco por texto
 npm install        # se better-sqlite3 falhar por falta de Visual Studio,
                    # use: npm install --ignore-scripts (o electron-builder
                    # baixa o binário nativo certo para o Electron na hora de empacotar)
-npm run dist:win   # gera release/Teka Setup X.Y.Z.exe (NSIS)
+npm run dist:win   # gera release/TekaFlow Setup X.Y.Z.exe (NSIS)
 ```
 
 ### Publicando uma versão
@@ -236,7 +237,7 @@ npm run dist:win   # gera release/Teka Setup X.Y.Z.exe (NSIS)
    `npm run dist:win`, que grava a nova casca mínima (`teka.shellMin` e
    `teka.shellDeps` no `package.json`) e gera o instalador.
 3. Crie a release `vX.Y.Z` em `robertfxbr/TekaFlow` com os dois arquivos acima. Inclua
-   também o `Teka Setup X.Y.Z.exe` e o `latest.yml`, para quem ainda não tem
+   também o `TekaFlow Setup X.Y.Z.exe` e o `latest.yml`, para quem ainda não tem
    a casca mínima.
 
 Quem já tem o app recebe o aviso, baixa só o pacote leve e reinicia. O

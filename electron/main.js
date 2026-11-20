@@ -148,7 +148,7 @@ function trayMenu(settingsStore) {
 function createTray(settingsStore) {
   const icon = nativeImage.createFromPath(path.join(__dirname, 'assets', 'tray.png'));
   tray = new Tray(icon.isEmpty() ? nativeImage.createEmpty() : icon);
-  tray.setToolTip('Teka');
+  tray.setToolTip('TekaFlow');
   tray.setContextMenu(trayMenu(settingsStore));
   tray.on('click', () => toggleOverlay(isDev));
 }

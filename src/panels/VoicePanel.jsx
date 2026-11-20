@@ -223,7 +223,7 @@ export function VoicePanel({
         <input
           className="model-input"
           value={sttPrompt}
-          placeholder="nomes próprios e jargões (ex.: Robert, Teka)"
+          placeholder="nomes próprios e jargões (ex.: Robert, TekaFlow)"
           title="O Whisper usa como contexto; soma-se ao vocabulário embutido (nomes IBGE + termos de reunião e tecnologia PT-BR/EN)"
           onChange={(e) => onPrompt(e.target.value)}
         />

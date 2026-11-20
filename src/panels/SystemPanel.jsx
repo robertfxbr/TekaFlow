@@ -126,7 +126,7 @@ export function SystemPanel({
         <button className="chip" onClick={checkNow}>verificar</button>
       </div>
       <div className="panel-note">
-        O Teka procura versão nova a cada 1 h e já baixa sozinho.{' '}
+        O TekaFlow procura versão nova a cada 1 h e já baixa sozinho.{' '}
         {updateMode === 'auto'
           ? 'Na automática, reinicia na versão nova quando você não estiver ouvindo nem mexendo nele.'
           : 'Na manual, avisa que está pronta e você reinicia quando quiser.'}

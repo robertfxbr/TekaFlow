@@ -86,7 +86,7 @@ async function checkForUpdate() {
   let res;
   for (const repo of REPOS) {
     res = await fetch(releasesApi(repo), {
-      headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'Teka-updater' },
+      headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'TekaFlow-updater' },
       signal: AbortSignal.timeout(10000),
     });
     if (res.status !== 404) break;

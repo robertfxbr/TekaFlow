@@ -1806,7 +1806,7 @@ function App() {
       <div className="header">
         <div className="logo">
           <TekaMark size={24} />
-          <span className="logo-name brand-name">teka</span>
+          <span className="logo-name brand-name">tekaflow</span>
         </div>
         <div className={`status-pill ${listening ? 'on' : ''}`} title={resumeTarget ? `continuando: ${resumeTarget.subject || 'sessão anterior'}` : undefined}>
           <span className="dot" />
@@ -1965,11 +1965,11 @@ function App() {
           </div>
           <div className="panel-section">modo fantasma</div>
           <label className="option-label"><input type="checkbox" checked={ghost.hidden} onChange={(e) => changeGhost({ hidden: e.target.checked })} /> Sumir do compartilhamento de tela ({hintKey('toggle-ghost')})</label>
-          <div className="panel-note">Quem assiste à sua tela (Meet, Zoom, Teams, Discord, OBS) e prints veem o que está atrás do Teka. Na sua tela ele continua normal. O Teka já não aparece na barra de tarefas nem no Alt+Tab.</div>
+          <div className="panel-note">Quem assiste à sua tela (Meet, Zoom, Teams, Discord, OBS) e prints veem o que está atrás do TekaFlow. Na sua tela ele continua normal. O TekaFlow já não aparece na barra de tarefas nem no Alt+Tab.</div>
           <label className="option-label"><input type="checkbox" checked={ghost.hideTray} onChange={(e) => changeGhost({ hideTray: e.target.checked })} /> Tirar também o ícone da bandeja</label>
-          <div className="panel-note">Só vale com o fantasma ligado. Para mostrar ou esconder o Teka, use {hintKey('toggle-overlay')}.</div>
+          <div className="panel-note">Só vale com o fantasma ligado. Para mostrar ou esconder o TekaFlow, use {hintKey('toggle-overlay')}.</div>
           <label className="option-label"><input type="checkbox" checked={ghost.clickThrough} onChange={(e) => changeGhost({ clickThrough: e.target.checked })} /> Cliques atravessam a janela ({hintKey('toggle-click-through')})</label>
-          <div className="panel-note">O mouse passa pelo Teka e clica no app de baixo. Os atalhos continuam funcionando; o mesmo atalho devolve o mouse.</div>
+          <div className="panel-note">O mouse passa pelo TekaFlow e clica no app de baixo. Os atalhos continuam funcionando; o mesmo atalho devolve o mouse.</div>
           </>)}
         </div>
       )}
@@ -2104,7 +2104,7 @@ function App() {
               <span>
                 {updateFile === 'light'
                   ? (updateAuto
-                    ? `✦ versão ${updateInfo.version} baixada: o Teka reinicia sozinho quando você não estiver ouvindo`
+                    ? `✦ versão ${updateInfo.version} baixada: o TekaFlow reinicia sozinho quando você não estiver ouvindo`
                     : `✦ versão ${updateInfo.version} pronta (você tem ${updateInfo.current})`)
                   : `✦ versão ${updateInfo.version} disponível (você tem ${updateInfo.current})`}
               </span>

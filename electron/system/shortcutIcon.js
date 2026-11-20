@@ -15,9 +15,12 @@ const ICON_NAME = 'teka-icon.ico';
 function shortcutPaths() {
   const startMenu = path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs');
   return [
-    path.join(startMenu, 'Teka.lnk'),
-    path.join(startMenu, 'Teka', 'Teka.lnk'),
-    path.join(app.getPath('desktop'), 'Teka.lnk'),
+    // instalador até a 0.4.17: Teka.lnk; depois: TekaFlow.lnk
+    ...['Teka', 'TekaFlow'].flatMap((n) => [
+      path.join(startMenu, `${n}.lnk`),
+      path.join(startMenu, n, `${n}.lnk`),
+      path.join(app.getPath('desktop'), `${n}.lnk`),
+    ]),
   ];
 }
 
@@ -60,7 +63,7 @@ function updateShortcutIcons(paths = shortcutPaths()) {
       const options = {
         target: info.target,
         args: info.args || '',
-        description: info.description || 'Teka',
+        description: info.description || 'TekaFlow',
         cwd: cwdOk ? info.cwd : installDir,
         icon,
         iconIndex: 0,

@@ -69,7 +69,7 @@ export function parseAssistantImport(json, existingIds, createId = () => `c-${cr
     });
   } catch { throw new Error('JSON inválido ou com chaves não permitidas.'); }
   if (!object(document) || document.format !== 'teka-assistants' || document.version !== 1 || !Array.isArray(document.assistants)) {
-    throw new Error('Formato não reconhecido. Escolha um JSON de assistentes exportado pelo Teka.');
+    throw new Error('Formato não reconhecido. Escolha um JSON de assistentes exportado pelo TekaFlow.');
   }
   if (document.assistants.length > MAX_CUSTOM_ASSISTANTS || existingIds.length + document.assistants.length > MAX_CUSTOM_ASSISTANTS) throw new Error('Limite de 100 assistentes próprios.');
   const used = new Set([...existingIds, ...BUILTIN_ASSISTANTS.map((a) => a.id)]);
