@@ -36,7 +36,7 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 | Item | Esforço | Por quê |
 |---|---|---|
 | Testar numa chamada real, 10 minutos seguidos, com e sem fone | M | O som do computador, o eco e a velocidade só foram pensados; o original só confiou depois de uma bateria assim |
-| Tirar o cofre de senhas de teste | M | Hoje as chaves de API são guardadas com um cofre de desenvolvimento, que não protege de verdade. Para o público, precisa do cofre real do Mac |
+| Segurança com o ProvenSec | M | Spec 008. Inclui o cofre de senhas real do Mac (hoje o de teste não protege as chaves de API), a assinatura própria do pacote de atualização e limites nas pastas que a tela pode abrir. Adiada por decisão do Carlos |
 | Filtro de frases inventadas no silêncio | P | O Whisper inventa "Obrigado por assistir" quando só há silêncio |
 | Núcleos livres e prioridade baixa no Whisper | P | Para não travar Zoom, Meet ou Teams |
 | Aviso de transcrição lenta | P | Medium e Large levam mais de 20 segundos por fala em muitos Macs |
@@ -44,29 +44,33 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 | Atualização automática dentro do app | G | **Feito.** Pacote leve por versão, conferido por hash; a versão nova que não abre é descartada sozinha. Testado com versão boa e com versão quebrada |
 | Publicar o repositório e a release | P | Passo a passo em `RELEASE.md` |
 
-## Versão 1.1: abrir e reviver a reunião
+## Versão 1.1: assistentes (a próxima etapa)
+
+**Ideia do Carlos:** hoje há uma pasta de contexto só. O próximo passo é trocar por assistentes, como no original e no Perssua: cada assistente tem seus arquivos, suas instruções e suas regras. Exemplo: "Entrevista para designer", com o currículo, a vaga e as instruções de como responder.
 
 | Item | Esforço | Por quê |
 |---|---|---|
+| Assistentes: criar, editar e escolher antes da reunião | G | Cada um com nome, arquivos e instruções. A pasta de contexto de hoje vira o primeiro assistente |
+| Regra de resposta por assistente | M | Uma opção para escolher: "pode completar a resposta" ou "só com o que está nos arquivos" (no original, "responder só com certeza") |
+| Instruções por uso | M | Instruções diferentes para a sugestão ao vivo, para a pergunta direta e para o resumo |
+| Assistentes prontos (entrevista, venda, reunião de equipe, aula) | M | Ponto de partida, que a pessoa edita |
+| Importar e exportar assistentes | P | Compartilhar um assistente com outra pessoa |
+
+## Versão 1.2: o que o original já faz, com interface nova
+
+**Ideia do Carlos:** os mecanismos já existem no original. O trabalho é mudar a interface como um todo, **sem apagar o código antigo**: ele fica guardado (ramo `windows-legado`) e desligado para reativar depois.
+
+| Item | Esforço | Por quê |
+|---|---|---|
+| Análise de tela (capturar a tela e perguntar sobre ela) | M | Parakeet e Perssua têm; o original já captura |
+| Modo fantasma (esconder da gravação e da transmissão) | P | No Mac, o Electron já esconde a janela; falta ligar o botão |
+| Teleprompter com o roteiro do assistente | M | O original lê o contexto em letra grande, rolando sozinho |
+| Ferramentas MCP (conectar serviços) | M | O original aceita servidores MCP; entra na tela de Configurações |
 | Tela de detalhes e Sessões clicável | M | O wireframe está pronto; hoje a reunião salva mas não abre no app |
 | Resumo, decisões e pendências ao encerrar | M | A spec 006 prevê o `resumo.md` |
-| Pasta de contexto que persiste e fica pré-carregada | M | Hoje precisa reescolher a pasta; carregar antes deixa a sugestão mais rápida |
-| Modo fantasma | P | O Electron já esconde a janela da gravação no Mac; falta ligar o botão |
-| Escolher outra pasta para salvar | P | Previsto na spec 006 |
-| Idioma escolhido a cada gravação | M | Decisão antiga do Carlos |
-| "Sessões" virar "Reuniões" | P | Aguardando aval |
-
-## Versão 1.2: o copiloto fica mais esperto
-
-| Item | Esforço | Por quê |
-|---|---|---|
-| Resposta em camadas | M | A melhor ideia do 0.4.1: começa a falar pela primeira linha, o resto é apoio |
-| "Responder só com certeza" | M | Para a IA avisar em vez de inventar quando a resposta não está nos arquivos |
-| Perfis de reunião (entrevista, venda, aula) com contexto próprio | G | É o que o original chama de assistentes |
-| Resumo de entrevista | M | O que ficou forte, o que faltou e uma resposta mais forte |
-| Atalhos globais, com reserva | M | Iniciar e parar sem tocar na janela |
-| Modo mini com painel de resposta | M | Sugestão visível sem ocupar a tela |
-| Lembrete de escuta longa | P | Opcional, depois de 30 minutos |
+| Resposta em camadas e resumo de entrevista | M | A melhor ideia do 0.4.1 do original |
+| Atalhos globais, modo mini, lembrete de escuta longa | M | Do original |
+| Escolher outra pasta para salvar; idioma a cada gravação; "Sessões" virar "Reuniões" | P | Decisões antigas, algumas aguardando aval |
 
 ## Versão 1.3: sair do Mac
 
@@ -90,4 +94,4 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 
 ## Governança
 
-Roda com `node scripts/gate.mjs`: tipos, build, harness do design system, detector de design, voz da marca e varredura de cacoetes. O gancho de commit e a nuvem rodam o gate. O harness acusa 34 bloqueios antigos no baseline (22 de cor fora dos tokens, 14 deles no gato animado). Falta decidir se as cores do gato entram nos tokens.
+Roda com `node scripts/gate.mjs` (o gate visual mantém tudo o que for criado dentro do Design System): tipos, build, harness do design system, detector de design, voz da marca e varredura de cacoetes. O gancho de commit e a nuvem rodam o gate. O harness acusa 34 bloqueios antigos no baseline (22 de cor fora dos tokens, 14 deles no gato animado). Falta decidir se as cores do gato entram nos tokens.
