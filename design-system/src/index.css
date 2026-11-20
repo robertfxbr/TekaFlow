@@ -1,0 +1,284 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/figtree";
+@import "@fontsource-variable/outfit";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+    /* Escalas da marca. O limão é o brand-300 e o verde escuro é o brand-700; o grafite neutro é o grafite-950 e a superfície escura é o grafite-900 */
+    --brand-50: #F2FBE5;
+    --brand-100: #E6F8CC;
+    --brand-200: #D6F5A4;
+    --brand-300: #C5EF6B;
+    --brand-400: #A4D047;
+    --brand-500: #87AF2C;
+    --brand-600: #719519;
+    --brand-700: #5C7F10;
+    --brand-800: #475F07;
+    --brand-900: #324408;
+    --brand-950: #1F2B06;
+    --grafite-50: #F9FAFB;
+    --grafite-100: #EFF0F2;
+    --grafite-200: #E0E1E4;
+    --grafite-300: #C6C7CB;
+    --grafite-400: #A3A4A8;
+    --grafite-500: #7F8084;
+    --grafite-600: #616368;
+    --grafite-700: #46474C;
+    --grafite-800: #34353A;
+    --grafite-900: #25262A;
+    --grafite-950: #1A1B1E;
+
+    --background: #FFFFFF;
+    --foreground: #1A1B1E;
+    --card: #FFFFFF;
+    --card-foreground: #1A1B1E;
+    --popover: #FFFFFF;
+    --popover-foreground: #1A1B1E;
+    --primary: #5C7F10;
+    --primary-foreground: #FFFFFF;
+    --secondary: #EFF0F2;
+    --secondary-foreground: #1A1B1E;
+    --muted: #EFF0F2;
+    --muted-foreground: #616368;
+    --accent: #EFF0F2;
+    --accent-foreground: #1A1B1E;
+    --destructive: oklch(0.577 0.245 27.325);
+    /* tom da primária em fundo suave, para o balão de insight */
+    --tint: oklch(from var(--primary) 0.93 calc(c * 0.4) h);
+    --tint-hover: oklch(from var(--primary) 0.88 calc(c * 0.5) h);
+    /* feedback: derivado da primária, com a matiz girada. O alerta é mais claro porque amarelo escuro vira marrom */
+    --success: #0B7D4E;
+    --success-foreground: #FFFFFF;
+    --warning: #EFA810;
+    --warning-foreground: #1A1B1E;
+    --info: #0471A2;
+    --info-foreground: #FFFFFF;
+    --border: #E0E1E4;
+    --input: #E0E1E4;
+    --ring: #A3A4A8;
+    --chart-1: #C5EF6B;
+    --chart-2: #A4D047;
+    --chart-3: #87AF2C;
+    --chart-4: #719519;
+    --chart-5: #5C7F10;
+    --radius: 12px;
+    --sidebar: #F9FAFB;
+    --sidebar-foreground: #1A1B1E;
+    --sidebar-primary: #5C7F10;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #EFF0F2;
+    --sidebar-accent-foreground: #1A1B1E;
+    --sidebar-border: #E0E1E4;
+    --sidebar-ring: #A3A4A8;
+}
+
+.dark {
+    --background: #1A1B1E;
+    --foreground: #FFFFFF;
+    --card: #25262A;
+    --card-foreground: #FFFFFF;
+    --popover: #25262A;
+    --popover-foreground: #FFFFFF;
+    --primary: #C5EF6B;
+    --primary-foreground: #1A1B1E;
+    --secondary: #34353A;
+    --secondary-foreground: #FFFFFF;
+    --muted: #34353A;
+    --muted-foreground: #A3A4A8;
+    --accent: #34353A;
+    --accent-foreground: #FFFFFF;
+    --destructive: #E47C75;
+    --tint: oklch(from var(--primary) 0.3 calc(c * 0.4) h);
+    --tint-hover: oklch(from var(--primary) 0.35 calc(c * 0.5) h);
+    --success: #6DC799;
+    --success-foreground: #1A1B1E;
+    --warning: #EBBC63;
+    --warning-foreground: #1A1B1E;
+    --info: #6EB7E6;
+    --info-foreground: #1A1B1E;
+    --border: oklch(1 0 0 / 15%);
+    --input: oklch(1 0 0 / 40%);
+    --ring: #7F8084;
+    --chart-1: #C5EF6B;
+    --chart-2: #A4D047;
+    --chart-3: #87AF2C;
+    --chart-4: #719519;
+    --chart-5: #5C7F10;
+    --sidebar: #25262A;
+    --sidebar-foreground: #FFFFFF;
+    --sidebar-primary: #C5EF6B;
+    --sidebar-primary-foreground: #1A1B1E;
+    --sidebar-accent: #34353A;
+    --sidebar-accent-foreground: #FFFFFF;
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: #7F8084;
+}
+
+@theme inline {
+    --color-brand-50: var(--brand-50);
+    --color-brand-100: var(--brand-100);
+    --color-brand-200: var(--brand-200);
+    --color-brand-300: var(--brand-300);
+    --color-brand-400: var(--brand-400);
+    --color-brand-500: var(--brand-500);
+    --color-brand-600: var(--brand-600);
+    --color-brand-700: var(--brand-700);
+    --color-brand-800: var(--brand-800);
+    --color-brand-900: var(--brand-900);
+    --color-brand-950: var(--brand-950);
+    --color-grafite-50: var(--grafite-50);
+    --color-grafite-100: var(--grafite-100);
+    --color-grafite-200: var(--grafite-200);
+    --color-grafite-300: var(--grafite-300);
+    --color-grafite-400: var(--grafite-400);
+    --color-grafite-500: var(--grafite-500);
+    --color-grafite-600: var(--grafite-600);
+    --color-grafite-700: var(--grafite-700);
+    --color-grafite-800: var(--grafite-800);
+    --color-grafite-900: var(--grafite-900);
+    --color-grafite-950: var(--grafite-950);
+    --font-sans: 'Figtree Variable', sans-serif;
+    --font-heading: 'Outfit Variable', sans-serif;
+    --color-tint: var(--tint);
+    --color-tint-hover: var(--tint-hover);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --text-xs: 12px;
+    --text-xs--line-height: 16px;
+    --text-sm: 14px;
+    --text-sm--line-height: 20px;
+    --text-base: 16px;
+    --text-base--line-height: 24px;
+    --text-lg: 20px;
+    --text-lg--line-height: 28px;
+    --text-xl: 24px;
+    --text-xl--line-height: 32px;
+    --text-2xl: 28px;
+    --text-2xl--line-height: 36px;
+    --text-3xl: 32px;
+    --text-3xl--line-height: 40px;
+    --text-4xl: 40px;
+    --text-4xl--line-height: 48px;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 16px;
+    --radius-3xl: 16px;
+    --radius-4xl: 16px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+/*
+ * Barra de rolagem fina, nas cores do tema, e verde quando a pessoa passa o mouse ou arrasta.
+ * No Chrome e no Safari, `scrollbar-width` e `scrollbar-color` desligam o estilo por ::-webkit-scrollbar,
+ * então eles só valem onde o ::-webkit-scrollbar não existe (Firefox).
+ */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:active {
+  background: var(--primary);
+}
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+}
+
+/* Títulos com um respiro a mais entre as letras (0,5%) */
+.font-heading,
+h1,
+h2,
+h3 {
+  letter-spacing: 0.005em;
+}
+
+/* Barras de onda de voz, usadas na tela de entrada */
+@keyframes teka-onda {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+
+/* Texto em negrito mais leve: 600 no lugar de 700 */
+b,
+strong {
+  font-weight: 600;
+}
+
+/* Deriva lenta das manchas de cor e pontos de "digitando" */
+@keyframes teka-deriva-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-48px, 40px) scale(1.15); }
+}
+@keyframes teka-deriva-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(56px, -36px) scale(1.1); }
+}
+@keyframes teka-ponto {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* Áreas que rolam reservam o espaço da barra, para o conteúdo não andar quando ela aparece */
+[class*="overflow-y-auto"] {
+  scrollbar-gutter: stable;
+}

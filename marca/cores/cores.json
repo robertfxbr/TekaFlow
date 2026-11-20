@@ -1,0 +1,23 @@
+{
+  "marca": "TekaFlow",
+  "cores": {
+    "limao": "#C5EF6B",
+    "grafite-neutro": "#1A1B1E",
+    "verde-escuro": "#5C7F10",
+    "branco": "#FFFFFF",
+    "superficie-escura": "#25262A",
+    "azul-ceu": "#5BC0FF"
+  },
+  "contraste": {
+    "grafite-neutro sobre limao": 13.1,
+    "branco sobre grafite-neutro": 17.2,
+    "limao sobre grafite-neutro": 13.1,
+    "verde-escuro sobre branco": 4.7,
+    "grafite-neutro sobre branco": 17.2,
+    "branco sobre superficie-escura": 15.1,
+    "limao sobre superficie-escura": 11.5,
+    "azul-ceu sobre grafite-neutro": 8.6,
+    "grafite-neutro sobre azul-ceu": 8.6,
+    "azul-ceu sobre branco": 2.0
+  }
+}

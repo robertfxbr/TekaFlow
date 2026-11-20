@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TekaFlow, detalhes da reunião (wireframe)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root{--bg:#1A1B1E;--surf:#25262A;--surf2:#34353A;--line:rgba(255,255,255,.15);--inp:rgba(255,255,255,.4);--fg:#F9FAFB;--mut:#A3A4A8;--br:#C5EF6B;--ok:#6DC799;--err:#E47C75;--warn:#EBBC63}
+*{box-sizing:border-box}body{margin:0;background:#111;color:var(--fg);font:14px/1.5 system-ui,sans-serif;padding:28px 24px}.w{max-width:1100px;margin:0 auto}
+h1{font-size:24px;font-weight:500;margin:0 0 8px}.l{color:var(--mut);max-width:780px;margin:0 0 14px}
+.ctl{display:flex;gap:10px;align-items:center;margin:0 0 16px;flex-wrap:wrap}.mini{font-size:12px;color:var(--mut)}
+.seg{display:inline-flex;background:var(--surf);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}.seg button{font:inherit;font-size:13px;border:0;background:none;color:var(--mut);padding:5px 14px;border-radius:999px;cursor:pointer}.seg button.on{background:var(--surf2);color:var(--fg);font-weight:600}
+.janela{width:1040px;max-width:100%;height:640px;background:var(--bg);border:1px solid var(--line);border-radius:14px;display:flex;overflow:hidden}
+.menu{width:200px;border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:4px;flex:none}.menu b{font-size:15px;padding:4px 10px 12px;font-weight:600}.menu span{padding:8px 10px;border-radius:8px;color:var(--mut);display:flex;gap:8px;align-items:center}.menu .on{background:var(--surf2);color:var(--fg)}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;padding:24px 32px;gap:16px;overflow:hidden}
+.voltar{display:inline-flex;gap:6px;align-items:center;color:var(--mut);font-size:13px}
+.cab{display:flex;gap:16px;align-items:flex-start}.cab>div:first-child{flex:1;min-width:0}
+.tit{font-size:24px;font-weight:500;display:flex;gap:8px;align-items:center}.tit i{font-size:16px;color:var(--mut)}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.chip{font-size:12px;padding:2px 10px;border-radius:999px;background:var(--surf);border:1px solid var(--line);color:var(--mut);display:inline-flex;gap:4px;align-items:center}
+.chip.ok{color:var(--ok)}.chip.w{color:var(--warn);border-color:rgba(235,188,99,.5)}
+.btn{font:inherit;font-size:13px;height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--inp);background:transparent;color:var(--fg);display:inline-flex;gap:6px;align-items:center;white-space:nowrap}.btn.p{background:var(--br);border-color:var(--br);color:#1F2B06;font-weight:600}
+.acoes{display:flex;gap:8px;flex-wrap:wrap}
+.banner{border:1px solid rgba(235,188,99,.5);background:rgba(235,188,99,.09);border-radius:12px;padding:10px 14px;font-size:13px;display:flex;gap:10px;align-items:center}.banner b{color:var(--warn)}.banner .btn{margin-left:auto}
+.cols{flex:1;min-height:0;display:grid;grid-template-columns:1.25fr 1fr;gap:16px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.card h3{margin:0;font-size:14px;font-weight:600;display:flex;gap:8px;align-items:center}.card h3 .mini{margin-left:auto;font-weight:400}
+.rolo{overflow-y:auto;display:flex;flex-direction:column;gap:12px;min-height:0;scrollbar-width:thin;padding-right:4px}
+.fala{display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:13px}.fala time{color:var(--mut);font-size:12px;font-variant-numeric:tabular-nums;padding-top:2px}.fala b{display:block;font-size:11px;letter-spacing:.06em;color:var(--mut);font-weight:600}.fala.v b{color:var(--br)}
+.sug{border:1px solid rgba(197,239,107,.3);background:rgba(197,239,107,.07);border-radius:10px;padding:10px 12px;font-size:13px}.sug b{font-size:11px;letter-spacing:.06em;color:var(--br)}.sug .mini{margin-top:4px}
+.sec{display:flex;flex-direction:column;gap:6px;font-size:13px}.sec h4{margin:0;font-size:12px;letter-spacing:.06em;color:var(--mut);text-transform:uppercase}.sec ul{margin:0;padding-left:18px}.sec li{margin:2px 0}
+.sk{height:10px;border-radius:6px;background:var(--surf2);animation:p 1.2s ease-in-out infinite}@keyframes p{50%{opacity:.4}}
+.arq{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--mut)}
+.oculto{display:none!important}
+</style></head><body><div class="w">
+<h1>Detalhes da reunião: wireframe</h1>
+<p class="l">Abre ao clicar numa reunião em Sessões. Baseado na tela de sessão do original (título editável, ações de resumo e e-mail de follow-up, transcrição com quem falou, respostas do copiloto), adaptado à nossa interface e ao que o TekaFlow já salva em disco. Troque o estado abaixo.</p>
+<div class="ctl"><span class="mini">Estado</span><div class="seg" id="est"><button class="on" data-v="ok">Concluída</button><button data-v="int">Interrompida</button><button data-v="ger">Gerando resumo</button></div></div>
+<div class="janela">
+ <div class="menu"><b>TekaFlow</b><span><i class="ti ti-home"></i>Início</span><span class="on"><i class="ti ti-list"></i>Sessões</span><span><i class="ti ti-folder"></i>Contexto</span><span><i class="ti ti-settings"></i>Configurações</span></div>
+ <div class="main">
+  <span class="voltar"><i class="ti ti-arrow-left"></i> Sessões</span>
+  <div class="cab"><div><div class="tit">Entrevista técnica, Acme <i class="ti ti-pencil"></i></div>
+   <div class="meta"><span class="chip"><i class="ti ti-calendar"></i> 20 de Novembro, 14:20</span><span class="chip"><i class="ti ti-clock"></i> 42 min</span><span class="chip"><i class="ti ti-help-circle"></i> 9 sugestões</span><span class="chip ok" id="chipEst"><i class="ti ti-check"></i> Salva</span><span class="chip"><i class="ti ti-folder"></i> Documentos/TekaFlow</span></div></div>
+   <div class="acoes"><button class="btn"><i class="ti ti-copy"></i> Copiar como Markdown</button><button class="btn"><i class="ti ti-folder-open"></i> Abrir pasta</button><button class="btn"><i class="ti ti-mail"></i> E-mail de follow-up</button></div></div>
+  <div class="banner oculto" id="banner"><i class="ti ti-alert-triangle" style="color:var(--warn)"></i><span><b>Reunião interrompida.</b> O app fechou antes do fim. A transcrição até 14:51 está salva.</span><button class="btn">Gerar o resumo com o que existe</button></div>
+  <div class="cols">
+   <div class="card"><h3><i class="ti ti-file-text"></i> Transcrição <span class="mini">salva a cada minuto</span></h3>
+    <div class="rolo">
+     <div class="fala"><time>00:05</time><div><b>OUTROS</b>Conta uma situação em que você discordou de uma decisão técnica do time.</div></div>
+     <div class="sug"><b>SUGERI DIZER</b><div>Na migração do checkout, defendi manter a fila até medir a latência. Levei um teste de carga e o time revisou o plano.</div><div class="mini">briefing-vaga.md · em 0,9 s</div></div>
+     <div class="fala v"><time>00:19</time><div><b>VOCÊ</b>Teve sim. Na migração do checkout eu achava arriscado trocar a fila sem medir antes.</div></div>
+     <div class="fala"><time>00:41</time><div><b>OUTROS</b>E como o time reagiu quando você levantou isso?</div></div>
+     <div class="fala v"><time>00:50</time><div><b>VOCÊ</b>Pedi um teste de carga e mostrei os números. O plano foi revisado na semana seguinte.</div></div>
+     <div class="fala"><time>01:12</time><div><b>OUTROS</b>Como você lida com prazo apertado?</div></div>
+    </div></div>
+   <div class="card"><h3><i class="ti ti-sparkles"></i> Resumo <span class="mini" id="quem">Claude Haiku 5.5</span></h3>
+    <div class="rolo" id="resumo">
+     <div class="sec"><h4>Resumo</h4><p style="margin:0">Entrevista técnica para a vaga de Product Designer. Foram discutidos a migração do checkout, a decisão de medir antes de trocar a fila e como lidar com prazo apertado.</p></div>
+     <div class="sec"><h4>Decisões</h4><ul><li>Segunda rodada com o time de produto na semana que vem</li></ul></div>
+     <div class="sec"><h4>Pendências</h4><ul><li>Enviar o estudo de caso do checkout</li><li>Confirmar horário da segunda rodada</li></ul></div>
+     <div class="sec"><h4>Arquivos usados</h4><div class="arq"><i class="ti ti-file-text"></i> briefing-vaga.md, notas-entrevista.txt</div></div>
+    </div>
+    <div class="rolo oculto" id="gerando"><div class="sk" style="width:90%"></div><div class="sk" style="width:75%"></div><div class="sk" style="width:82%"></div><span class="mini">Gerando o resumo com Claude Haiku 5.5…</span></div>
+   </div>
+  </div>
+ </div>
+</div>
+</div>
+<script>
+document.querySelectorAll('#est button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#est button').forEach(x=>x.classList.toggle('on',x===b));const v=b.dataset.v;
+ document.getElementById('banner').classList.toggle('oculto',v!=='int');
+ document.getElementById('resumo').classList.toggle('oculto',v==='ger');
+ document.getElementById('gerando').classList.toggle('oculto',v!=='ger');
+ const c=document.getElementById('chipEst');c.className='chip '+(v==='int'?'w':'ok');c.innerHTML=v==='int'?'<i class="ti ti-alert-triangle"></i> Interrompida':'<i class="ti ti-check"></i> Salva'});
+</script></body></html>

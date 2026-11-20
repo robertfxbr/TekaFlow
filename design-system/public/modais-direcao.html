@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TekaFlow, direção dos modais</title>
+<style>
+:root{--bg:#1A1B1E;--surf:#25262A;--surf2:#34353A;--fg:#F9FAFB;--mut:#A3A4A8;--line:#46474C;--br:#C5EF6B;--brd:#475F07;--warn:#F5C451;--r:12px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,sans-serif;padding:40px 24px}
+h1{font-size:24px;font-weight:500;margin:0 0 8px}
+p.l{color:var(--mut);margin:0 0 32px;max-width:640px}
+h2{font-size:18px;font-weight:500;margin:40px 0 4px}
+.ref{color:var(--mut);font-size:12px;margin:0 0 16px}
+.row{display:flex;gap:24px;flex-wrap:wrap}
+.opt{cursor:pointer;border:2px solid transparent;border-radius:16px;padding:8px;background:transparent;text-align:left;color:inherit;font:inherit}
+.opt:hover{border-color:var(--line)}
+.opt.sel{border-color:var(--br)}
+.opt>b{display:block;margin:0 0 8px 4px;font-weight:500;font-size:12px;color:var(--mut)}
+.stage{width:440px;height:320px;background:#111;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.m{width:360px;height:260px;background:var(--surf);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;padding:20px;gap:12px}
+.m h3{margin:0;font-size:16px;font-weight:500}
+.m .sub{color:var(--mut);font-size:12px;margin:0}
+.m .body{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.m .head{border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:12px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.foot>:only-child{margin-left:auto}
+button.b{font:inherit;font-size:13px;height:36px;padding:0 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+button.p{background:var(--br);color:#1F2B06;border-color:var(--br);font-weight:600}
+button.g{border-color:transparent;color:var(--mut)}
+button:disabled{opacity:.5}
+.in{height:40px;border:1px solid var(--line);border-radius:8px;background:var(--bg);display:flex;align-items:center;padding:0 12px;color:var(--mut);font-size:13px;justify-content:space-between}
+.pair{display:flex;align-items:center;justify-content:center;gap:12px}
+.ic{width:44px;height:44px;border-radius:10px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-weight:600}
+.dots{color:var(--mut);letter-spacing:4px}
+.step{display:flex;gap:8px;font-size:13px;color:var(--mut);align-items:center}.step i{width:8px;height:8px;border-radius:50%;background:var(--br)}.step.w i{background:var(--line)}
+.warn{background:rgba(245,196,81,.12);border:1px solid rgba(245,196,81,.35);color:var(--warn);border-radius:8px;padding:10px 12px;font-size:12px}
+.tabs{display:flex;gap:4px}.tabs span{padding:4px 10px;border-radius:6px;font-size:12px;background:var(--surf2);color:var(--mut)}.tabs .on{background:var(--br);color:#1F2B06;font-weight:600}
+#zoom{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:9;cursor:zoom-out}
+#zoom.on{display:flex}#zoom .stage{transform:scale(1.7);background:transparent}
+#sel{position:fixed;right:16px;bottom:16px;background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:12px;max-width:260px;z-index:10}
+.hint{font-size:12px;color:var(--mut);margin-top:8px}
+</style>
+</head>
+<body>
+<h1>Modais do TekaFlow: direção</h1>
+<p class="l">Rascunho para escolher caminho, não é produção. Todos têm o mesmo tamanho (360 × 260), Cancelar sempre no canto esquerdo e no máximo dois botões. Clique para ampliar; use o botão "Escolher" para marcar a sua. O texto de cada um nasceu de uma referência do Mobbin, citada embaixo do título.</p>
+
+<h2>1. Entrar com o ChatGPT</h2>
+<p class="ref">Referências: Writer (janela aberta, volte depois de entrar) e Higgsfield (conectando em outra janela).</p>
+<div class="row" data-m="chatgpt">
+ <div class="opt" data-id="1A"><b>A · Uma frase só, com ícones ligados</b><div class="stage"><div class="m">
+  <div class="body"><div class="pair"><div class="ic">T</div><span class="dots">• • •</span><div class="ic">G</div></div>
+  <h3 style="text-align:center">Termine o login na janela do navegador</h3><p class="sub" style="text-align:center">Não viu a janela? <u>Abrir de novo</u></p></div>
+  <div class="foot"><button class="b g">Cancelar</button></div></div></div></div>
+ <div class="opt" data-id="1B"><b>B · Passos numerados (estilo ClickUp)</b><div class="stage"><div class="m">
+  <div class="head"><h3>Conectar o ChatGPT</h3></div>
+  <div class="body"><div class="step"><i></i>1. O navegador abriu na página de login</div><div class="step w"><i></i>2. Entre com a sua conta</div><div class="step w"><i></i>3. Volte aqui, a conexão segue sozinha</div></div>
+  <div class="foot"><button class="b g">Cancelar</button><button class="b" disabled>Aguardando…</button></div></div></div></div>
+</div>
+
+<h2>2. Chave de API</h2>
+<p class="ref">Referências: LangChain (campo com olho e Salvar), Resend e StackAI (aviso curto em cima do campo).</p>
+<div class="row">
+ <div class="opt" data-id="2A"><b>A · Campo simples com aviso de onde fica guardada</b><div class="stage"><div class="m">
+  <div class="head"><h3>Chave da OpenAI</h3></div>
+  <div class="body"><div class="in"><span>sk-••••••••••••</span><span>👁</span></div><p class="sub">Fica guardada no chaveiro do Mac. Só o TekaFlow lê.</p></div>
+  <div class="foot"><button class="b g">Cancelar</button><button class="b p">Salvar</button></div></div></div></div>
+ <div class="opt" data-id="2B"><b>B · Provedor em abas, o mesmo molde para todos</b><div class="stage"><div class="m">
+  <div class="head"><h3>Conectar por chave</h3></div>
+  <div class="body"><div class="tabs"><span class="on">OpenAI</span><span>Gemini</span><span>Claude</span></div><div class="in"><span>Cole a chave</span><span>👁</span></div><p class="sub">Onde pegar: platform.openai.com → API keys</p></div>
+  <div class="foot"><button class="b g">Cancelar</button><button class="b p" disabled>Testar e salvar</button></div></div></div></div>
+</div>
+
+<h2>3. Ollama não instalado</h2>
+<p class="ref">Referências: Air e NordVPN (baixar e tentar de novo) e Perplexity (instalar em passos). Por enquanto o cartão fica desligado, mas o modal já tem direção.</p>
+<div class="row">
+ <div class="opt" data-id="3A"><b>A · Um botão só, estado explícito</b><div class="stage"><div class="m">
+  <div class="body"><div class="pair"><div class="ic">O</div></div><h3 style="text-align:center">Não achei o Ollama neste Mac</h3><p class="sub" style="text-align:center">Instale e volte. O TekaFlow confere sozinho.</p></div>
+  <div class="foot"><button class="b g">Cancelar</button><button class="b p">Baixar o Ollama</button></div></div></div></div>
+ <div class="opt" data-id="3B"><b>B · Checklist que se completa sozinho</b><div class="stage"><div class="m">
+  <div class="head"><h3>Usar o Ollama</h3></div>
+  <div class="body"><div class="step"><i></i>Ollama instalado</div><div class="step w"><i></i>Ollama aberto</div><div class="step w"><i></i>Um modelo baixado</div><p class="sub">Procurando de 3 em 3 segundos…</p></div>
+  <div class="foot"><button class="b g">Cancelar</button></div></div></div></div>
+</div>
+
+<h2>4. Pular a escolha da IA (com aviso)</h2>
+<p class="ref">Referências: Searchable (consequência em uma frase), HubSpot (aviso de risco) e Vercel (alerta amarelo). Ações claras: voltar é o destaque, pular é o secundário.</p>
+<div class="row">
+ <div class="opt" data-id="4A"><b>A · Pergunta curta com consequência</b><div class="stage"><div class="m">
+  <div class="body"><h3>Sem IA, o TekaFlow só transcreve</h3><p class="sub">Você não terá sugestões nem respostas durante a reunião. Dá para conectar depois em Configurações.</p></div>
+  <div class="foot"><button class="b g">Pular assim mesmo</button><button class="b p">Escolher uma IA</button></div></div></div></div>
+ <div class="opt" data-id="4B"><b>B · Com faixa de aviso</b><div class="stage"><div class="m">
+  <div class="head"><h3>Pular esta etapa?</h3></div>
+  <div class="body"><div class="warn">⚠ Sem uma IA conectada, você não recebe respostas ao vivo nas reuniões.</div><p class="sub">Você poderá conectar uma a qualquer hora em Configurações → Cérebro.</p></div>
+  <div class="foot"><button class="b g">Pular</button><button class="b p">Voltar e escolher</button></div></div></div></div>
+</div>
+
+<div id="zoom"></div>
+<div id="sel">Nenhuma escolhida ainda. Clique numa opção para ampliar, depois em "Escolher".</div>
+<script>
+const z=document.getElementById('zoom'),sel=document.getElementById('sel'),pick={};
+document.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{
+ z.innerHTML=o.querySelector('.stage').outerHTML+'<button class="b p" id="esc" style="position:absolute;bottom:48px">Escolher '+o.dataset.id+'</button>';
+ z.classList.add('on');
+ document.getElementById('esc').onclick=e=>{e.stopPropagation();const g=o.dataset.id[0];document.querySelectorAll('.opt').forEach(x=>{if(x.dataset.id[0]===g)x.classList.remove('sel')});o.classList.add('sel');pick[g]=o.dataset.id;sel.textContent='Escolhidas: '+Object.values(pick).sort().join(', ');z.classList.remove('on')};
+}));
+z.addEventListener('click',()=>z.classList.remove('on'));
+</script>
+</body>
+</html>

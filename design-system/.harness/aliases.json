@@ -1,0 +1,10 @@
+{
+  "componentes": [
+    { "apelido": "escolha única", "alvo": "RadioGroup" },
+    { "apelido": "rolagem", "alvo": "ScrollArea" },
+    { "apelido": "atalho de teclado", "alvo": "Kbd" },
+    { "apelido": "confirmação", "alvo": "AlertDialog" },
+    { "apelido": "aviso com decisão", "alvo": "AlertDialog" },
+    { "apelido": "modal", "alvo": "AlertDialog" }
+  ]
+}

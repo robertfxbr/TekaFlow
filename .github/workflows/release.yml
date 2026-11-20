@@ -1,0 +1,32 @@
+name: Release do Mac
+# Dispara quando uma tag v* é enviada (por exemplo v0.1.0). Gera o app para Mac e publica o .zip na release.
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  mac:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: design-system
+      - run: npm ci
+        working-directory: app
+      - name: Compila o ajudante de voz
+        working-directory: app
+        run: swiftc -O native/fala.swift -o native/fala -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __info_plist -Xlinker native/Info.plist
+      - name: Empacota o app
+        working-directory: app
+        env:
+          SEM_INSTALAR: "1"
+        run: npm run empacotar
+      - name: Publica a release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" app/release/*.zip app/release/*.asar app/release/tekaflow-mac-update.json --title "TekaFlow ${GITHUB_REF_NAME}" --notes-file .github/release-notes.md

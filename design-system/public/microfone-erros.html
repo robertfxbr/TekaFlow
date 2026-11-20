@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TekaFlow, microfone na pergunta</title>
+<style>
+:root{--bg:#1A1B1E;--surf:#25262A;--surf2:#34353A;--line:rgba(255,255,255,.15);--inp:rgba(255,255,255,.4);--fg:#F9FAFB;--mut:#A3A4A8;--br:#C5EF6B;--err:#E47C75;--warn:#EBBC63}
+*{box-sizing:border-box}body{margin:0;background:#111;color:var(--fg);font:14px/1.5 system-ui,sans-serif;padding:32px 24px}.w{max-width:1100px;margin:0 auto}
+h1{font-size:24px;font-weight:500;margin:0 0 8px}.l{color:var(--mut);max-width:760px;margin:0 0 8px}h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:34px 0 8px;font-weight:600}
+.jan{width:1040px;height:560px;background:var(--bg);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;overflow:hidden;margin:0 auto}
+.fx{height:40px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--mut);position:relative;flex:none}.fx b{position:absolute;left:16px;display:flex;gap:8px}.fx b i{width:12px;height:12px;border-radius:50%;background:#ff5f57}.fx b i+i{background:#febc2e}.fx b i+i+i{background:#28c840}
+.cor{flex:1;padding:24px 40px;display:flex;flex-direction:column;gap:16px;min-height:0}.tit{text-align:center}.tit h3{margin:0;font-family:Outfit,system-ui;font-size:28px;font-weight:500}.tit p{margin:2px 0 0;color:var(--mut)}
+.grid{flex:1;display:grid;grid-template-columns:2fr 3fr;gap:24px;min-height:0}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:16px}.pasta{padding:16px;display:flex;flex-direction:column;gap:8px}.pasta .r{display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 0}.pasta .t{color:var(--mut);font-size:12px;margin-left:auto}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:0}.msgs{flex:1;padding:16px;display:flex;flex-direction:column;gap:10px;justify-content:flex-end;overflow:hidden}
+.mine{align-self:flex-end;background:var(--br);color:#1F2B06;border-radius:16px;padding:8px 14px;font-size:14px}.ia{align-self:flex-start;background:var(--surf2);border-radius:16px;padding:8px 14px;font-size:14px;max-width:80%}.ia small{display:block;font-size:11px;letter-spacing:.06em;color:var(--mut);margin-bottom:2px}
+.cx{width:100%;height:48px;border:1px solid var(--inp);border-radius:999px;display:flex;align-items:center;gap:8px;padding:0 6px 0 18px;background:rgba(255,255,255,.03);transition:padding .25s,border-color .25s;flex:none}
+[data-fase=gravando] .cx{padding-left:6px;border-color:rgba(197,239,107,.5);background:rgba(197,239,107,.04)}
+.ph{flex:1;color:var(--fg);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ph.vz{color:var(--mut)}
+.ib{width:34px;height:34px;border-radius:50%;border:0;background:transparent;color:var(--fg);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}.ib:hover{background:rgba(255,255,255,.08)}
+.env{background:var(--br);color:#1F2B06;font-weight:700}.lixo{color:var(--mut)}.lixo:hover{color:var(--err)}
+.rec{display:none;flex:1;align-items:center;gap:10px;min-width:0}[data-fase=gravando] .rec{display:flex}[data-fase=gravando] .ph,[data-fase=gravando] .mic{display:none}
+.tm{font-variant-numeric:tabular-nums;font-size:13px;min-width:32px;color:var(--mut)}.dot{width:8px;height:8px;border-radius:50%;background:var(--err);animation:pi 1s infinite;flex:none}@keyframes pi{50%{opacity:.25}}
+canvas{width:150px;height:30px;flex:none}
+.tr{display:none;flex:1;height:12px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,.06) 25%,rgba(197,239,107,.35) 50%,rgba(255,255,255,.06) 75%);background-size:200% 100%;animation:sh 1.1s linear infinite}[data-fase=transcrevendo] .tr{display:block}[data-fase=transcrevendo] .ph,[data-fase=transcrevendo] .mic{display:none}@keyframes sh{to{background-position:-200% 0}}
+.ban{display:flex;align-items:flex-start;gap:12px;border-radius:12px;padding:12px 14px;border:1px solid rgba(228,124,117,.45);background:rgba(228,124,117,.09)}.ban.w{border-color:rgba(235,188,99,.45);background:rgba(235,188,99,.09)}
+.bi{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;background:rgba(228,124,117,.22);color:var(--err);font-weight:700}.ban.w .bi{background:rgba(235,188,99,.22);color:var(--warn)}
+.bt2{flex:1;font-size:13px}.bt2 b{display:block;font-size:14px}.bt2 span{color:var(--mut)}.acoes{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.bt{font:inherit;font-size:13px;height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--inp);background:transparent;color:var(--fg);cursor:pointer}.bt.p{background:var(--br);border-color:var(--br);color:#1F2B06;font-weight:600}
+.x{border:0;background:none;color:var(--mut);cursor:pointer;font-size:16px}
+.sel{height:32px;border:1px solid var(--inp);border-radius:999px;display:inline-flex;align-items:center;gap:12px;padding:0 12px;font-size:13px}
+.rod{height:56px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 40px;flex:none}
+</style>
+</head>
+<body><div class="w">
+<h1>Falar a pergunta: gravar, apagar ou enviar, e quando dá erro</h1>
+<p class="l">Sem botão de pausar: só <b>apagar</b> e <b>enviar</b>. A barra de áudio ficou menor (ondas espelhadas, a opção B). Ao enviar, a fala é transcrita na hora com o modelo de transcrição escolhido e o texto entra no campo. Se já havia texto, entra depois dele, com um espaço no meio. A primeira janela é interativa; as outras duas mostram os erros.</p>
+
+<h2>1 · Gravando e inserindo o texto (clique no microfone)</h2>
+<div class="jan" id="j1" data-fase="parado"><div class="fx"><b><i></i><i></i><i></i></b>TekaFlow</div><div class="cor"><div class="tit"><h3>4. Dê contexto à IA com uma pasta</h3><p>Escolha a pasta, pergunte por texto ou voz e confira se ela leu direito.</p></div><div class="grid"><div class="card pasta"><div class="r">📁 <b>TekaFlow-teste-entrevista</b></div><div class="r">☑ respostas-entrevista.md<span class="t">16 KB</span></div><div class="r">☑ contexto-linkedin.md<span class="t">13 KB</span></div><div class="r">☑ curriculo.pdf<span class="t">8 KB</span></div></div><div class="chat"><div class="card msgs"><div class="mine">Resuma os pontos principais</div><div class="ia"><small>TEKAFLOW</small>Você tem 7 anos em design e 5 em produto.</div></div>
+<div class="cx"><span class="ph">Quais são os</span><span class="rec"><button class="ib lixo" data-lixo title="Apagar">🗑</button><i class="dot"></i><span class="tm">0:00</span><span style="flex:1"></span><canvas></canvas></span><span class="tr"></span><button class="ib mic" data-mic title="Falar">🎙</button><button class="ib env" data-env>➤</button></div>
+</div></div></div><div class="rod"><button class="bt">Voltar</button><span style="color:var(--mut);font-size:12px" id="dica1">O campo já tem "Quais são os". Grave e envie para ver o texto entrar depois dele.</span><button class="bt p">Concluir →</button></div></div>
+
+<h2>2 · Erro: o microfone não captou nada</h2>
+<div class="jan"><div class="fx"><b><i></i><i></i><i></i></b>TekaFlow</div><div class="cor"><div class="tit"><h3>4. Dê contexto à IA com uma pasta</h3><p>Escolha a pasta, pergunte por texto ou voz e confira se ela leu direito.</p></div><div class="grid"><div class="card pasta"><div class="r">📁 <b>TekaFlow-teste-entrevista</b></div><div class="r">☑ respostas-entrevista.md<span class="t">16 KB</span></div><div class="r">☑ contexto-linkedin.md<span class="t">13 KB</span></div><div class="r">☑ curriculo.pdf<span class="t">8 KB</span></div></div><div class="chat"><div class="card msgs"><div class="mine">Resuma os pontos principais</div><div class="ia"><small>TEKAFLOW</small>Você tem 7 anos em design e 5 em produto.</div></div>
+<div class="ban"><span class="bi">!</span><div class="bt2"><b>Não ouvi nada no microfone</b><span>A gravação chegou em silêncio. Confira se o QCY H3 (Bluetooth) está ligado e perto, ou escolha outro.</span><div class="acoes"><span class="sel">QCY H3 (Bluetooth) ⌃</span><button class="bt p">Tentar de novo</button></div></div><button class="x">✕</button></div>
+<div class="cx"><span class="ph vz">Pergunte sobre a pasta</span><button class="ib mic">🎙</button><button class="ib env">➤</button></div>
+</div></div></div><div class="rod"><button class="bt">Voltar</button><span></span><button class="bt p">Concluir →</button></div></div>
+
+<h2>3 · Erro: o TekaFlow não tem permissão para usar o microfone</h2>
+<div class="jan"><div class="fx"><b><i></i><i></i><i></i></b>TekaFlow</div><div class="cor"><div class="tit"><h3>4. Dê contexto à IA com uma pasta</h3><p>Escolha a pasta, pergunte por texto ou voz e confira se ela leu direito.</p></div><div class="grid"><div class="card pasta"><div class="r">📁 <b>TekaFlow-teste-entrevista</b></div><div class="r">☑ respostas-entrevista.md<span class="t">16 KB</span></div><div class="r">☑ contexto-linkedin.md<span class="t">13 KB</span></div><div class="r">☑ curriculo.pdf<span class="t">8 KB</span></div></div><div class="chat"><div class="card msgs"><div class="mine">Resuma os pontos principais</div></div>
+<div class="ban w"><span class="bi">🔒</span><div class="bt2"><b>Precisamos da sua permissão para usar o microfone</b><span>O Mac ainda não liberou o microfone para o TekaFlow. Sem isso, não dá para falar a pergunta.</span><div class="acoes"><button class="bt p">Permitir</button><button class="bt">Abrir Ajustes do Mac</button></div></div><button class="x">✕</button></div>
+<div class="cx"><span class="ph vz">Pergunte sobre a pasta</span><button class="ib mic" style="opacity:.6">🎙</button><button class="ib env">➤</button></div>
+</div></div></div><div class="rod"><button class="bt">Voltar</button><span style="color:var(--mut);font-size:12px">Se o Mac já recusou antes, "Permitir" abre os Ajustes direto.</span><button class="bt p">Concluir →</button></div></div>
+</div>
+<script>
+const root=document.getElementById("j1"),cx=root.querySelector(".cx"),ph=root.querySelector(".ph"),cv=root.querySelector("canvas"),tm=root.querySelector(".tm"),ctx=cv.getContext("2d");
+let alvo=0,lvl=0,hist=[],fase="parado",t=0,tiv,hiv,raf;const PREVIO="Quais são os",NOVO="pontos principais do arquivo?";
+setInterval(()=>{alvo=Math.random()<.25?Math.random()*.12:.3+Math.random()*.7},130);
+function set(f){fase=f;root.dataset.fase=f}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y,x+w,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.fill()}
+function desenhar(){cv.width=300;cv.height=60;ctx.clearRect(0,0,300,60);lvl+=(alvo-lvl)*.3;const passo=8,n=Math.floor(300/passo);while(hist.length>n)hist.shift();hist.forEach((v,i)=>{const x=300-(hist.length-i)*passo;const e=Math.min(1,x/50,(300-x)/10);const h=Math.max(5,v*56);ctx.fillStyle=`rgba(197,239,107,${.9*Math.max(0,e)})`;rr(x,(60-h)/2,4,h,2)});raf=requestAnimationFrame(desenhar)}
+root.querySelector("[data-mic]").addEventListener("click",()=>{set("gravando");t=0;tm.textContent="0:00";hist=[];tiv=setInterval(()=>{t++;tm.textContent="0:"+String(t).padStart(2,"0")},1000);hiv=setInterval(()=>hist.push(Math.max(.08,lvl)),60);if(!raf)desenhar()});
+root.querySelector("[data-lixo]").addEventListener("click",()=>{clearInterval(tiv);clearInterval(hiv);set("parado")});
+root.querySelector("[data-env]").addEventListener("click",()=>{if(fase!=="gravando")return;clearInterval(tiv);clearInterval(hiv);set("transcrevendo");setTimeout(()=>{set("parado");ph.textContent=PREVIO+" "+NOVO;document.getElementById("dica1").textContent="Texto inserido depois do que já estava no campo, com um espaço no meio."},1300)});
+</script>
+</body></html>

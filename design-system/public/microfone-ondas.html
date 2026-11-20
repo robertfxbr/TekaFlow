@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TekaFlow, microfone gravando</title>
+<style>
+:root{--bg:#1A1B1E;--surf:#25262A;--surf2:#34353A;--line:rgba(255,255,255,.15);--inp:rgba(255,255,255,.4);--fg:#F9FAFB;--mut:#A3A4A8;--br:#C5EF6B;--brd:#87AF2C;--err:#E47C75}
+*{box-sizing:border-box}body{margin:0;background:#111;color:var(--fg);font:14px/1.5 system-ui,sans-serif;padding:32px 24px}.w{max-width:900px;margin:0 auto}
+h1{font-size:24px;font-weight:500;margin:0 0 8px}.l{color:var(--mut);max-width:720px;margin:0 0 8px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:34px 0 4px;font-weight:600}.d{color:var(--mut);font-size:13px;margin:0 0 12px;max-width:660px}
+.demo{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:28px 32px;display:flex;justify-content:center}
+.cx{width:100%;max-width:680px;height:56px;border:1px solid var(--inp);border-radius:999px;display:flex;align-items:center;gap:10px;padding:0 8px 0 20px;background:rgba(255,255,255,.03);transition:padding .25s,border-color .25s}
+[data-fase=gravando] .cx,[data-fase=pausado] .cx{padding-left:8px;border-color:rgba(197,239,107,.5);background:rgba(197,239,107,.04)}
+.ph{flex:1;color:var(--mut);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ph.v{color:var(--fg)}
+.ib{width:38px;height:38px;border-radius:50%;border:0;background:transparent;color:var(--fg);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;transition:background .2s,transform .12s}.ib:hover{background:rgba(255,255,255,.08)}.ib:active{transform:scale(.92)}
+.env{background:var(--br);color:#1F2B06;font-weight:700}
+.rec{display:none;flex:1;align-items:center;gap:12px;min-width:0}
+[data-fase=gravando] .rec,[data-fase=pausado] .rec{display:flex}[data-fase=gravando] .ph,[data-fase=pausado] .ph,[data-fase=transcrevendo] .ph{display:none}
+[data-fase=gravando] .nr,[data-fase=pausado] .nr{display:none}
+.tr{display:none;flex:1;height:14px;border-radius:7px;background:linear-gradient(90deg,rgba(255,255,255,.06) 25%,rgba(197,239,107,.35) 50%,rgba(255,255,255,.06) 75%);background-size:200% 100%;animation:sh 1.1s linear infinite}[data-fase=transcrevendo] .tr{display:block}@keyframes sh{to{background-position:-200% 0}}
+.tm{font-variant-numeric:tabular-nums;font-size:14px;min-width:38px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--err);animation:pi 1s ease-in-out infinite;flex:none}[data-fase=pausado] .dot{animation:none;opacity:.4}@keyframes pi{50%{opacity:.25}}
+canvas{flex:1;height:40px;min-width:0}
+.pa{font-size:15px}
+.lixo{color:var(--mut)}.lixo:hover{color:var(--err)}
+.nota{font-size:12px;color:var(--mut);text-align:center;margin-top:10px}
+.gt{width:34px;height:34px;flex:none}.olhos-feliz{display:block}.olhos-aberto{display:none}[data-fase=gravando] .olhos-feliz{display:none}[data-fase=gravando] .olhos-aberto{display:block}
+</style>
+</head>
+<body><div class="w">
+<h1>Microfone gravando: ondas, na linha do WhatsApp, com a marca</h1>
+<p class="l">Mesma estrutura da referência (lixeira, ponto, tempo, ondas, pausa e enviar), mas com o visual do TekaFlow: ondas em <b>limão</b> sobre o grafite, cantos arredondados do app e o botão de enviar em limão. O vermelho aparece só no ponto de gravação. <b>Cada uma já abre gravando</b>, para você comparar lado a lado. Pause, apague ou envie pelos botões; depois, clique no microfone para gravar de novo. Ao enviar, o campo mostra o brilho de "transcrevendo" e o texto cai digitado.</p>
+
+<h2>A · Barras que entram pela direita (a mais próxima da referência)</h2>
+<p class="d">O som novo entra pela direita e as barras andam para a esquerda. Os últimos instantes são limão forte, e os mais antigos vão apagando. A linha pontilhada à esquerda é o "silêncio".</p>
+<div class="demo" data-viz="entra"></div>
+
+<h2>B · Ondas espelhadas, crescendo do centro</h2>
+<p class="d">Barras arredondadas crescem para cima e para baixo a partir do eixo. Parece mais "áudio de verdade". As bordas somem em degradê.</p>
+<div class="demo" data-viz="espelho"></div>
+
+<h2>C · Pontos que viram barras quando você fala</h2>
+<p class="d">Uma linha de pontos fica parada no silêncio. Quando há voz, cada ponto cresce em uma barra. Combina com a ideia de "ouvindo" sem ficar barulhento.</p>
+<div class="demo" data-viz="pontos"></div>
+
+<h2>D · Com o gato à esquerda, no lugar da lixeira</h2>
+<p class="d">O gato do app, de olhos abertos, abre a gravação, e as barras seguem como na A. A lixeira vai para o fim, ao lado da pausa.</p>
+<div class="demo" data-viz="gato"></div>
+
+<h2>E · Onda contínua e suave, em um traço só</h2>
+<p class="d">Uma única linha limão que oscila com a voz, bem fina e elegante. É a mais discreta e a mais "marca".</p>
+<div class="demo" data-viz="linha"></div>
+<p class="nota">O texto transcrito entra digitado: “Resuma os pontos principais dos arquivos.”</p>
+</div>
+<script>
+const TXT="Resuma os pontos principais dos arquivos.";
+let alvo=0,lvl=0;setInterval(()=>{alvo=Math.random()<.25?Math.random()*.12:.3+Math.random()*.7},130);
+const nivel=()=>{lvl+=(alvo-lvl)*.3;return lvl};
+const GATO='<svg class="gt" viewBox="0 0 44 44"><path d="M7 15L9 6L18 11H26L35 6L37 15V30A6 6 0 0 1 31 36H13A6 6 0 0 1 7 30Z" fill="#C5EF6B"/><g class="olhos-feliz"><path d="M13 23Q16 19 19 23" stroke="#1A1B1E" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M25 23Q28 19 31 23" stroke="#1A1B1E" stroke-width="2.4" fill="none" stroke-linecap="round"/></g><g class="olhos-aberto"><rect x="14" y="18" width="4.2" height="8" rx="2.1" fill="#1A1B1E"/><rect x="25.8" y="18" width="4.2" height="8" rx="2.1" fill="#1A1B1E"/></g><rect id="boca" x="19.5" y="29" width="5" height="2.5" rx="1.2" fill="#1A1B1E"/></svg>';
+document.querySelectorAll(".demo").forEach(root=>{
+ const viz=root.dataset.viz;
+ const lixo='<button class="ib lixo" data-lixo title="Apagar">🗑</button>';
+ const gato=viz==="gato";
+ root.innerHTML=`<div class="cx" data-fase="parado"><span class="nr" style="display:contents"><span class="ph">Pergunte sobre a pasta</span></span><span class="rec">${gato?GATO:lixo}<i class="dot"></i><span class="tm">0:00</span><canvas></canvas><button class="ib pa" data-pausa title="Pausar">⏸</button>${gato?lixo:""}</span><span class="tr"></span><button class="ib mic" data-mic title="Gravar">🎙</button><button class="ib env" data-env title="Enviar">➤</button></div>`;
+ const cx=root.querySelector(".cx"),ph=root.querySelector(".ph"),cv=root.querySelector("canvas"),ctx=cv.getContext("2d"),tm=root.querySelector(".tm"),mic=root.querySelector("[data-mic]"),env=root.querySelector("[data-env]"),pausa=root.querySelector("[data-pausa]"),lx=root.querySelector("[data-lixo]");
+ let fase="parado",t=0,hist=[],tiv=null,hiv=null,tw=null,raf=null;
+ const set=f=>{fase=f;cx.dataset.fase=f;root.dataset.fase=f;mic.style.display=(f==="gravando"||f==="pausado")?"none":"flex";};
+ // o CSS usa [data-fase] em ancestrais: coloca no root também
+ const style=document.createElement("style");
+ function dim(){const r=cv.getBoundingClientRect();if(cv.width!==Math.round(r.width*2)){cv.width=Math.max(10,Math.round(r.width*2));cv.height=80}}
+ function desenhar(){
+  dim();const W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+  const passo=viz==="pontos"?12:10, n=Math.floor(W/passo);
+  while(hist.length>n)hist.shift();
+  if(viz==="entra"||viz==="gato"){
+    // linha pontilhada do silêncio + barras que entram pela direita
+    ctx.fillStyle="rgba(255,255,255,.22)";for(let x=0;x<W;x+=passo){ctx.fillRect(x,H/2-1.5,3,3)}
+    hist.forEach((v,i)=>{const x=W-(hist.length-i)*passo;const idade=i/hist.length;const h=Math.max(6,v*H*.92);ctx.fillStyle=`rgba(197,239,107,${.25+idade*.75})`;rr(x,(H-h)/2,5,h,2.5)});
+  }
+  if(viz==="espelho"){
+    hist.forEach((v,i)=>{const x=W-(hist.length-i)*passo;const e=Math.min(1,x/(W*.18),(W-x)/(W*.04));const h=Math.max(6,v*H*.92);ctx.fillStyle=`rgba(197,239,107,${.9*Math.max(0,Math.min(1,e))})`;rr(x,(H-h)/2,5,h,2.5)});
+  }
+  if(viz==="pontos"){
+    for(let k=0;k<n;k++){const x=W-(k+1)*passo;const idx=hist.length-1-k;const v=idx>=0?hist[idx]:0;if(v>.12){const h=Math.max(8,v*H*.9);ctx.fillStyle="#C5EF6B";rr(x,(H-h)/2,5,h,2.5)}else{ctx.fillStyle="rgba(255,255,255,.28)";ctx.beginPath();ctx.arc(x+2.5,H/2,2.4,0,7);ctx.fill()}}
+  }
+  if(viz==="linha"){
+    const l=fase==="pausado"?0.02:nivel();ctx.beginPath();ctx.strokeStyle="#C5EF6B";ctx.lineWidth=3;ctx.lineCap="round";
+    for(let x=0;x<=W;x+=3){const env=Math.sin(x/W*Math.PI);const y=H/2+Math.sin(x/34+performance.now()/180)*H*.42*env*(.08+l)+Math.sin(x/17-performance.now()/260)*H*.18*env*l;x?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke();
+  }
+  if(gato){const b=root.querySelector("#boca");if(b){const l=nivel();b.setAttribute("height",2.5+l*6);b.setAttribute("y",29-l*2)}}
+  raf=requestAnimationFrame(desenhar)
+ }
+ function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.fill()}
+ function comecar(){clearInterval(tw);ph.classList.remove("v");ph.textContent="Pergunte sobre a pasta";t=0;tm.textContent="0:00";hist=[];set("gravando");pausa.textContent="⏸";
+  tiv=setInterval(()=>{if(fase==="gravando"){t++;tm.textContent="0:"+String(t).padStart(2,"0")}},1000);
+  hiv=setInterval(()=>{if(fase==="gravando")hist.push(Math.max(.08,nivel()))},viz==="pontos"?90:60);}
+ function parar(){clearInterval(tiv);clearInterval(hiv)}
+ function digitar(){ph.classList.add("v");ph.textContent="";let i=0;tw=setInterval(()=>{ph.textContent=TXT.slice(0,++i);if(i>=TXT.length)clearInterval(tw)},28)}
+ mic.addEventListener("click",comecar);
+ pausa.addEventListener("click",()=>{if(fase==="gravando"){set("pausado");pausa.textContent="●"}else if(fase==="pausado"){set("gravando");pausa.textContent="⏸"}});
+ lx.addEventListener("click",()=>{parar();set("parado")});
+ env.addEventListener("click",()=>{if(fase==="gravando"||fase==="pausado"){parar();set("transcrevendo");setTimeout(()=>{set("pronto");digitar()},1300)}});
+ set("parado");desenhar();
+ setTimeout(comecar,400);
+});
+document.head.insertAdjacentHTML("beforeend","<style>.demo[data-fase=gravando] .nr,.demo[data-fase=pausado] .nr{display:none!important}.demo[data-fase=gravando] .rec,.demo[data-fase=pausado] .rec{display:flex}.demo[data-fase=gravando] .cx,.demo[data-fase=pausado] .cx{padding-left:8px;border-color:rgba(197,239,107,.5);background:rgba(197,239,107,.04)}.demo[data-fase=gravando] .dot{animation:pi 1s ease-in-out infinite}.demo[data-fase=transcrevendo] .tr{display:block}.demo[data-fase=transcrevendo] .nr{display:none!important}</style>");
+</script>
+</body></html>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 120" width="720" height="120" role="img" aria-label="Estados do TekaFlow: ouvindo, pensando, escrevendo, diga isso">
+  <rect width="720" height="120" rx="24" fill="#C5EF6B"/>
+  <g font-family="Chillax, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="22">
+    <g transform="rotate(-4 120 60)"><rect x="36" y="38" width="170" height="46" rx="23" fill="#1A1B1E" stroke="#FFFFFF" stroke-width="3"/><circle cx="64" cy="61" r="9" fill="#C5EF6B"/><text x="82" y="68" fill="#C5EF6B">ouvindo</text></g>
+    <g transform="rotate(3 280 60)"><rect x="218" y="38" width="176" height="46" rx="23" fill="#FFFFFF"/><text x="238" y="68" fill="#1A1B1E">pensando</text><circle cx="364" cy="62" r="2.5" fill="#1A1B1E"/><circle cx="373" cy="62" r="2.5" fill="#1A1B1E"/><circle cx="382" cy="62" r="2.5" fill="#1A1B1E"/></g>
+    <g transform="rotate(-3 470 60)"><rect x="408" y="38" width="170" height="46" rx="23" fill="#5BC0FF" stroke="#FFFFFF" stroke-width="3"/><text x="428" y="68" fill="#1A1B1E">escrevendo</text></g>
+    <g transform="rotate(4 640 60)"><rect x="590" y="38" width="108" height="46" rx="23" fill="#1A1B1E" stroke="#FFFFFF" stroke-width="3"/><text x="606" y="68" fill="#C5EF6B">diga isso</text></g>
+  </g>
+</svg>
