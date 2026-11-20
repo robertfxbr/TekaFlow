@@ -17,10 +17,16 @@ const fs = require('fs');
 const path = require('path');
 const bundles = require('./appBundle');
 
-const REPO = 'robertfxbr/openPerssua';
-const RELEASES_API = `https://api.github.com/repos/${REPO}/releases/latest`;
-const DOWNLOAD_PREFIX = `https://github.com/${REPO}/releases/download/`;
+// O repositório se chamava openPerssua e passa a se chamar TekaFlow. Depois
+// da troca, o GitHub entrega os links de download com o nome novo; antes, só
+// o antigo existe. Os dois valem, e a busca tenta o nome novo primeiro.
+const REPOS = ['robertfxbr/TekaFlow', 'robertfxbr/openPerssua'];
+const REPO = REPOS[0];
+const releasesApi = (repo) => `https://api.github.com/repos/${repo}/releases/latest`;
 const RELEASES_PAGE = `https://github.com/${REPO}/releases`;
+// GitHub não diferencia maiúsculas no nome do repositório
+const isRepoUrl = (url, sub = '') => typeof url === 'string'
+  && REPOS.some((r) => url.toLowerCase().startsWith(`https://github.com/${r}/${sub}`.toLowerCase()));
 const LIGHT_MANIFEST = 'teka-update.json';
 const MAX_LIGHT_BYTES = 50 * 1024 * 1024; // pacote leve real tem ~1 MB
 
@@ -58,7 +64,7 @@ function parseLightManifest(data, releaseVersion) {
 
 let lastRelease = null; // resultado do último check, usado pelo download
 
-const safeUrl = (a) => (a && String(a.browser_download_url).startsWith(DOWNLOAD_PREFIX) ? a.browser_download_url : null);
+const safeUrl = (a) => (a && isRepoUrl(String(a.browser_download_url), 'releases/download/') ? a.browser_download_url : null);
 
 async function fetchLightManifest(assets, version) {
   const json = assets.find((a) => a.name === LIGHT_MANIFEST);
@@ -77,10 +83,14 @@ async function fetchLightManifest(assets, version) {
 }
 
 async function checkForUpdate() {
-  const res = await fetch(RELEASES_API, {
-    headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'Teka-updater' },
-    signal: AbortSignal.timeout(10000),
-  });
+  let res;
+  for (const repo of REPOS) {
+    res = await fetch(releasesApi(repo), {
+      headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'Teka-updater' },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (res.status !== 404) break;
+  }
   if (res.status === 404) return { available: false, current: currentVersion(), note: 'nenhuma release publicada ainda' };
   if (!res.ok) throw new Error(`GitHub ${res.status}`);
   const rel = await res.json();
@@ -202,7 +212,7 @@ function installUpdate(file) {
 }
 
 function openReleasesPage(url) {
-  const target = typeof url === 'string' && url.startsWith(`https://github.com/${REPO}/`) ? url : RELEASES_PAGE;
+  const target = isRepoUrl(url) ? url : RELEASES_PAGE;
   shell.openExternal(target);
   return { ok: true };
 }

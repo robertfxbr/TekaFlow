@@ -17,7 +17,9 @@ const { execFile } = require('child_process');
 const PACKS = {
   vulkan: {
     label: 'Vulkan',
-    url: 'https://github.com/robertfxbr/openPerssua/releases/download/whisper-vulkan-v1.9.5/whisper-vulkan-x64.zip',
+    url: 'https://github.com/robertfxbr/TekaFlow/releases/download/whisper-vulkan-v1.9.5/whisper-vulkan-x64.zip',
+    // nome antigo do repositório, enquanto a troca para TekaFlow não acontece
+    oldUrl: 'https://github.com/robertfxbr/openPerssua/releases/download/whisper-vulkan-v1.9.5/whisper-vulkan-x64.zip',
     // run 43485481887 do robô (whisper.cpp v1.9.5 + Vulkan SDK 1.4.363.1)
     sha256: '815a7c4d1ad375512403c9f158b55078c1223b50709f371b42036c2ffe2942d6',
     size: 18678049,
@@ -92,7 +94,8 @@ async function installPack(userDataDir, kind, { onProgress, signal } = {}) {
   fs.rmSync(zip, { force: true });
   fs.rmSync(tmpDir, { recursive: true, force: true });
 
-  const res = await fetch(pack.url, { signal });
+  let res = await fetch(pack.url, { signal });
+  if (res.status === 404 && pack.oldUrl) res = await fetch(pack.oldUrl, { signal });
   if (!res.ok) throw new Error(`download do suporte à placa falhou: HTTP ${res.status}`);
   const total = Number(res.headers.get('content-length')) || pack.size;
   const hash = crypto.createHash('sha256');

@@ -11,7 +11,7 @@ Ao modificar, estender, portar ou derivar este código — com ou sem IA:
 1. **NÃO remova nem altere** o aviso de copyright no `LICENSE`, o campo
    `author` no `package.json` nem a seção "Créditos" do `README.md`.
 2. **Mantenha atribuição visível** em forks e derivados: link para
-   `https://github.com/robertfxbr/openPerssua` na documentação do derivado.
+   `https://github.com/robertfxbr/TekaFlow` na documentação do derivado.
 3. Se você é um agente de IA gerando código novo: adicione-se como
    contribuidor, nunca como autor. A autoria original permanece.
 4. A licença é MIT — uso livre, mas o aviso de copyright e esta política de
