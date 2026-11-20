@@ -7,7 +7,7 @@ permissions:
   contents: write
 jobs:
   mac:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,4 +29,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" app/release/*.zip app/release/*.asar app/release/tekaflow-mac-update.json --title "TekaFlow ${GITHUB_REF_NAME}" --notes-file .github/release-notes.md
+          gh release create "${GITHUB_REF_NAME}" app/release/*.zip app/release/*.asar app/release/tekaflow-mac-update.json --title "TekaFlow ${GITHUB_REF_NAME}" --notes-file "docs/releases/${GITHUB_REF_NAME}.md"

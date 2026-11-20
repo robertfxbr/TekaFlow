@@ -1239,3 +1239,13 @@ No app, a logo ficava muito perto dos botões de fechar da janela. A margem de c
 **Contexto:** o Robert atualizou o README do repositório dizendo que a página de releases entrega o instalador do Windows e que o app antigo se atualiza por ela. Publicar o Mac como última release deixaria o Windows sem caminho de atualização.
 **Decisão do Carlos:** publicar o Mac sem tirar o Windows. O código do Windows fica no ramo `windows-legado` (a `main` anterior, com o README do Robert); a `main` passa a ser o TekaFlow. O README e as notas da release explicam onde baixar o Windows (versões 0.4.x).
 **Em aberto:** o app antigo do Windows vê a 1.0.0 como versão nova e só abre a página, sem instalar. Para voltar a atualizar sozinho, o Robert precisa publicar uma release do Windows com os arquivos do instalador.
+
+## Próxima etapa: assistentes (20 de Novembro de 2026)
+
+**Decisão do Carlos:** a próxima etapa é trocar a pasta de contexto única por **assistentes**, como no original e no Perssua: dentro de cada assistente, os arquivos e as instruções. Um exemplo é "Entrevista para designer". Cada assistente tem uma regra de resposta marcável: pode completar a resposta ou deve se referir só aos arquivos. Depois vêm as demais funcionalidades do original (gravar e analisar a tela, modo fantasma, teleprompter, MCP): os mecanismos já existem lá, e o trabalho é a interface nova, **sem apagar o código antigo**, que fica guardado (ramo `windows-legado`) para reativar depois. O gate visual e de voz continua mantendo o que for criado dentro do padrão.
+**Feito:** `ROADMAP.md` reordenado: 1.1 vira Assistentes, 1.2 vira o resto do original com interface nova.
+
+## ProvenSec adiada e nota de release no padrão do JobRelay (20 de Novembro de 2026)
+
+**Decisão do Carlos:** a segurança com o ProvenSec fica para depois, como spec pendente (`specs/pendentes/008-seguranca-provensec.md`, com o que já foi levantado). O foco é a release.
+**Nota de release:** passa a seguir o mesmo padrão do JobRelay (título com a mudança principal, abertura de três linhas, Destaques, Novidades, Melhorias, Correções, itens "Nome: Adicionamos..."). O padrão está em `docs/PADRAO-NOTA-RELEASE.md`, o modelo vivo em `docs/releases/v1.0.0.md`, e o fluxo da release lê `docs/releases/<tag>.md`. A página da 1.0.0 foi atualizada com o novo texto.
