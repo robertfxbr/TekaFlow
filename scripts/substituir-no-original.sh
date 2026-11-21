@@ -2,11 +2,6 @@
 # Troca o conteúdo do repositório original (openPerssua, que vira TekaFlow) pelo TekaFlow, mantendo o histórico do Robert.
 # Não envia nada: prepara um ramo local e mostra o comando de envio.
 set -e
-# Já foi usado (PR #1, novembro de 2026). Rodar de novo apagaria o app para Windows, que voltou a morar
-# no main ao lado do Mac. Veja NOTA-PARA-O-CARLOS.md.
-echo "Este script não deve mais ser usado: o TekaFlow para Mac já está no main, junto com o app para Windows."
-echo "Leia NOTA-PARA-O-CARLOS.md para o jeito novo de enviar mudanças."
-exit 1
 ORIGEM="$(cd "$(dirname "$0")/.." && pwd)/../TekaFlow-publico"
 TMP="$(mktemp -d)"
 [ -d "$ORIGEM" ] || { echo "Rode antes: sh scripts/exportar-publico.sh"; exit 1; }

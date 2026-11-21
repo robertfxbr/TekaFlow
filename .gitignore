@@ -10,9 +10,3 @@ renderer/
 robert-openperssua/
 referencias/
 prototipos/
-# app para Windows (raiz)
-whisper-bin/
-*.db
-*.db-wal
-*.db-shm
-screenshot*.png

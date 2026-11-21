@@ -1,6 +1,5 @@
 name: Release do Mac
-# Dispara quando uma tag v* é criada (por exemplo v0.4.18). Gera o app para Mac e põe os arquivos dele na
-# release dessa tag, ao lado dos do Windows. Mac e Windows dividem a mesma versão e a mesma release (ver RELEASE.md).
+# Dispara quando uma tag v* é enviada (por exemplo v0.1.0). Gera o app para Mac e publica o .zip na release.
 on:
   push:
     tags: ["v*"]
@@ -14,13 +13,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Confere a versão
-        # a tag precisa ser a versão do app/package.json: o app só aceita pacote da versão da release
-        run: |
-          VERSAO=$(node -p "require('./app/package.json').version")
-          if [ "v${VERSAO}" != "${GITHUB_REF_NAME}" ]; then
-            echo "A tag ${GITHUB_REF_NAME} não bate com a versão ${VERSAO} do app/package.json"; exit 1
-          fi
       - run: npm ci
         working-directory: design-system
       - run: npm ci
@@ -33,14 +25,18 @@ jobs:
         env:
           SEM_INSTALAR: "1"
         run: npm run empacotar
-      - name: Põe os arquivos do Mac na release
+      - name: Confere que o app abre
+        working-directory: app
+        run: |
+          APP="dist-app/TekaFlow-darwin-arm64/TekaFlow.app/Contents/MacOS/TekaFlow"
+          TEKA_LOG_VERSAO=1 "$APP" --user-data-dir="$RUNNER_TEMP/teka-teste" > "$RUNNER_TEMP/abertura.txt" 2>&1 &
+          PID=$!
+          for i in $(seq 1 30); do sleep 1; grep -q "TEKA_VERSAO\|NODE_MODULE_VERSION" "$RUNNER_TEMP/abertura.txt" && break; done
+          kill $PID 2>/dev/null || true
+          cat "$RUNNER_TEMP/abertura.txt" | head -20
+          grep -q "TEKA_VERSAO" "$RUNNER_TEMP/abertura.txt"
+      - name: Publica a release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # O Robert cria a release com os arquivos do Windows (e a tag junto). Se ela ainda não existe,
-          # cria sem marcar como a mais recente, para não esconder a versão do Windows: quem publicar o
-          # Windows depois marca a release como a mais recente.
-          if ! gh release view "${GITHUB_REF_NAME}" > /dev/null 2>&1; then
-            gh release create "${GITHUB_REF_NAME}" --verify-tag --latest=false --title "TekaFlow ${GITHUB_REF_NAME#v}" --notes-file "docs/releases/${GITHUB_REF_NAME}.md"
-          fi
-          gh release upload "${GITHUB_REF_NAME}" app/release/*.zip app/release/*.asar app/release/tekaflow-mac-update.json --clobber
+          gh release create "${GITHUB_REF_NAME}" app/release/*.zip app/release/*.asar app/release/tekaflow-mac-update.json --title "TekaFlow ${GITHUB_REF_NAME}" --notes-file "docs/releases/${GITHUB_REF_NAME}.md"

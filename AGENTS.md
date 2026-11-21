@@ -7,7 +7,6 @@ Este arquivo vale para qualquer agente de IA (Claude Code, Codex e outros) que t
 | Pasta | O que é |
 |---|---|
 | `app/` | O aplicativo para Mac em Electron: janela, banco local, ajudante de voz (Swift), empacotamento |
-| `electron/`, `src/`, `package.json` (raiz) | O aplicativo para Windows (o antigo Teka): overlay, Whisper embutido, atualização leve. Detalhes em `WINDOWS.md` |
 | `design-system/` | Tokens, componentes, Style Guide e a interface do app (`src/app/`) |
 | `marca/`, `logo/`, `naming/` | Marca: cores, logo, gato, posicionamento |
 | `specs/` | O que foi pedido em cada etapa |
@@ -23,20 +22,6 @@ Este arquivo vale para qualquer agente de IA (Claude Code, Codex e outros) que t
 6. Registre a decisão em `DECISIONS.md`.
 
 Qual skill abrir em cada tarefa: [docs/SKILLS.md](docs/SKILLS.md).
-
-## Versões e releases (Mac e Windows juntos)
-
-A raiz do versionamento é o `version` do `package.json` da raiz. Detalhes em `CLAUDE.md` e `RELEASE.md`.
-
-- Uma versão só para os dois apps: `version` do `package.json` da raiz e do `app/package.json` andam juntas (hoje 0.4.18). Nada de numeração separada para o Mac.
-- Cada versão é uma release só, `vX.Y.Z`, marcada como a mais recente. Os dois apps procuram atualização na release mais recente e cada um pega só os arquivos dele (`teka-update.json` no Windows, `tekaflow-mac-update.json` no Mac). Release com arquivos de um sistema só deixa o outro sem atualização.
-- Passo a passo em `RELEASE.md`.
-
-## Regras do app para Windows
-
-- Não renomeie `productName`, `Teka.exe` nem a pasta de dados `%APPDATA%/Teka`: quem já usa perderia login e histórico.
-- Nunca suba `whisper-bin/`, `release/` nem bancos `.db`.
-- Clean-room: nada de código, asset ou texto do produto proprietário que inspirou o projeto.
 
 ## Limites
 

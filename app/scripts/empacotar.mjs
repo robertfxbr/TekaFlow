@@ -10,6 +10,13 @@ const raiz = path.join(aqui, "..")
 await rm(path.join(raiz, "renderer"), { recursive: true, force: true })
 await cp(path.join(raiz, "..", "design-system", "dist"), path.join(raiz, "renderer"), { recursive: true })
 
+// O banco (better-sqlite3) é um módulo nativo: precisa ser compilado para o Electron, não para o Node da máquina.
+// Sem isto, o app empacotado não abre ("compiled against a different Node.js version").
+const { rebuild } = await import("@electron/rebuild")
+const { createRequire } = await import("node:module")
+const electronVersion = createRequire(import.meta.url)("electron/package.json").version
+await rebuild({ buildPath: raiz, electronVersion, arch: process.arch, force: true, onlyModules: ["better-sqlite3"] })
+
 const caminhos = await packager({
   dir: raiz,
   out: path.join(raiz, "dist-app"),

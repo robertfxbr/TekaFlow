@@ -1,7 +1,7 @@
 {
   "name": "tekaflow-app",
   "productName": "TekaFlow",
-  "version": "0.4.18",
+  "version": "1.0.1",
   "description": "TekaFlow, o companheiro discreto de reunião",
   "author": "Carlos Henrique",
   "private": true,
@@ -21,5 +21,5 @@
     "@electron/rebuild": "^4.2.1",
     "electron": "^38.8.6"
   },
-  "shellMin": "0.4.18"
+  "shellMin": "1.0.1"
 }

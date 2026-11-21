@@ -1256,3 +1256,9 @@ No app, a logo ficava muito perto dos botões de fechar da janela. A margem de c
 **Revisão:** o gate aprovou de ponta a ponta (tipos, build, harness com 34 bloqueios antigos no baseline, detector de design, voz da marca, varredura de cacoetes). As pastas de dependências e de build (`node_modules`, `dist`, `dist-app`, `release`) tinham sumido do projeto, sem nenhum arquivo de código perdido (conferido contra a cópia limpa); reinstalei as do Design System. As de `app/` voltam com `npm ci` quando for empacotar.
 **Skills:** `docs/SKILLS.md` diz qual skill abrir em cada tarefa e onde instalar cada uma; `AGENTS.md` e `docs/CONTRIBUINDO.md` apontam para ele.
 **Documentos sincronizados:** `RELEASE.md` (agora o fluxo real: versão, nota, gate, cópia limpa, pull request, tag), `ROADMAP.md` (1.0.0 publicada), `app/README.md` (atualização e release).
+
+## 1.0.0 não abria; correção na 1.0.1 (21 de Novembro de 2026)
+
+**O que aconteceu:** o app empacotado não abria. O banco local (better-sqlite3) é um módulo nativo e saiu compilado para o Node da máquina, não para o Electron ("compiled against a different Node.js version"). Antes, o módulo já estava recompilado dentro das pastas do projeto, e isso escondia o problema. Quando as pastas de dependências sumiram e foram reinstaladas, o app instalado e a release 1.0.0 saíram quebrados. A release 1.0.0 foi publicada sem teste de abertura.
+**Correção:** `empacotar.mjs` recompila o banco para o Electron antes de empacotar; o fluxo da release abre o app empacotado e só publica se ele abrir. Versão 1.0.1 (`shellMin` 1.0.1). A nota da 1.0.0 avisa que ela não abre e aponta a 1.0.1.
+**Lição:** nenhuma release sai sem abrir o app empacotado e ver a versão no log.

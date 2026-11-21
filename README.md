@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/robertfxbr/TekaFlow/releases/latest"><img alt="Baixar para Mac" src="https://img.shields.io/badge/Baixar%20para%20Mac-C5EF6B?style=for-the-badge&labelColor=1A1B1E&color=C5EF6B&logo=apple&logoColor=C5EF6B"></a>
-  <a href="https://github.com/robertfxbr/TekaFlow/releases/latest"><img alt="Baixar para Windows" src="https://img.shields.io/badge/Baixar%20para%20Windows-5BC0FF?style=for-the-badge&labelColor=1A1B1E&color=5BC0FF"></a>
+  <img alt="Windows em breve" src="https://img.shields.io/badge/Windows-em%20breve-5BC0FF?style=for-the-badge&labelColor=1A1B1E">
 </p>
 
 <p align="center">
@@ -60,20 +60,7 @@ Entrevista, chamada de venda, apresentação, conversa difícil. Em qualquer reu
 | **Primeira abertura** | O app ainda não é assinado pela Apple. Clique com o botão direito, escolha **Abrir** e confirme |
 | **Whisper (opcional)** | `brew install whisper-cpp`. O Apple Speech funciona sem isso |
 
-## Para Windows
-
-| | |
-|---|---|
-| **Sistema** | Windows 10 ou 11, 64 bits |
-| **Instalação** | Baixe o `TekaFlow-Setup` na [página de versões](https://github.com/robertfxbr/TekaFlow/releases/latest) e rode. O instalador ainda não é assinado, então o SmartScreen pode avisar na primeira vez |
-| **Atualização** | O app se atualiza sozinho. Quem está na 0.4.16 ou antes baixa o instalador uma vez; os dados continuam lá |
-| **Whisper** | Já vem no instalador, com opção de usar a placa de vídeo |
-
-O app para Windows começou como OpenPerssua. Os detalhes técnicos dele estão em [WINDOWS.md](WINDOWS.md).
-
-## Uma versão, dois sistemas
-
-Mac e Windows seguem o mesmo número de versão. Cada versão é uma release só, `vX.Y.Z`, com os arquivos dos dois: o app para Windows sobe do PC do Robert e o do Mac é gerado na nuvem do GitHub quando a tag é criada. Cada app baixa só o que é dele. O passo a passo está no [RELEASE.md](RELEASE.md).
+O Windows vem depois para o TekaFlow. O app para Windows que existia antes continua disponível nas versões 0.4.x da [página de versões](https://github.com/robertfxbr/TekaFlow/releases), e o código dele está no ramo [windows-legado](https://github.com/robertfxbr/TekaFlow/tree/windows-legado).
 
 ## Perguntas rápidas
 
@@ -86,11 +73,6 @@ Mac e Windows seguem o mesmo número de versão. Cada versão é uma release só
 **Onde ficam as reuniões?** Em `Documentos/TekaFlow/Reuniões`, uma pasta por reunião, com a transcrição em texto.
 
 ## Para quem constrói
-
-| Pasta | App |
-|---|---|
-| `app/`, `design-system/` | Mac |
-| `electron/`, `src/`, `package.json` na raiz | Windows |
 
 O TekaFlow tem Design System próprio, gate de qualidade e regras de escrita da marca. Antes de criar ou subir qualquer coisa, leia o [CLAUDE.md](CLAUDE.md) e o [guia de contribuição](docs/CONTRIBUINDO.md). Para lançar uma versão, veja o [RELEASE.md](RELEASE.md).
 

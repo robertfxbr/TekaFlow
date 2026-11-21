@@ -83,15 +83,5 @@ else {
   console.log(`${c.status === 0 ? "OK    " : "AVISO "} Varredura de cacoetes de escrita${c.status === 0 ? "" : `\n  ${saida.slice(0, 6).join("\n  ")}`}`)
 }
 
-// 7. Versão única: Mac e Windows dividem o número e a release (RELEASE.md). A raiz do versionamento é o
-// package.json da raiz (o app para Windows); o app/package.json do Mac acompanha o mesmo número.
-{
-  const ler = (f) => JSON.parse(readFileSync(path.join(raiz, f), "utf8")).version
-  const raizV = existsSync(path.join(raiz, "package.json")) ? ler("package.json") : null
-  const macV = ler(path.join("app", "package.json"))
-  passo("Versão única Mac e Windows", raizV === macV,
-    raizV === macV ? macV : `package.json da raiz está em ${raizV} e app/package.json em ${macV}. Use o mesmo número nos dois (veja RELEASE.md)`)
-}
-
 console.log(falhou ? "\nGate: REPROVADO" : "\nGate: aprovado")
 process.exit(falhou ? 1 : 0)
