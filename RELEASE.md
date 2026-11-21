@@ -22,7 +22,13 @@ Os dois apps procuram atualização na release marcada como a mais recente. Por 
 gh release create vX.Y.Z --repo robertfxbr/TekaFlow --target main --latest --title "TekaFlow X.Y.Z" --notes-file docs/releases/vX.Y.Z.md teka-app-X.Y.Z.asar teka-update.json TekaFlow-Setup-X.Y.Z.exe latest.yml
 ```
 
-7. A tag dispara a release do Mac na nuvem (`.github/workflows/release.yml`). Ela confere se a tag bate com a versão do `app/package.json` e põe os arquivos do Mac na mesma release. Acompanhe na aba Actions.
+7. A tag dispara a release do Mac na nuvem (`.github/workflows/release.yml`). Ela confere se a tag bate com a versão do `app/package.json`, recompila o banco local para o Electron, abre o app empacotado e só põe os arquivos do Mac na mesma release se ele abrir. Acompanhe na aba Actions.
+
+Para refazer só a parte do Mac de uma versão já publicada (como foi feito com a 0.4.18 depois do PR #7), use Actions, "Release do Mac", Run workflow, e informe a tag. Pelo terminal:
+
+```bash
+gh workflow run release.yml --repo robertfxbr/TekaFlow --ref main -f tag=vX.Y.Z
+```
 
 Se a tag for criada antes da release do Windows, a nuvem cria a release sem marcar como a mais recente. Quando o Windows subir, marque como a mais recente com `--latest`.
 
