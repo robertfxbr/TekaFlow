@@ -1,65 +1,45 @@
 # Como lançar uma versão do TekaFlow para Mac
 
-A release é gerada na nuvem do GitHub. Você só precisa criar o repositório, enviar o código e criar uma etiqueta (tag) de versão.
+O TekaFlow mora em [github.com/robertfxbr/TekaFlow](https://github.com/robertfxbr/TekaFlow), com o histórico do app original. A release é gerada na nuvem do GitHub a partir de uma etiqueta (tag) de versão. Quem já tem a 1.0.0 recebe as próximas versões sozinho, pelo pacote leve de atualização.
 
-## O repositório é o original (substitui o openPerssua)
+## A cada versão nova
 
-O TekaFlow entra no repositório do Robert, `robertfxbr/openPerssua`, no lugar do app original, mantendo o histórico dele. Em ordem:
-
-1. Em github.com, abra o repositório, **Settings** e, em **Repository name**, troque para **TekaFlow**. Só quem é administrador consegue. O GitHub redireciona o endereço antigo.
-2. Rode o script que prepara a troca. Ele só prepara um ramo local e não envia nada:
+1. **Número da versão.** Aumente `version` em `app/package.json` (por exemplo, 1.0.1). Só mexa em `shellMin` se a versão trocar o Electron ou um módulo nativo: aí a atualização leve não basta e o app pede o download completo.
+2. **Nota da versão.** Crie `docs/releases/v1.0.1.md` no padrão de `docs/PADRAO-NOTA-RELEASE.md`. O fluxo da release usa esse arquivo como texto da página, e sem ele a release falha.
+3. **Gate.** Rode o gate e espere aprovar:
 
 ```bash
-cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow && sh scripts/exportar-publico.sh && sh scripts/substituir-no-original.sh
+cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow && node scripts/gate.mjs
 ```
 
-3. Siga o comando de envio que o script mostrar (cria o ramo `tekaflow`) e abra o pull request. Depois do merge, crie a tag da versão (passos abaixo, trocando a pasta pelo clone que o script mostrou).
-
-**Versão:** a última release do app antigo é a 0.4.16. O TekaFlow começa na **1.0.0**, por decisão do Carlos. Quem ainda usa a versão antiga recebe o aviso de atualização por esse repositório.
-
-## Uma vez só, só se fosse um repositório novo
-
-1. Abra [github.com/new](https://github.com/new).
-2. Nome: **TekaFlow**. Público. Sem README, sem .gitignore e sem licença (o projeto já tem).
-3. Clique em **Create repository**.
-
-## Uma vez só: preparar a pasta que sobe
-
-A pasta `Projects/TekaFlow-publico` é uma cópia limpa do projeto, só com o que pode ficar público (sem referências de terceiros, sem o clone do Robert, sem protótipos antigos). Para atualizá-la quando mudar algo:
+4. **Atualize a cópia limpa** (sem referências de terceiros, sem o clone do Robert, sem protótipos antigos):
 
 ```bash
 cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow && sh scripts/exportar-publico.sh
 ```
 
-## A cada versão nova
-
-1. Atualize a cópia (comando acima).
-2. Rode o gate na cópia:
+5. **Envie por pull request.** Crie um ramo no clone do repositório, copie a cópia limpa por cima, faça o commit, envie e abra o pull request. O GitHub roda tipos, build e voz da marca. Mescle quando passar.
+6. **Crie a tag.** Isso dispara a release na nuvem:
 
 ```bash
-cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow-publico && node scripts/gate.mjs
+git tag v1.0.1 && git push origin v1.0.1
 ```
 
-3. Depois da primeira troca, o repositório de trabalho passa a ser o clone do original (a pasta que o script mostrou). Para as versões seguintes, copie a cópia limpa para lá e envie:
+7. **Confira.** Espere o fluxo terminar na aba Actions e abra [a página de versões](https://github.com/robertfxbr/TekaFlow/releases). Devem estar lá o `.zip` do Mac, o pacote leve `tekaflow-mac-app-X.Y.Z.asar` e o `tekaflow-mac-update.json`.
 
-```bash
-cd <pasta do clone> && git add -A && git commit -m "TekaFlow 1.0.1" && git push
-```
+## Como a atualização automática funciona
 
-4. Crie a versão. Isso dispara a release na nuvem:
-
-```bash
-cd <pasta do clone> && git tag v1.0.0 && git push origin v1.0.0
-```
-
-5. Espere a release terminar na aba Actions e abra [github.com/robertfxbr/TekaFlow/releases](https://github.com/robertfxbr/TekaFlow/releases). O `.zip` do Mac estará lá, com as instruções de primeira abertura.
+- O app confere a última release do GitHub ao abrir e quando a pessoa clica em **Atualizar** em Configurações.
+- Se houver pacote leve, ele baixa, confere o hash e reinicia. Se a versão nova não abrir, o app volta sozinho para a anterior.
+- Os arquivos têm nomes próprios do Mac (`tekaflow-mac-*`) para o app antigo do Windows nunca baixar o pacote errado.
 
 ## O que a release entrega e o que falta
 
 - **Apple Silicon** (M1 em diante). Intel não está no fluxo.
-- **Sem assinatura da Apple**: quem baixar vê um aviso e precisa abrir com botão direito e **Abrir**. As instruções estão na página da release. Para tirar o aviso, é preciso uma conta de desenvolvedor da Apple, assinatura e notarização.
-- O Whisper exige `brew install whisper-cpp` no Mac de quem usa; o Apple Speech funciona sem isso.
-- Antes de uma versão para o público, tirar o cofre de senhas de teste do app (veja `ROADMAP.md`).
+- **Sem assinatura da Apple.** Quem baixa vê um aviso e abre com botão direito e **Abrir**. Para tirar o aviso, é preciso conta de desenvolvedor da Apple, assinatura e notarização (roadmap, versão 1.3).
+- O Whisper exige `brew install whisper-cpp` no Mac de quem usa. O Apple Speech funciona sem isso.
+- O pacote leve não tem assinatura própria; a confiança é a da release. A spec 008 trata disso e do cofre de senhas.
+- O app do Windows antigo continua no ramo `windows-legado` e nas versões 0.4.x.
 
 ## Testar o pacote antes, no seu Mac
 
@@ -67,4 +47,4 @@ cd <pasta do clone> && git tag v1.0.0 && git push origin v1.0.0
 cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow/app && SEM_INSTALAR=1 npm run empacotar
 ```
 
-O `.zip` sai em `app/release/`.
+Os arquivos saem em `app/release/`. Precisa de `npm ci` em `app/` e em `design-system/` antes.

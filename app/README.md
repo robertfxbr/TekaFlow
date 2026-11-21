@@ -23,3 +23,7 @@ cd Projects/TekaFlow/app && npm run empacotar
 - O menu **Desenvolvimento** pula para qualquer etapa do onboarding, abre a tela inicial ou refaz o onboarding do zero (Cmd+Shift+O).
 - Os dados ficam em `~/Library/Application Support/TekaFlow/tekaflow.db`. Apagar o arquivo recomeça tudo (não há sessões de exemplo). As reuniões salvas ficam em `~/Documents/TekaFlow/Reuniões`.
 - Para conferir a tela sem olhar: `TEKA_CAPTURA=/tmp/foto.png` faz o app tirar uma foto da janela e fechar.
+
+## Atualização e release
+
+O app se atualiza por um pacote leve publicado na release do GitHub (`bootstrap.cjs`, `appBundle.cjs` e `atualizador.cjs`). Se uma versão nova não abrir, ele volta sozinho para a anterior. O passo a passo de uma versão nova está em `../RELEASE.md`. Para gerar os arquivos da release no seu Mac: `SEM_INSTALAR=1 npm run empacotar`.

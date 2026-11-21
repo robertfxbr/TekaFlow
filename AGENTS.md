@@ -21,6 +21,8 @@ Este arquivo vale para qualquer agente de IA (Claude Code, Codex e outros) que t
 5. Rode o gate: `node scripts/gate.mjs`. Ele reprova bloqueio novo do harness e de voz da marca. Os bloqueios antigos estão em `design-system/.harness/baseline.json`; **não aumente esses arquivos para fazer o gate passar**. Corrija ou peça decisão.
 6. Registre a decisão em `DECISIONS.md`.
 
+Qual skill abrir em cada tarefa: [docs/SKILLS.md](docs/SKILLS.md).
+
 ## Limites
 
 - Não commite nem faça push sem o pedido de quem mantém.
