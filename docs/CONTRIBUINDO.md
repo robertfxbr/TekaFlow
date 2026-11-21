@@ -54,6 +54,10 @@ node scripts/instalar-gancho.mjs
 3. Abra um pull request. O GitHub roda tipos e build sozinho.
 4. Registre a decisão em `DECISIONS.md`.
 
+## Skills de cada tarefa
+
+A tabela está em [SKILLS.md](SKILLS.md).
+
 ## Lançar uma versão do Mac
 
 Veja [RELEASE.md](../RELEASE.md).

@@ -8,7 +8,7 @@
 
 ## Onde estamos
 
-O TekaFlow já abre no Mac, faz o onboarding de verdade e abre a reunião numa janelinha própria. Ouve você e os outros, transcreve quase ao vivo, sugere a resposta sozinho quando os outros perguntam (em primeira pessoa, com a conversa e a pasta de contexto) e salva tudo em `Documentos/TekaFlow`. O repositório público e a release do Mac estão preparados, mas ainda não foram enviados. Como o TekaFlow entra no repositório do Robert, a primeira versão é a **1.0.0** (a última do app antigo é a 0.4.16).
+O TekaFlow já abre no Mac, faz o onboarding de verdade e abre a reunião numa janelinha própria. Ouve você e os outros, transcreve quase ao vivo, sugere a resposta sozinho quando os outros perguntam (em primeira pessoa, com a conversa e a pasta de contexto) e salva tudo em `Documentos/TekaFlow`. A primeira versão, a **1.0.0**, está publicada em [robertfxbr/TekaFlow](https://github.com/robertfxbr/TekaFlow/releases/tag/v1.0.0) (a última do app antigo é a 0.4.16, e o código do Windows está no ramo `windows-legado`).
 
 ## O que o Teka original já aprendeu e o TekaFlow herda
 
@@ -42,7 +42,7 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 | Aviso de transcrição lenta | P | Medium e Large levam mais de 20 segundos por fala em muitos Macs |
 | Recuperar a transcrição se o motor cair | M | Hoje, se o motor parar, a escuta fica muda |
 | Atualização automática dentro do app | G | **Feito.** Pacote leve por versão, conferido por hash; a versão nova que não abre é descartada sozinha. Testado com versão boa e com versão quebrada |
-| Publicar o repositório e a release | P | Passo a passo em `RELEASE.md` |
+| Publicar o repositório e a release | P | **Feito.** 1.0.0 publicada; passo a passo das próximas em `RELEASE.md` |
 
 ## Versão 1.1: assistentes (a próxima etapa)
 
@@ -94,4 +94,4 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 
 ## Governança
 
-Roda com `node scripts/gate.mjs` (o gate visual mantém tudo o que for criado dentro do Design System): tipos, build, harness do design system, detector de design, voz da marca e varredura de cacoetes. O gancho de commit e a nuvem rodam o gate. O harness acusa 34 bloqueios antigos no baseline (22 de cor fora dos tokens, 14 deles no gato animado). Falta decidir se as cores do gato entram nos tokens.
+Roda com `node scripts/gate.mjs`: tipos, build, harness do design system, detector de design, voz da marca e varredura de cacoetes. As skills de cada tarefa estão em `docs/SKILLS.md`. O gancho de commit e a nuvem rodam o gate. O harness acusa 34 bloqueios antigos no baseline (22 de cor fora dos tokens, 14 deles no gato animado). Falta decidir se as cores do gato entram nos tokens.
