@@ -21,6 +21,8 @@ import { createListenReminder } from './audio/listenReminder.mjs';
 import { findEcho, ECHO_WINDOW_MS } from './audio/echo';
 import { createVad, VAD_DEFAULTS } from './audio/vad.mjs';
 import { formatClock } from './util/time';
+import { frameBatch } from './util/frameBatch';
+import { TranscriptList } from './ui/TranscriptList';
 import { prettyAccelerator } from './util/accelerator';
 import {
   History, Settings2, Minimize2, Maximize2, EyeOff, Ghost, MousePointerClick, Mic, Square, LoaderCircle, Sparkles, Camera,
@@ -229,6 +231,8 @@ function App() {
   const audioRef = useRef(null);     // { mic|sys: { stream, audioCtx, processor, analyser, flusher } }
   const transcriptEndRef = useRef(null);
   const transcriptBoxRef = useRef(null);
+  const answerLineRef = useRef(null);
+  const answerLineStable = useRef((line) => answerLineRef.current(line)).current;
   const nearBottomRef = useRef(true);   // usuário está vendo o fim da transcrição?
   const sessionStartRef = useRef(null); // Date.now() do início da escuta atual
   // Vigia do áudio do sistema: o Windows só entrega o som da saída PADRÃO.
@@ -1034,6 +1038,9 @@ function App() {
     lastAssistAtRef.current = Date.now(); // o auto não atropela logo em seguida
     runAssist(line.text);
   }
+  // A lista de falas só se redesenha quando muda; para isso o clique nela
+  // precisa ser sempre a mesma função, que chama a versão atual de answerLine.
+  answerLineRef.current = answerLine;
 
   async function runAssist(q, instruction, opts = {}) {
     if (assistBusyRef.current) return;
@@ -1050,10 +1057,11 @@ function App() {
     const matches = (streamId) =>
       !assistStreamIdRef.current || streamId === assistStreamIdRef.current;
 
+    const show = frameBatch((text) => setSuggestion((s) => (s ? { ...s, text } : s)));
     const unsubChunk = api.llm.onStreamChunk(({ streamId, delta }) => {
       if (!matches(streamId)) return;
       acc += delta;
-      setSuggestion((s) => (s ? { ...s, text: acc } : s));
+      show.push(acc);
     });
     // stream-error também encerra a espera — no refresh ao vivo o abort
     // intencional chega por este canal; sem isso o assist travaria "ocupado"
@@ -1105,6 +1113,7 @@ function App() {
     } finally {
       unsubChunk();
       unsubErr();
+      show.flush();
       assistStreamIdRef.current = null;
       assistBusyRef.current = false;
       setSuggestion((s) => (s ? { ...s, streaming: false } : s));
@@ -1475,10 +1484,11 @@ function App() {
     let acc = '';
     const matches = (streamId) =>
       !askStreamIdRef.current || streamId === askStreamIdRef.current;
+    const show = frameBatch(setAnswer);
     const unsubChunk = api.llm.onStreamChunk(({ streamId, delta }) => {
       if (!matches(streamId)) return;
       acc += delta;
-      setAnswer(acc);
+      show.push(acc);
     });
     const done = new Promise((resolve) => { resolveDone = resolve; });
     const unsubErr = api.llm.onStreamError(({ streamId, error: err }) => {
@@ -1505,6 +1515,7 @@ function App() {
       });
       askStreamIdRef.current = streamId;
       await done;
+      show.flush();
       if (acc && !streamError) setAnswerQuestions({ ...questionSeed, answer: acc });
       const dbId = sessionRef.current?.dbId;
       if (dbId && acc) api.db.addMessage({ sessionId: dbId, role: 'assistant', content: acc });
@@ -1516,6 +1527,7 @@ function App() {
       unsubChunk();
       unsubErr();
       unsubDone();
+      show.flush();
       askStreamIdRef.current = null;
       setBusy(false);
     }
@@ -1558,10 +1570,11 @@ function App() {
     let streamErr = null;
     let resolveDone;
     const done = new Promise((resolve) => { resolveDone = resolve; });
+    const show = frameBatch((text) => setScreenResult((s) => (s ? { ...s, text } : s)));
     const unsubChunk = api.llm.onStreamChunk(({ streamId: id, delta }) => {
       if (id !== streamId) return;
       acc += delta;
-      setScreenResult((s) => (s ? { ...s, text: acc } : s));
+      show.push(acc);
     });
     const unsubDone = api.llm.onStreamDone(({ streamId: id }) => {
       if (id === streamId) resolveDone();
@@ -1605,6 +1618,7 @@ function App() {
       unsubChunk();
       unsubDone();
       unsubErr();
+      show.flush();
       screenStreamIdRef.current = null;
       // Sem nenhuma resposta (erro de provedor, por exemplo) o cartão some:
       // senão ficaria a imagem com "analisando…" parado para sempre.
@@ -2269,24 +2283,7 @@ function App() {
             </span>
           </div>
         )}
-        {transcript.map((t, i) => (
-          <div
-            key={t.id ?? i}
-            className={`bubble ${t.source} clickable ${suggestion?.question === t.text ? 'answered' : ''}`}
-            role="button"
-            tabIndex={0}
-            title="Clique para o copiloto responder a esta fala"
-            onClick={() => answerLine(t)}
-            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); answerLine(t); } }}
-          >
-            <span className="who">
-              {t.source === 'mic' ? 'Você' : 'Reunião'}
-              <span className="reply-hint"><Sparkles size={9} /> responder</span>
-            </span>
-            {t.text}
-            {t.translation && <span className="translation">{t.translation}</span>}
-          </div>
-        ))}
+        <TranscriptList lines={transcript} answered={suggestion?.question} onAnswer={answerLineStable} />
         {listening && ['sys', 'mic'].map((slot) => sttPending[slot] > 0 && (
           <div key={`pending-${slot}`} className={`bubble ${slot === 'mic' ? 'mic' : 'system'} stt-pending`} aria-label="transcrevendo" title="Transcrevendo esta fala">
             <span className="typing"><i /><i /><i /></span>
