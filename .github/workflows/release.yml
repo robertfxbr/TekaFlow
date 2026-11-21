@@ -42,6 +42,17 @@ jobs:
         env:
           SEM_INSTALAR: "1"
         run: npm run empacotar
+      - name: Confere que o app abre
+        # o app empacotado precisa abrir (o banco local é um módulo nativo e já saiu errado uma vez, na 1.0.0)
+        working-directory: app
+        run: |
+          APP="dist-app/TekaFlow-darwin-arm64/TekaFlow.app/Contents/MacOS/TekaFlow"
+          TEKA_LOG_VERSAO=1 "$APP" --user-data-dir="$RUNNER_TEMP/teka-teste" > "$RUNNER_TEMP/abertura.txt" 2>&1 &
+          PID=$!
+          for i in $(seq 1 30); do sleep 1; grep -q "TEKA_VERSAO\|NODE_MODULE_VERSION" "$RUNNER_TEMP/abertura.txt" && break; done
+          kill $PID 2>/dev/null || true
+          head -20 "$RUNNER_TEMP/abertura.txt"
+          grep -q "TEKA_VERSAO" "$RUNNER_TEMP/abertura.txt"
       - name: Põe os arquivos do Mac na release
         env:
           GH_TOKEN: ${{ github.token }}
