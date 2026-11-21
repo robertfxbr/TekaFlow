@@ -6,9 +6,11 @@
 
 **Esforço:** P é horas, M é dias, G é uma semana ou mais. São ordens de grandeza, sem prazo.
 
+**Numeração:** Mac e Windows seguem uma versão só, na sequência 0.4.x (0.4.18, 0.4.19, 0.4.20), e cada versão é uma release com os dois sistemas. A raiz do versionamento é o `version` do `package.json` da raiz (veja `CLAUDE.md` e `RELEASE.md`). As etapas abaixo não têm número fixo: cada entrega sai na próxima versão da sequência.
+
 ## Onde estamos
 
-O TekaFlow já abre no Mac, faz o onboarding de verdade e abre a reunião numa janelinha própria. Ouve você e os outros, transcreve quase ao vivo, sugere a resposta sozinho quando os outros perguntam (em primeira pessoa, com a conversa e a pasta de contexto) e salva tudo em `Documentos/TekaFlow`. A primeira versão, a **1.0.0**, está publicada em [robertfxbr/TekaFlow](https://github.com/robertfxbr/TekaFlow/releases/tag/v1.0.0) (a última do app antigo é a 0.4.16, e o código do Windows está no ramo `windows-legado`).
+O TekaFlow já abre no Mac, faz o onboarding de verdade e abre a reunião numa janelinha própria. Ouve você e os outros, transcreve quase ao vivo, sugere a resposta sozinho quando os outros perguntam (em primeira pessoa, com a conversa e a pasta de contexto) e salva tudo em `Documentos/TekaFlow`. A primeira versão para Mac está publicada como **0.4.18** em [robertfxbr/TekaFlow](https://github.com/robertfxbr/TekaFlow/releases/tag/v0.4.18), na mesma release do app para Windows. Ela saiu antes como 1.0.0, que virou pré-lançamento quando o Mac passou a seguir a numeração do Windows. O app para Windows (o original) mora na raiz do repositório, ao lado do `app/`.
 
 ## O que o Teka original já aprendeu e o TekaFlow herda
 
@@ -29,7 +31,7 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 | 0.4.16 | Sem frase inventada depois de pausa, recuperação do servidor de transcrição, eco do alto-falante no microfone, 10 minutos seguidos testados | Eco e pausa por detector de fala já estão; falta testar 10 minutos e recuperar queda |
 | Todas | Atualização leve, sem reinstalar | Pronto (pacote leve de cerca de 1,4 MB, conferido por hash, com volta automática se a versão nova não abrir) |
 
-## Versão 1.0: a primeira do TekaFlow, para Mac
+## 0.4.18: a primeira do TekaFlow para Mac (publicada)
 
 **Objetivo:** subir o que já funciona, sem deixar um buraco que quem baixar vai sentir.
 
@@ -42,9 +44,9 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 | Aviso de transcrição lenta | P | Medium e Large levam mais de 20 segundos por fala em muitos Macs |
 | Recuperar a transcrição se o motor cair | M | Hoje, se o motor parar, a escuta fica muda |
 | Atualização automática dentro do app | G | **Feito.** Pacote leve por versão, conferido por hash; a versão nova que não abre é descartada sozinha. Testado com versão boa e com versão quebrada |
-| Publicar o repositório e a release | P | **Feito.** 1.0.0 publicada; passo a passo das próximas em `RELEASE.md` |
+| Publicar o repositório e a release | P | **Feito.** Publicada como 0.4.18, junto com o Windows; passo a passo das próximas em `RELEASE.md` |
 
-## Versão 1.1: assistentes (a próxima etapa)
+## Próxima etapa: assistentes (a partir da 0.4.19)
 
 **Ideia do Carlos:** hoje há uma pasta de contexto só. O próximo passo é trocar por assistentes, como no original e no Perssua: cada assistente tem seus arquivos, suas instruções e suas regras. Exemplo: "Entrevista para designer", com o currículo, a vaga e as instruções de como responder.
 
@@ -56,9 +58,9 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 | Assistentes prontos (entrevista, venda, reunião de equipe, aula) | M | Ponto de partida, que a pessoa edita |
 | Importar e exportar assistentes | P | Compartilhar um assistente com outra pessoa |
 
-## Versão 1.2: o que o original já faz, com interface nova
+## Etapa seguinte: o que o original já faz, com interface nova
 
-**Ideia do Carlos:** os mecanismos já existem no original. O trabalho é mudar a interface como um todo, **sem apagar o código antigo**: ele fica guardado (ramo `windows-legado`) e desligado para reativar depois.
+**Ideia do Carlos:** os mecanismos já existem no original. O trabalho é mudar a interface como um todo, **sem apagar o código antigo**: ele continua vivo no app para Windows, na raiz do repositório, e serve de referência.
 
 | Item | Esforço | Por quê |
 |---|---|---|
@@ -72,11 +74,11 @@ Cada linha é uma versão do Robert. A coluna do meio diz o que o TekaFlow já t
 | Atalhos globais, modo mini, lembrete de escuta longa | M | Do original |
 | Escolher outra pasta para salvar; idioma a cada gravação; "Sessões" virar "Reuniões" | P | Decisões antigas, algumas aguardando aval |
 
-## Versão 1.3: sair do Mac
+## Depois: o TekaFlow novo fora do Mac
 
 | Item | Esforço | Por quê |
 |---|---|---|
-| Versão para Windows | G | O app já foi desenhado para os dois; no Windows a transcrição padrão vira um modelo local, porque o Apple Speech é só do Mac |
+| Interface nova no Windows | G | Hoje o Windows usa o app original (raiz do repositório). O app novo já foi desenhado para os dois; no Windows a transcrição padrão vira um modelo local, porque o Apple Speech é só do Mac |
 | Assinar e notarizar com conta Apple | M | Tira o aviso da primeira abertura |
 | Modelos locais (Ollama, modelo local, Parakeet) | G | Aparecem como "Em breve" |
 | Privacidade e dados | P | A tela existe sem conteúdo |

@@ -1256,3 +1256,9 @@ No app, a logo ficava muito perto dos botões de fechar da janela. A margem de c
 **Revisão:** o gate aprovou de ponta a ponta (tipos, build, harness com 34 bloqueios antigos no baseline, detector de design, voz da marca, varredura de cacoetes). As pastas de dependências e de build (`node_modules`, `dist`, `dist-app`, `release`) tinham sumido do projeto, sem nenhum arquivo de código perdido (conferido contra a cópia limpa); reinstalei as do Design System. As de `app/` voltam com `npm ci` quando for empacotar.
 **Skills:** `docs/SKILLS.md` diz qual skill abrir em cada tarefa e onde instalar cada uma; `AGENTS.md` e `docs/CONTRIBUINDO.md` apontam para ele.
 **Documentos sincronizados:** `RELEASE.md` (agora o fluxo real: versão, nota, gate, cópia limpa, pull request, tag), `ROADMAP.md` (1.0.0 publicada), `app/README.md` (atualização e release).
+
+## Versão única para Mac e Windows (20 de Novembro de 2026)
+
+**Contexto:** a 1.0.0 do Mac saiu como a release mais recente. Os dois apps procuram atualização na release mais recente do mesmo repositório, então o Windows passou a ver uma versão que não conseguia instalar.
+**Decisão do Robert:** o Mac segue a numeração do Windows. A raiz do versionamento é o `version` do `package.json` da raiz; o `app/package.json` repete o número e o gate confere. Cada versão é uma release só, com os arquivos dos dois sistemas. O app para Windows volta para a raiz do `main`, ao lado do `app/`.
+**Feito:** Mac renumerado para 0.4.18 e publicado na mesma release do Windows; a 1.0.0 virou pré-lançamento. `CLAUDE.md`, `AGENTS.md`, `RELEASE.md` e `NOTA-PARA-O-CARLOS.md` explicam a regra. `ROADMAP.md` trocou as versões 1.x por etapas sem número fixo, dentro da sequência 0.4.x.

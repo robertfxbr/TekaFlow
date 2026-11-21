@@ -35,7 +35,7 @@ Se a tag for criada antes da release do Windows, a nuvem cria a release sem marc
 ## O que a release entrega e o que falta
 
 - **Apple Silicon** (M1 em diante). Intel não está no fluxo.
-- **Sem assinatura da Apple.** Quem baixa vê um aviso e abre com botão direito e **Abrir**. Para tirar o aviso, é preciso conta de desenvolvedor da Apple, assinatura e notarização (roadmap, versão 1.3).
+- **Sem assinatura da Apple.** Quem baixa vê um aviso e abre com botão direito e **Abrir**. Para tirar o aviso, é preciso conta de desenvolvedor da Apple, assinatura e notarização (roadmap, etapa "o TekaFlow novo fora do Mac").
 - O Whisper exige `brew install whisper-cpp` no Mac de quem usa. O Apple Speech funciona sem isso.
 - O pacote leve não tem assinatura própria; a confiança é a da release. A spec 008 trata disso e do cofre de senhas.
 - O app para Windows mora na raiz do repositório (`electron/`, `src/`), segue a mesma versão e sobe na mesma release.
