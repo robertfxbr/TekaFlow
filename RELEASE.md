@@ -26,12 +26,19 @@ gh release create vX.Y.Z --repo robertfxbr/TekaFlow --target main --latest --tit
 
 Se a tag for criada antes da release do Windows, a nuvem cria a release sem marcar como a mais recente. Quando o Windows subir, marque como a mais recente com `--latest`.
 
+## Como a atualização automática funciona
+
+- O app confere a release marcada como a mais recente ao abrir e quando a pessoa clica em **Atualizar** em Configurações.
+- Se houver pacote leve, ele baixa, confere o hash e reinicia. Se a versão nova não abrir, o app volta sozinho para a anterior.
+- Os arquivos têm nomes próprios do Mac (`tekaflow-mac-*`) e do Windows (`teka-*`, `TekaFlow-Setup-*`), e cada app baixa só os dele da mesma release.
+
 ## O que a release entrega e o que falta
 
 - **Apple Silicon** (M1 em diante). Intel não está no fluxo.
-- **Sem assinatura da Apple**: quem baixar vê um aviso e precisa abrir com botão direito e **Abrir**. As instruções estão na página da release. Para tirar o aviso, é preciso uma conta de desenvolvedor da Apple, assinatura e notarização.
-- O Whisper exige `brew install whisper-cpp` no Mac de quem usa; o Apple Speech funciona sem isso.
-- Antes de uma versão para o público, tirar o cofre de senhas de teste do app (veja `ROADMAP.md`).
+- **Sem assinatura da Apple.** Quem baixa vê um aviso e abre com botão direito e **Abrir**. Para tirar o aviso, é preciso conta de desenvolvedor da Apple, assinatura e notarização (roadmap, versão 1.3).
+- O Whisper exige `brew install whisper-cpp` no Mac de quem usa. O Apple Speech funciona sem isso.
+- O pacote leve não tem assinatura própria; a confiança é a da release. A spec 008 trata disso e do cofre de senhas.
+- O app para Windows mora na raiz do repositório (`electron/`, `src/`), segue a mesma versão e sobe na mesma release.
 
 ## Testar o pacote antes, no seu Mac
 
@@ -39,4 +46,4 @@ Se a tag for criada antes da release do Windows, a nuvem cria a release sem marc
 cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow/app && SEM_INSTALAR=1 npm run empacotar
 ```
 
-O `.zip` sai em `app/release/`.
+Os arquivos saem em `app/release/`. Precisa de `npm ci` em `app/` e em `design-system/` antes.

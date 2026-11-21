@@ -1249,3 +1249,10 @@ No app, a logo ficava muito perto dos botões de fechar da janela. A margem de c
 
 **Decisão do Carlos:** a segurança com o ProvenSec fica para depois, como spec pendente (`specs/pendentes/008-seguranca-provensec.md`, com o que já foi levantado). O foco é a release.
 **Nota de release:** passa a seguir o mesmo padrão do JobRelay (título com a mudança principal, abertura de três linhas, Destaques, Novidades, Melhorias, Correções, itens "Nome: Adicionamos..."). O padrão está em `docs/PADRAO-NOTA-RELEASE.md`, o modelo vivo em `docs/releases/v1.0.0.md`, e o fluxo da release lê `docs/releases/<tag>.md`. A página da 1.0.0 foi atualizada com o novo texto.
+
+## Revisão rápida e sincronização de documentos (20 de Novembro de 2026)
+
+**Pedido do Carlos:** usar o harness e a skill de identificar skills, uma revisão rápida e a sincronização dos documentos.
+**Revisão:** o gate aprovou de ponta a ponta (tipos, build, harness com 34 bloqueios antigos no baseline, detector de design, voz da marca, varredura de cacoetes). As pastas de dependências e de build (`node_modules`, `dist`, `dist-app`, `release`) tinham sumido do projeto, sem nenhum arquivo de código perdido (conferido contra a cópia limpa); reinstalei as do Design System. As de `app/` voltam com `npm ci` quando for empacotar.
+**Skills:** `docs/SKILLS.md` diz qual skill abrir em cada tarefa e onde instalar cada uma; `AGENTS.md` e `docs/CONTRIBUINDO.md` apontam para ele.
+**Documentos sincronizados:** `RELEASE.md` (agora o fluxo real: versão, nota, gate, cópia limpa, pull request, tag), `ROADMAP.md` (1.0.0 publicada), `app/README.md` (atualização e release).
