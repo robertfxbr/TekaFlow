@@ -1,58 +1,30 @@
-# Como lançar uma versão do TekaFlow para Mac
+# Como lançar uma versão do TekaFlow
 
-A release é gerada na nuvem do GitHub. Você só precisa criar o repositório, enviar o código e criar uma etiqueta (tag) de versão.
+Mac e Windows dividem o mesmo número de versão e a mesma release. Uma versão `vX.Y.Z` traz os arquivos dos dois sistemas, e cada app baixa só o que é dele:
 
-## O repositório é o original (substitui o openPerssua)
+| Sistema | Arquivos na release | Quem gera |
+|---|---|---|
+| Windows | `teka-update.json`, `teka-app-X.Y.Z.asar`, `TekaFlow-Setup-X.Y.Z.exe`, `latest.yml` | O Robert, no PC dele |
+| Mac | `tekaflow-mac-update.json`, `tekaflow-mac-app-X.Y.Z.asar`, o `.zip` | A nuvem do GitHub, quando a tag é criada |
 
-O TekaFlow entra no repositório do Robert, `robertfxbr/openPerssua`, no lugar do app original, mantendo o histórico dele. Em ordem:
-
-1. Em github.com, abra o repositório, **Settings** e, em **Repository name**, troque para **TekaFlow**. Só quem é administrador consegue. O GitHub redireciona o endereço antigo.
-2. Rode o script que prepara a troca. Ele só prepara um ramo local e não envia nada:
-
-```bash
-cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow && sh scripts/exportar-publico.sh && sh scripts/substituir-no-original.sh
-```
-
-3. Siga o comando de envio que o script mostrar (cria o ramo `tekaflow`) e abra o pull request. Depois do merge, crie a tag da versão (passos abaixo, trocando a pasta pelo clone que o script mostrou).
-
-**Versão:** a última release do app antigo é a 0.4.16. O TekaFlow começa na **1.0.0**, por decisão do Carlos. Quem ainda usa a versão antiga recebe o aviso de atualização por esse repositório.
-
-## Uma vez só, só se fosse um repositório novo
-
-1. Abra [github.com/new](https://github.com/new).
-2. Nome: **TekaFlow**. Público. Sem README, sem .gitignore e sem licença (o projeto já tem).
-3. Clique em **Create repository**.
-
-## Uma vez só: preparar a pasta que sobe
-
-A pasta `Projects/TekaFlow-publico` é uma cópia limpa do projeto, só com o que pode ficar público (sem referências de terceiros, sem o clone do Robert, sem protótipos antigos). Para atualizá-la quando mudar algo:
-
-```bash
-cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow && sh scripts/exportar-publico.sh
-```
+Os dois apps procuram atualização na release marcada como a mais recente. Por isso ela precisa ter os arquivos dos dois: uma release só com o Mac deixa o Windows sem atualização, e o contrário também.
 
 ## A cada versão nova
 
-1. Atualize a cópia (comando acima).
-2. Rode o gate na cópia:
+1. Combine o número com o Robert. Ele é o mesmo para os dois apps e segue a sequência que já existe (0.4.18, 0.4.19, e assim por diante).
+2. Troque a versão em `app/package.json` (campo `version`) e em `package.json` na raiz. Se o Mac precisar de um instalador novo, troque também o `shellMin` do `app/package.json`.
+3. Escreva a nota em `docs/releases/vX.Y.Z.md` no padrão de `docs/PADRAO-NOTA-RELEASE.md`, com o que mudou nos dois sistemas.
+4. Rode o gate: `node scripts/gate.mjs`.
+5. Envie para o `main` por pull request.
+6. O Robert gera os arquivos do Windows e cria a release, que cria a tag junto e já fica marcada como a mais recente:
 
 ```bash
-cd /Users/carlos/Documents/AI-Workspace/Projects/TekaFlow-publico && node scripts/gate.mjs
+gh release create vX.Y.Z --repo robertfxbr/TekaFlow --target main --latest --title "TekaFlow X.Y.Z" --notes-file docs/releases/vX.Y.Z.md teka-app-X.Y.Z.asar teka-update.json TekaFlow-Setup-X.Y.Z.exe latest.yml
 ```
 
-3. Depois da primeira troca, o repositório de trabalho passa a ser o clone do original (a pasta que o script mostrou). Para as versões seguintes, copie a cópia limpa para lá e envie:
+7. A tag dispara a release do Mac na nuvem (`.github/workflows/release.yml`). Ela confere se a tag bate com a versão do `app/package.json` e põe os arquivos do Mac na mesma release. Acompanhe na aba Actions.
 
-```bash
-cd <pasta do clone> && git add -A && git commit -m "TekaFlow 1.0.1" && git push
-```
-
-4. Crie a versão. Isso dispara a release na nuvem:
-
-```bash
-cd <pasta do clone> && git tag v1.0.0 && git push origin v1.0.0
-```
-
-5. Espere a release terminar na aba Actions e abra [github.com/robertfxbr/TekaFlow/releases](https://github.com/robertfxbr/TekaFlow/releases). O `.zip` do Mac estará lá, com as instruções de primeira abertura.
+Se a tag for criada antes da release do Windows, a nuvem cria a release sem marcar como a mais recente. Quando o Windows subir, marque como a mais recente com `--latest`.
 
 ## O que a release entrega e o que falta
 

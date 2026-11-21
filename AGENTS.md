@@ -24,6 +24,8 @@ Este arquivo vale para qualquer agente de IA (Claude Code, Codex e outros) que t
 
 ## Versões e releases (Mac e Windows juntos)
 
+A raiz do versionamento é o `version` do `package.json` da raiz. Detalhes em `CLAUDE.md` e `RELEASE.md`.
+
 - Uma versão só para os dois apps: `version` do `package.json` da raiz e do `app/package.json` andam juntas (hoje 0.4.18). Nada de numeração separada para o Mac.
 - Cada versão é uma release só, `vX.Y.Z`, marcada como a mais recente. Os dois apps procuram atualização na release mais recente e cada um pega só os arquivos dele (`teka-update.json` no Windows, `tekaflow-mac-update.json` no Mac). Release com arquivos de um sistema só deixa o outro sem atualização.
 - Passo a passo em `RELEASE.md`.

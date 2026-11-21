@@ -18,6 +18,15 @@ Toda tela, componente ou estilo novo nasce **no Design System** (`design-system/
 - **Registro:** toda decisão vai para [DECISIONS.md](DECISIONS.md), só acrescentando.
 - **Créditos:** a base é do Robert ([openPerssua](https://github.com/robertfxbr/openPerssua)). Não remova o `LICENSE` nem a seção Créditos do README.
 
+## Versão e release (a raiz do versionamento)
+
+- **De onde vem o número:** o campo `version` do `package.json` da **raiz** do repositório. Ele é a raiz do versionamento do TekaFlow inteiro. O `app/package.json` (Mac) repete o mesmo número, e o gate reprova se os dois forem diferentes.
+- **Sequência:** segue a do app para Windows, que já tem gente usando: 0.4.18, 0.4.19, 0.4.20. Não comece outra numeração (1.0.0, 0.1.0) nem pule para 1.x sem o Robert pedir.
+- **Uma release por versão, com os dois sistemas:** a tag `vX.Y.Z` traz os arquivos do Windows (`teka-update.json`, `teka-app-*.asar`, `TekaFlow-Setup-*.exe`, `latest.yml`) e os do Mac (`tekaflow-mac-update.json`, `tekaflow-mac-app-*.asar`, `.zip`). Os dois apps procuram atualização na release marcada como a mais recente; uma release com um sistema só deixa o outro sem atualização.
+- **Não crie tag nem release sozinho.** Combine o número com o Robert: ele gera o Windows e cria a release, e a tag dispara a parte do Mac (`.github/workflows/release.yml`). Passo a passo em [RELEASE.md](RELEASE.md).
+- **Não apague o app para Windows.** Ele mora na raiz (`electron/`, `src/`, `package.json`), ao lado do `app/`. Nada de `git rm -r .` nem `rsync --delete` na raiz do repositório.
+- O que mudou e por quê: [NOTA-PARA-O-CARLOS.md](NOTA-PARA-O-CARLOS.md).
+
 ## Antes de subir
 
 1. `node scripts/gate.mjs` precisa aprovar (tipos, build, harness do design system, detector de design, escrita e voz da marca).
