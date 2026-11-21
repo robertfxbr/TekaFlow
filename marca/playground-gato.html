@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TekaFlow · Playground do gato</title>
+<style>
+:root{--bg:#1A1B1E;--cat:#C5EF6B;--tx:#fff;--card:#25262A;--mu:#9a9b9f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 -apple-system,system-ui,sans-serif;min-height:100vh}
+header{padding:24px 32px 0}
+h1{font-size:20px;margin:0}
+header p{margin:2px 0 0;color:var(--mu);max-width:640px}
+.palco{display:flex;align-items:center;justify-content:center;gap:48px;padding:32px 32px 16px;min-height:400px}
+.palco.esq{flex-direction:row-reverse}
+#cat{width:320px;height:320px;flex:none}
+.texto{width:340px;background:var(--card);border-radius:14px;padding:18px 20px;display:none}
+.texto.on{display:block}
+.texto b{font-size:12px;color:var(--mu);font-weight:600;display:block;margin-bottom:8px}
+.texto p{margin:0;font-size:16px;line-height:1.6;min-height:104px}
+.texto i{display:inline-block;width:2px;height:1.1em;background:var(--cat);vertical-align:-2px;margin-left:1px;animation:pisca 1s steps(1) infinite}
+@keyframes pisca{50%{opacity:0}}
+.principal{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:0 32px 8px}
+.principal button{padding:10px 22px;font-size:15px}
+.avancado{max-width:980px;margin:18px auto 0;padding:0 32px 48px}
+summary{cursor:pointer;color:var(--mu);font-size:13px;padding:6px 0;text-align:center}
+.grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px}
+.grupo{background:var(--card);border-radius:14px;padding:14px 16px}
+.grupo h2{font-size:12px;margin:0 0 10px;color:var(--mu);font-weight:600;letter-spacing:.02em}
+.bt{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;color:var(--tx);background:transparent;border:1px solid color-mix(in srgb,var(--tx) 28%,transparent);border-radius:999px;padding:7px 14px;cursor:pointer;transition:background .15s,border-color .15s}
+button:hover{border-color:var(--tx)}
+button.on{background:var(--cat);border-color:var(--cat);color:var(--bg)}
+.estado{position:fixed;right:20px;bottom:16px;font-size:12px;color:var(--mu)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Playground do gato</h1>
+  <p>As animações principais ficam em destaque. Olhar para os lados e os ajustes finos estão em “Avançado”.</p>
+</header>
+
+<div class="palco" id="palco">
+  <svg id="cat" viewBox="3 2.9 10 10" role="img" aria-label="Gato do TekaFlow">
+    <defs>
+      <mask id="mk" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+        <rect width="16" height="16" fill="#000"/>
+        <g transform="translate(0 .25)">
+          <path d="M4 6L4.5 3.5L7 5H9L11.5 3.5L12 6V10A2 2 0 0 1 10 12H6A2 2 0 0 1 4 10Z" fill="#fff" stroke="#fff" stroke-width=".5" stroke-linejoin="round"/>
+          <path d="M4.95 5.8L5.05 4.8L6.15 5.4Z" fill="#000" stroke="#000" stroke-width=".25" stroke-linejoin="round"/>
+          <path d="M11.05 5.8L10.95 4.8L9.85 5.4Z" fill="#000" stroke="#000" stroke-width=".25" stroke-linejoin="round"/>
+          <g id="olhos">
+            <rect id="oE" fill="#000"/><rect id="oD" fill="#000"/>
+            <path id="aE" fill="none" stroke="#000" stroke-width=".55" stroke-linecap="round"/>
+            <path id="aD" fill="none" stroke="#000" stroke-width=".55" stroke-linecap="round"/>
+          </g>
+          <circle id="sE" r=".6" fill="none" stroke="#000" stroke-width=".45" stroke-linecap="round" stroke-dasharray="2.3 1.47"/>
+          <circle id="sD" r=".6" fill="none" stroke="#000" stroke-width=".45" stroke-linecap="round" stroke-dasharray="2.3 1.47"/>
+          <g id="boca"><rect id="b0" fill="#000"/><rect id="b1" fill="#000"/><rect id="b2" fill="#000"/></g>
+          <rect id="trilho" fill="#000" x="6.8" y="9.725" width="2.4" height=".55" rx=".275"/>
+          <rect id="enche" fill="#000" y="9.725" height=".55" rx=".275"/>
+        </g>
+      </mask>
+    </defs>
+    <g id="corpo"><rect width="16" height="16" fill="var(--cat)" mask="url(#mk)"/></g>
+  </svg>
+  <div class="texto" id="texto"><b>Alguém escrevendo</b><p><span id="digitado"></span><i></i></p></div>
+</div>
+
+<div class="principal">
+  <button data-est="idle" class="on">Idle</button>
+  <button data-est="falando">Falando</button>
+  <button data-est="lendo">Lendo</button>
+  <button data-est="pensando">Pensando</button>
+</div>
+
+<div class="avancado">
+  <details>
+    <summary>Avançado</summary>
+    <div class="grade">
+      <div class="grupo"><h2>OLHAR</h2><div class="bt">
+        <button data-olhar="auto" class="on">Automático</button>
+        <button data-olhar="esq">Esquerda</button>
+        <button data-olhar="dir">Direita</button>
+        <button data-olhar="cima">Cima</button>
+        <button data-olhar="centro">Em frente</button>
+      </div></div>
+      <div class="grupo"><h2>OLHOS</h2><div class="bt">
+        <button id="bPiscar">Piscar</button>
+        <button data-olhos="auto" class="on">Automático</button>
+        <button data-olhos="contente">Contente</button>
+        <button data-olhos="atento">Atento</button>
+        <button id="bFeliz">Feliz, com pulinho</button>
+      </div></div>
+      <div class="grupo"><h2>BOCA</h2><div class="bt">
+        <button data-boca="auto" class="on">Automática</button>
+        <button data-boca="quieta">Quieta</button>
+        <button data-boca="falando">Falando</button>
+        <button data-boca="sem">Sem boca</button>
+      </div></div>
+      <div class="grupo"><h2>LOADING DO “PENSANDO”</h2><div class="bt">
+        <button data-load="olhos">Olhos girando (rascunho)</button>
+        <button data-load="pontos" class="on">Pontinhos na boca (padrão)</button>
+        <button data-load="barra">Barra na boca (rascunho)</button>
+      </div></div>
+      <div class="grupo"><h2>TEXTO</h2><div class="bt">
+        <button id="bLado">Texto à direita</button>
+      </div></div>
+    </div>
+  </details>
+</div>
+<div class="estado" id="estado"></div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduzir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const rr = Math.random;
+  const SW = .55, EY = 7.7;
+  const EXC = [6, 10];       // centros dos olhos em arco (Contente), como na logo
+  const EXA = [6.45, 9.55];  // centros dos olhos abertos (Atento), mais juntos
+
+  // v = o que o desenho mostra agora; alvo = para onde ele vai. A cada quadro um se aproxima do outro.
+  const v = { lx: 0, ly: 0, aberto: 1, atento: 0, pulo: 0, b: [SW, SW, SW], boca: 1, car: 0, barra: 0, giro: 0, enche: 0, ox: 0, oy: 0, rot: 0 };
+  const alvo = { lx: 0, ly: 0, aberto: 1, atento: 0, b: [SW, SW, SW], boca: 1 };
+  const modo = { est: 'idle', olhos: 'auto', boca: 'auto', olhar: 'auto', feliz: false, lado: 1, load: 'pontos' };
+  let olhosAtual = 'contente';   // o que está desenhado: 'contente' ou 'atento'
+  let ocupado = false;
+
+  const set = (el, o) => { for (const k in o) el.setAttribute(k, o[k]); };
+
+  function desenhar() {
+    const dx = v.lx * .5, dy = v.ly * .4;
+    const w = .6 + .5 * (1 - v.aberto), h = 1.5 * v.aberto + .5 * (1 - v.aberto);
+    const ex = [EXA[0], EXA[1]];
+    [[$('#oE'), ex[0]], [$('#oD'), ex[1]]].forEach(([el, cx]) =>
+      set(el, { x: cx + dx - w / 2, y: EY + dy - h / 2, width: w, height: h, rx: Math.min(w, h) / 2, opacity: v.atento * (1 - v.car) }));
+    [[$('#aE'), EXC[0]], [$('#aD'), EXC[1]]].forEach(([el, cx]) => {
+      const x = cx + dx * .5, yb = EY + .3 + dy * .4, yc = yb - 1.2 * v.aberto;   // piscar achata o arco num traço
+      set(el, { d: `M${x - .8} ${yb}Q${x} ${yc} ${x + .8} ${yb}`, opacity: (1 - v.atento) * (1 - v.car) });
+    });
+    [7, 8, 9].forEach((cx, i) => set($('#b' + i), { x: cx - SW / 2, y: 10 - v.b[i] / 2, width: SW, height: v.b[i], rx: SW / 2, opacity: v.boca }));
+    [['#sE', EXA[0]], ['#sD', EXA[1]]].forEach(([id, cx]) => set($(id), { cx: cx + dx, cy: EY + dy, opacity: v.car, transform: `rotate(${v.giro.toFixed(1)} ${(cx + dx).toFixed(3)} ${(EY + dy).toFixed(3)})` }));
+    set($('#trilho'), { opacity: v.barra * .38 });
+    set($('#enche'), { opacity: v.barra, x: 6.8, width: Math.max(.55, 2.4 * v.enche) });
+    $('#corpo').setAttribute('transform', `translate(${v.ox.toFixed(3)} ${(v.oy - v.pulo).toFixed(3)}) rotate(${v.rot.toFixed(2)} 8 8)`);
+  }
+
+  const suave = (a, b, k, dt) => a + (b - a) * (1 - Math.exp(-k * dt));
+  let t0 = performance.now(), proxFala = 0, proxPensa = 0;
+  function quadro(agora) {
+    const dt = Math.min(.05, (agora - t0) / 1000); t0 = agora; const T = agora / 1000;
+    v.lx = suave(v.lx, alvo.lx, 10, dt); v.ly = suave(v.ly, alvo.ly, 10, dt);
+    v.aberto = suave(v.aberto, alvo.aberto, 34, dt);
+    v.atento = suave(v.atento, alvo.atento, 40, dt);
+    v.boca = suave(v.boca, alvo.boca, 14, dt);
+    const pens = modo.est === 'pensando';
+    v.car = suave(v.car, pens && modo.load === 'olhos' ? 1 : 0, 12, dt);
+    v.barra = suave(v.barra, pens && modo.load === 'barra' ? 1 : 0, 12, dt);
+    v.giro = (v.giro + dt * 330) % 360;
+    v.enche = .5 + .5 * Math.sin(T * 2.6);
+    // o gato mexe um pouquinho quando fala ou lê, e respira de leve quando está parado
+    const mexe = (modo.est === 'falando' || modo.est === 'lendo') && !reduzir;
+    const k = mexe ? 1 : .35;
+    const ox = reduzir ? 0 : Math.sin(T * 1.7) * .05 * k + (mexe ? Math.sin(T * 6.1) * .03 : 0);
+    const oy = reduzir ? 0 : Math.sin(T * 1.3) * .04 * k + (mexe ? -Math.abs(Math.sin(T * 5.3)) * .05 : 0);
+    const rot = reduzir ? 0 : Math.sin(T * 1.1) * .9 * k + (mexe ? Math.sin(T * 4.2) * .7 : 0);
+    v.ox = suave(v.ox, ox, 12, dt); v.oy = suave(v.oy, oy, 12, dt); v.rot = suave(v.rot, rot, 12, dt);
+    const falando = bocaAtual() === 'falando';
+    for (let i = 0; i < 3; i++) v.b[i] = suave(v.b[i], alvo.b[i], falando ? 22 : 12, dt);
+    v.pulo = suave(v.pulo, modo.feliz && !reduzir ? Math.abs(Math.sin(T * 7)) * .35 : 0, 22, dt);
+    if (falando && agora > proxFala) { alvo.b = [1 + rr() * .9, 1.3 + rr() * 1.4, 1 + rr() * 1.1]; proxFala = agora + 90 + rr() * 110; }
+    if (bocaAtual() === 'pensando' && modo.load !== 'barra') {          // pontinhos que crescem em onda, como carregando
+      alvo.b = [0, 1, 2].map(i => SW + .9 * Math.max(0, Math.sin(T * 5 - i * 1.1)));
+    }
+    desenhar(); requestAnimationFrame(quadro);
+  }
+
+  // --- piscar e trocar de olhos numa piscada ---
+  function piscar(dur = 110, meio) {
+    if (ocupado) return;
+    ocupado = true; alvo.aberto = 0;
+    setTimeout(() => { if (meio) meio(); alvo.aberto = 1; setTimeout(() => { ocupado = false; }, 90); }, dur);
+  }
+  function olhosDesejados() {
+    if (modo.olhos !== 'auto') return modo.olhos;
+    return (modo.est === 'idle') ? 'contente' : 'atento';
+  }
+  function bocaAtual() {
+    if (modo.boca !== 'auto') return modo.boca;
+    return { idle: 'quieta', falando: 'falando', lendo: 'falando', pensando: modo.load === 'barra' ? 'sem' : 'pensando' }[modo.est];
+  }
+  function aplicarBoca() {
+    const b = bocaAtual();
+    alvo.boca = b === 'sem' ? 0 : 1;
+    if (b === 'quieta' || b === 'sem') alvo.b = [SW, SW, SW];
+    proxFala = 0;
+  }
+  function aplicarOlhos() {
+    const d = olhosDesejados();
+    if (d === olhosAtual) return;
+    const troca = () => { olhosAtual = d; alvo.atento = d === 'atento' ? 1 : 0; };
+    if (reduzir) troca(); else if (!ocupado) piscar(120, troca); else setTimeout(aplicarOlhos, 160);
+  }
+
+  // --- idle: pisca de tempos em tempos e passeia o olhar de leve ---
+  function laco() {
+    if (!reduzir && modo.est === 'idle') {
+      if (modo.olhar === 'auto') { alvo.lx = (rr() - .5) * .8; alvo.ly = (rr() - .5) * .3; }
+      if (rr() < .55) setTimeout(() => piscar(), 200 + rr() * 900);
+      if (rr() < .2) setTimeout(() => { piscar(100); setTimeout(() => piscar(100), 300); }, 400);
+    } else if (!reduzir && modo.est === 'falando') {
+      if (modo.olhar === 'auto') { alvo.lx = (rr() - .5) * .6; alvo.ly = (rr() - .5) * .25; }
+      if (rr() < .6) setTimeout(() => piscar(), 300 + rr() * 900);
+    } else if (!reduzir && modo.est === 'lendo') {
+      if (rr() < .5) setTimeout(() => piscar(), 400 + rr() * 1200);
+    }
+    setTimeout(laco, 1100 + rr() * 1800);
+  }
+
+  // --- estados principais ---
+  const frase = 'Na migração do checkout, defendi manter a fila até medir a latência. O time revisou o plano e entregamos sem queda.';
+  let i = 0, timerTexto, timerPensa;
+  function pararExtras() { clearInterval(timerTexto); clearInterval(timerPensa); $('#texto').classList.remove('on'); }
+  function escrever() {
+    clearInterval(timerTexto); i = 0; $('#digitado').textContent = '';
+    timerTexto = setInterval(() => {
+      if (modo.est !== 'lendo') return clearInterval(timerTexto);
+      i++; $('#digitado').textContent = frase.slice(0, i);
+      const col = (i % 34) / 34, linha = Math.floor(i / 34);
+      if (modo.olhar === 'auto') { alvo.lx = modo.lado * (.15 + .85 * col); alvo.ly = .1 + Math.min(linha, 3) * .15; }
+      if (i >= frase.length) { clearInterval(timerTexto); setTimeout(() => { if (modo.est === 'lendo') escrever(); }, 1800); }
+    }, 70);
+  }
+  function ir(est) {
+    pararExtras(); modo.est = est;
+    $$('[data-est]').forEach(b => b.classList.toggle('on', b.dataset.est === est));
+    alvo.lx = 0; alvo.ly = 0;
+    if (est === 'lendo') { $('#texto').classList.add('on'); escrever(); }
+    if (est === 'pensando') {
+      let k = 0;
+      const olha = () => { if (modo.olhar === 'auto') { const p = [[-.7, -.8], [.7, -.8], [0, -.9], [.5, -.6]][k++ % 4]; alvo.lx = p[0]; alvo.ly = p[1]; } };
+      olha(); timerPensa = setInterval(olha, 1400);
+    }
+    aplicarOlhos(); aplicarBoca(); estado();
+  }
+  $$('[data-est]').forEach(b => b.onclick = () => ir(b.dataset.est));
+
+  // --- avançado ---
+  const olhares = { esq: [-1, 0], dir: [1, 0], cima: [0, -1], centro: [0, 0] };
+  $$('[data-olhar]').forEach(b => b.onclick = () => {
+    modo.olhar = b.dataset.olhar;
+    if (modo.olhar !== 'auto') [alvo.lx, alvo.ly] = olhares[modo.olhar];
+    $$('[data-olhar]').forEach(x => x.classList.toggle('on', x === b));
+  });
+  $$('[data-olhos]').forEach(b => b.onclick = () => {
+    modo.olhos = b.dataset.olhos; aplicarOlhos();
+    $$('[data-olhos]').forEach(x => x.classList.toggle('on', x === b));
+  });
+  $$('[data-boca]').forEach(b => b.onclick = () => {
+    modo.boca = b.dataset.boca; aplicarBoca();
+    $$('[data-boca]').forEach(x => x.classList.toggle('on', x === b));
+  });
+  $$('[data-load]').forEach(b => b.onclick = () => {
+    modo.load = b.dataset.load; aplicarBoca();
+    $$('[data-load]').forEach(x => x.classList.toggle('on', x === b));
+    if (modo.est !== 'pensando') ir('pensando');
+  });
+  $('#bPiscar').onclick = () => piscar(130);
+  $('#bFeliz').onclick = () => { modo.feliz = !modo.feliz; $('#bFeliz').classList.toggle('on', modo.feliz); if (modo.feliz) { modo.olhos = 'contente'; aplicarOlhos(); } else { modo.olhos = 'auto'; aplicarOlhos(); } };
+  $('#bLado').onclick = () => {
+    modo.lado *= -1; $('#palco').classList.toggle('esq', modo.lado < 0);
+    $('#bLado').textContent = modo.lado > 0 ? 'Texto à direita' : 'Texto à esquerda';
+    if (modo.est === 'lendo') escrever();
+  };
+
+  function estado() { $('#estado').textContent = `${modo.est} · olhos: ${olhosDesejados()} · boca: ${bocaAtual()}`; }
+  alvo.atento = 0; v.atento = 0;
+  estado(); laco(); setTimeout(() => piscar(), 1200);
+  requestAnimationFrame(quadro);
+})();
+</script>
+</body>
+</html>

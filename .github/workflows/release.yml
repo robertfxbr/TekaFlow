@@ -1,0 +1,46 @@
+name: Release do Mac
+# Dispara quando uma tag v* é criada (por exemplo v0.4.18). Gera o app para Mac e põe os arquivos dele na
+# release dessa tag, ao lado dos do Windows. Mac e Windows dividem a mesma versão e a mesma release (ver RELEASE.md).
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Confere a versão
+        # a tag precisa ser a versão do app/package.json: o app só aceita pacote da versão da release
+        run: |
+          VERSAO=$(node -p "require('./app/package.json').version")
+          if [ "v${VERSAO}" != "${GITHUB_REF_NAME}" ]; then
+            echo "A tag ${GITHUB_REF_NAME} não bate com a versão ${VERSAO} do app/package.json"; exit 1
+          fi
+      - run: npm ci
+        working-directory: design-system
+      - run: npm ci
+        working-directory: app
+      - name: Compila o ajudante de voz
+        working-directory: app
+        run: swiftc -O native/fala.swift -o native/fala -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __info_plist -Xlinker native/Info.plist
+      - name: Empacota o app
+        working-directory: app
+        env:
+          SEM_INSTALAR: "1"
+        run: npm run empacotar
+      - name: Põe os arquivos do Mac na release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # O Robert costuma criar a release com os arquivos do Windows (e a tag junto). Se ela ainda
+          # não existe, cria sem marcar como a mais recente, para não esconder a versão do Windows:
+          # quem publicar o Windows depois marca a release como a mais recente.
+          if ! gh release view "${GITHUB_REF_NAME}" > /dev/null 2>&1; then
+            gh release create "${GITHUB_REF_NAME}" --verify-tag --latest=false --title "TekaFlow ${GITHUB_REF_NAME#v}" --notes-file .github/release-notes.md
+          fi
+          gh release upload "${GITHUB_REF_NAME}" app/release/*.zip app/release/*.asar app/release/tekaflow-mac-update.json --clobber

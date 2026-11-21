@@ -1,0 +1,88 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TekaFlow, escolher o modelo da IA</title><style>
+:root{--bg:#1A1B1E;--surf:#25262A;--surf2:#34353A;--fg:#F9FAFB;--mut:#A3A4A8;--line:#46474C;--br:#C5EF6B;--brs:rgba(197,239,107,.12)}
+*{box-sizing:border-box}
+body{margin:0;background:#111;color:var(--fg);font:14px/1.5 system-ui,sans-serif;padding:40px 24px}
+.w{max-width:1040px;margin:0 auto}
+h1{font-size:24px;font-weight:500;margin:0 0 8px}
+.l{color:var(--mut);margin:0 0 32px;max-width:680px}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:40px 0 12px;font-weight:600}
+.janela{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:32px 40px;width:100%}
+.tit{text-align:center;margin-bottom:24px}.tit b{display:block;font-size:24px;font-weight:500}.tit span{color:var(--mut);font-size:13px}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.card.sel{border-color:var(--br)}
+.topo{display:flex;align-items:center;gap:12px}
+.ic{width:40px;height:40px;border-radius:8px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-weight:600}
+.topo b{font-size:14px}.sp{flex:1}
+.tag{font-size:12px;padding:2px 10px;border-radius:999px;background:var(--surf2);color:var(--mut)}
+.tag.v{background:rgba(123,216,143,.16);color:#7BD88F}.tag.l{background:var(--br);color:#1F2B06;font-weight:600}
+p{margin:0;color:var(--mut);font-size:12px}
+.bt{font:inherit;font-size:13px;height:36px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--fg);width:100%}
+.bt.p{background:var(--br);border-color:var(--br);color:#1F2B06;font-weight:600}
+.mods{display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.m{display:flex;align-items:center;gap:12px;padding:8px;border-radius:8px;border:1px solid transparent}
+.m.sel{border-color:var(--br);background:var(--brs)}
+.rd{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);flex:none}
+.m.sel .rd{border-color:var(--br);background:radial-gradient(var(--br) 45%,transparent 50%)}
+.m div{flex:1;min-width:0}.m b{font-size:13px;font-weight:600;display:block}.m span{font-size:12px;color:var(--mut)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.col{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.col h3{margin:0;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.em{opacity:.55}
+.dica{color:var(--mut);font-size:12px;margin-top:12px}
+
+.sel2{height:36px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:13px;background:var(--bg)}
+.menu{border:1px solid var(--line);border-radius:10px;background:var(--surf2);padding:4px;display:flex;flex-direction:column;gap:2px}
+.menu .m{padding:6px 8px}
+.busca{height:32px;border:1px solid var(--line);border-radius:8px;padding:0 10px;display:flex;align-items:center;color:var(--mut);font-size:12px;margin:4px}
+.grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);padding:8px 8px 4px;font-weight:600}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:4px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--mut)}.chip.on{background:var(--br);border-color:var(--br);color:#1F2B06;font-weight:600}
+.perfil{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.perfil .card.sel p{color:var(--fg)}
+.tab{width:100%;border-collapse:collapse}.tab td{padding:10px 8px;border-top:1px solid rgba(255,255,255,.1);font-size:13px;vertical-align:middle}
+.cx{font-size:12px;color:var(--mut)}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 12px}summary{cursor:default;font-size:13px}
+</style></head><body><div class="w">
+<h1>Escolher o modelo depois de conectar</h1>
+<p class="l">Quatro direções para quando uma conexão tem vários modelos (5 ou mais). Todas separam duas coisas: <b>como conectar</b> (conta, Claude Code, chave, local) e <b>qual modelo responde</b>. O Claude aparece em dois cartões, porque são conexões diferentes: o Claude Code usa a sua assinatura e fica limitado ao plano; a chave de API do Claude cobra por uso. Os nomes são exemplos.</p>
+
+<h2>A · Cada cartão tem um seletor de modelo (lista que abre)</h2>
+<div class="janela"><div class="grade">
+ <div class="card sel"><div class="topo"><span class="ic">G</span><b>ChatGPT</b><span class="sp"></span><span class="tag l">Em uso</span></div><p>Conectado pela sua assinatura.</p><div class="sel2"><span>Modelo: <b>GPT-5.6 Sol</b></span><span>▾</span></div></div>
+ <div class="card"><div class="topo"><span class="ic">C</span><b>Claude Code</b><span class="sp"></span><span class="tag v">Conectado</span></div><p>Usa a sua assinatura do Claude, sem cobrança extra.</p><div class="sel2"><span>Modelo: <b>Haiku</b></span><span>▾</span></div></div>
+ <div class="card"><div class="topo"><span class="ic">◆</span><b>Gemini</b><span class="sp"></span><span class="tag v">Conectado</span></div><p>Chave do Google AI Studio.</p><div class="sel2"><span>Modelo: <b>2.5 Flash</b></span><span>▾</span></div></div>
+</div>
+<div style="max-width:340px;margin-top:16px"><div class="menu"><div class="busca">Buscar modelo</div><div class="m sel"><i class="rd"></i><div><b>GPT-5.6 Sol</b><span>O mais capaz, para respostas elaboradas</span></div><span class="tag l">Capaz</span></div><div class="m"><i class="rd"></i><div><b>GPT-5.6 Terra</b><span>Equilibrado no dia a dia</span></div><span class="tag ">Equilibrado</span></div><div class="m"><i class="rd"></i><div><b>GPT-5.6 Luna</b><span>Rápido e barato, para respostas curtas</span></div><span class="tag ">Rápido</span></div><div class="m"><i class="rd"></i><div><b>GPT-5.4</b><span>Geração anterior, estável</span></div></div><div class="m"><i class="rd"></i><div><b>GPT-5.3 Codex</b><span>Voltado a código</span></div></div></div></div>
+<p class="dica">Com 5 ou mais modelos o seletor ganha busca. O cartão sempre mostra qual está em uso.</p></div>
+
+<h2>B · Uma lista só com todos os modelos, filtrada por conexão</h2>
+<div class="janela">
+ <div class="tit"><b>Escolha o modelo que vai responder</b></div>
+ <div class="chips" style="margin-bottom:16px"><span class="chip on">Todos</span><span class="chip">ChatGPT</span><span class="chip">Claude Code</span><span class="chip">Gemini</span></div>
+ <table class="tab">
+  <tr><td><i class="rd" style="display:inline-block"></i></td><td><b>GPT-5.6 Sol</b><div class="cx">ChatGPT · O mais capaz</div></td><td><span class="tag l">Em uso</span></td></tr>
+  <tr><td><i class="rd" style="display:inline-block"></i></td><td><b>GPT-5.6 Luna</b><div class="cx">ChatGPT · Rápido e barato</div></td><td><span class="tag">Rápido</span></td></tr>
+  <tr><td><i class="rd" style="display:inline-block"></i></td><td><b>Haiku</b><div class="cx">Claude Code · O mais rápido</div></td><td><span class="tag">Rápido</span></td></tr>
+  <tr><td><i class="rd" style="display:inline-block"></i></td><td><b>Sonnet</b><div class="cx">Claude Code · Equilibrado</div></td><td></td></tr>
+  <tr><td><i class="rd" style="display:inline-block"></i></td><td><b>Gemini 2.5 Flash</b><div class="cx">Gemini · Equilibrado</div></td><td></td></tr>
+ </table>
+ <p class="dica">Bom para quem tem várias conexões e quer comparar. Fica longo se houver muitas, por isso o filtro e a busca no topo.</p></div>
+
+<h2>C · Etapa própria depois de conectar, uma coluna por conexão</h2>
+<div class="janela"><div class="tit"><b>Escolha o modelo que vai responder</b><span>Só aparecem as conexões que você fez.</span></div>
+ <div class="cols">
+  <div class="col"><h3><span class="ic">G</span>ChatGPT <span class="tag">Assinatura</span></h3><div class="m sel"><i class="rd"></i><div><b>GPT-5.6 Sol</b><span>O mais capaz, para respostas elaboradas</span></div><span class="tag l">Capaz</span></div><div class="m"><i class="rd"></i><div><b>GPT-5.6 Terra</b><span>Equilibrado no dia a dia</span></div><span class="tag ">Equilibrado</span></div><div class="m"><i class="rd"></i><div><b>GPT-5.6 Luna</b><span>Rápido e barato, para respostas curtas</span></div><span class="tag ">Rápido</span></div><details><summary>Ver mais 2 modelos</summary><div style="margin-top:8px"><div class="m"><i class="rd"></i><div><b>GPT-5.4</b><span>Geração anterior, estável</span></div></div><div class="m"><i class="rd"></i><div><b>GPT-5.3 Codex</b><span>Voltado a código</span></div></div></div></details></div>
+  <div class="col"><h3><span class="ic">C</span>Claude Code <span class="tag">Assinatura</span></h3><div class="m"><i class="rd"></i><div><b>Opus</b><span>O mais capaz</span></div><span class="tag l">Capaz</span></div><div class="m"><i class="rd"></i><div><b>Sonnet</b><span>Equilibrado no dia a dia</span></div><span class="tag ">Equilibrado</span></div><div class="m sel"><i class="rd"></i><div><b>Haiku</b><span>O mais rápido, ótimo para respostas curtas</span></div><span class="tag ">Rápido</span></div></div>
+ </div><p class="dica">Os três primeiros ficam à vista, os demais ficam atrás de "Ver mais". Cada coluna tem um "Testar este modelo".</p></div>
+
+<h2>D · Por perfil, sem escolher o nome do modelo (com opção avançada)</h2>
+<div class="janela"><div class="tit"><b>Como você quer que a IA responda?</b><span>O TekaFlow escolhe o melhor modelo de cada conexão para o perfil.</span></div>
+ <div class="perfil">
+  <div class="card"><div class="topo"><b>Rápida</b></div><p>Respostas curtas em poucos segundos. Ideal para reunião ao vivo.</p><p>ChatGPT: GPT-5.6 Luna · Claude: Haiku</p></div>
+  <div class="card sel"><div class="topo"><b>Equilibrada</b><span class="sp"></span><span class="tag l">Recomendado</span></div><p>Boa resposta sem esperar muito.</p><p>ChatGPT: GPT-5.6 Terra · Claude: Sonnet</p></div>
+  <div class="card"><div class="topo"><b>Aprofundada</b></div><p>Respostas mais elaboradas, levam mais tempo.</p><p>ChatGPT: GPT-5.6 Sol · Claude: Opus</p></div>
+ </div>
+ <details style="margin-top:16px"><summary>Escolher um modelo específico (avançado)</summary></details>
+ <p class="dica">Uma pessoa que não conhece os nomes escolhe só o perfil. Quem sabe qual modelo quer abre o avançado e vê a lista completa.</p></div>
+</div></body></html>

@@ -1,0 +1,405 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TekaFlow · Animações do gato</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=chillax@500,600&display=swap">
+<style>
+:root{--bg:#1A1B1E;--sup:#25262A;--lim:#C5EF6B;--azul:#5BC0FF;--tx:#fff;--mu:#A3A4A8;--fd:'Chillax',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 -apple-system,system-ui,sans-serif;padding:40px;max-width:1180px;margin-inline:auto}
+h1{font:600 30px var(--fd);letter-spacing:-.01em} .sub{color:var(--mu);margin:6px 0 36px;max-width:680px}
+h2{font:600 20px var(--fd);margin:44px 0 6px} .nota{color:var(--mu);margin:0 0 16px;max-width:680px}
+.palco{background:var(--sup);border-radius:24px;display:grid;grid-template-columns:320px 1fr;gap:32px;padding:32px;align-items:center}
+.palco .vitrine{position:relative;height:280px;display:grid;place-items:center;overflow:hidden;border-radius:16px;background:var(--bg)}
+.palco .vitrine svg.ondas{position:absolute;left:50%;top:50%;width:560px;height:560px;transform:translate(-50%,-50%);overflow:visible;pointer-events:none}
+.palco .gato{position:relative;width:120px;height:120px}
+.botoes{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0} button{font:inherit;color:var(--tx);background:transparent;border:1px solid #4d4e53;border-radius:999px;padding:8px 16px;cursor:pointer}
+button:hover{border-color:var(--tx)} button.on{background:var(--lim);border-color:var(--lim);color:var(--bg)}
+.ler{color:var(--mu);font-size:14px;max-width:520px} .ler b{color:var(--tx);font-weight:600}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.card{background:var(--sup);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px}
+.card .gato{width:96px;height:96px;margin-bottom:8px} .card h3{font:600 18px var(--fd)} .card p{color:#d6d7da;font-size:14px} .card .onde{color:var(--mu);margin-top:auto;padding-top:8px} .card .onde b{color:var(--lim);font-weight:600}
+.gato svg{width:100%;height:100%;display:block;color:var(--lim)}
+.ondas-regras{display:grid;grid-template-columns:1fr 1fr;gap:16px} .ondas-regras .card p b{color:var(--lim)}
+.rod{margin-top:44px;color:var(--mu);font-size:14px} a{color:var(--lim)}
+@media(max-width:860px){.palco{grid-template-columns:1fr} .ondas-regras{grid-template-columns:1fr}}
+</style></head><body>
+<h1>Animações do gato, por estado</h1>
+<p class="sub">Tudo aqui roda ao vivo, com o mesmo motor que o aplicativo usa. Em cima, um gato para você trocar de estado. Embaixo, cada estado parado no seu lugar, com o que ele faz e onde aparece.</p>
+
+<h2>Experimente</h2>
+<p class="nota">Troque o estado e veja a transição, os olhos trocando numa piscada e as ondas acelerando quando ele fala.</p>
+<div class="palco">
+  <div class="vitrine"><svg class="ondas" id="ondas" viewBox="-300 -300 600 600" aria-hidden="true"></svg><div class="gato" id="palco"></div></div>
+  <div>
+    <div class="botoes" id="estados">
+      <button data-e="idle" class="on">Idle</button><button data-e="parado">Parado</button><button data-e="falando">Falando</button>
+      <button data-e="lendo">Lendo</button><button data-e="pensando">Pensando e escrevendo</button>
+    </div>
+    <p class="ler" id="leitura"></p>
+  </div>
+</div>
+
+<h2>Os estados do gato</h2>
+<p class="nota">O motor é <code>gato-animacao.ts</code> e o componente é <code>GatoAnimado</code>. A boca de repouso é a da logo, com três barras.</p>
+<div class="grade"><article class="card"><div class="gato" id="g0"></div><h3>Idle</h3><p>O padrão onde há logo. Sorri com os olhos em arco, respira de leve e segue o mouse com os olhos, devagar e com um pequeno atraso. De tempos em tempos pisca, abre os olhos, pisca duas vezes e volta a sorrir. A boca é a da logo.</p><p class="onde"><b>Onde:</b> Toda logo com o gato, como a da tela 1, no repouso.</p></article><article class="card"><div class="gato" id="g1"></div><h3>Parado</h3><p>Sorrindo e quieto: sem piscar, sem respirar, sem passear o olhar. Só se mexe quando fala.</p><p class="onde"><b>Onde:</b> Gato do “sugiro dizer”, depois que a sugestão termina.</p></article><article class="card"><div class="gato" id="g2"></div><h3>Falando</h3><p>Os olhos abertos, mais juntos, e a boca em risquinhos. Pisca e mexe um pouco. A troca dos olhos acontece numa piscada.</p><p class="onde"><b>Onde:</b> Logo da tela 1 e “sugiro dizer”, enquanto o texto é escrito.</p></article><article class="card"><div class="gato" id="g3"></div><h3>Lendo</h3><p>Como falando, com o olhar indo para onde alguém escreve.</p><p class="onde"><b>Onde:</b> Disponível no motor, para acompanhar um texto na tela.</p></article><article class="card"><div class="gato" id="g4"></div><h3>Pensando e escrevendo</h3><p>O loading padrão. O gato fica estático: só os olhos e a boca se mexem. Os olhos abertos piscam normalmente de vez em quando e passeiam para cima e para os lados, e os pontinhos da boca crescem em onda.</p><p class="onde"><b>Onde:</b> Quando o app pensa ou escreve.</p></article></div>
+
+<h2>As ondas em quadradinho</h2>
+<p class="nota">Saem do gato da logo, no formato do ícone, e perdem a cor: limão, azul céu, sumir. Mudam de ritmo conforme o gato fala.</p>
+<div class="ondas-regras">
+  <article class="card"><h3>Parado</h3><p>Lentas e fracas: uma volta a cada <b>16 segundos</b>, opacidade máxima de <b>4,5%</b>.</p></article>
+  <article class="card"><h3>Falando ou pensando</h3><p>Mais rápidas e mais presentes: uma volta a cada <b>5,4 segundos</b>, opacidade máxima de <b>13,5%</b>, com um fade curto de cerca de meio segundo na troca.</p></article>
+</div>
+
+<h2>Guardados</h2>
+<p class="nota">As outras onze opções de loading que a gente olhou estão guardadas em <a href="rascunhos/loading-gato-opcoes.html">rascunhos/loading-gato-opcoes.html</a>. O escolhido foi o dos pontinhos na boca.</p>
+
+<p class="rod">Código: <code>design-system/src/lib/gato-animacao.ts</code>, <code>components/gato-animado.tsx</code> e <code>prototipo/telas/chegar-grafismos.tsx</code>. Resumo da marca em <a href="consolidado.md">consolidado.md</a>.</p>
+
+<script>
+/**
+ * Motor de animação do gato do TekaFlow. Não depende de React: recebe o <svg> montado pelo
+ * componente `GatoAnimado` e muda só os atributos dos olhos, da boca e do corpo.
+ *
+ * Estados (os mesmos do playground em `marca/playground-gato.html`):
+ *  - idle:      olhos Contente (arcos), que seguem o mouse. De tempos em tempos pisca, abre os olhos e olha em volta, pisca duas vezes e volta a sorrir. Boca quieta (três pontos)
+ *  - falando:   olhos Atento (abertos), boca em risquinhos, pisca e mexe um pouco
+ *  - lendo:     como falando, com o olhar indo para onde alguém escreve (`olhar`)
+ *  - pensando:  o loading padrão do gato ("pontinhos na boca"): os olhos abertos passeiam para cima e para os lados e os três pontinhos da boca crescem em onda. Serve para pensando e para escrevendo.
+ *
+ * A troca entre Contente e Atento acontece numa piscada.
+ */
+/** Contorno da cabeça com as orelhas, em coordenadas da grade 16 por 16. Trocar aqui quando a forma da cabeça for decidida. */
+const CABECA_GATO = "M4 6L4.5 3.5L7 5H9L11.5 3.5L12 6V10A2 2 0 0 1 10 12H6A2 2 0 0 1 4 10Z";
+const SW = 0.55; // traço dos olhos e da boca, igual ao da logo
+const EY = 7.7; // altura dos olhos, em coordenadas da cabeça
+const EXC = [6, 10]; // centros dos olhos Contente (arcos), como na logo
+const EXA = [6.45, 9.55]; // centros dos olhos Atento, mais juntos
+/** Tempos e intensidades em um só lugar, para ajustar sem mexer no motor. */
+const GATO_TEMPOS = {
+    piscadaMs: 110,
+    trocaDeOlhosMs: 120,
+    intervaloMs: [1100, 2900],
+    falaTrocaMs: [90, 200],
+};
+const suave = (a, b, k, dt) => a + (b - a) * (1 - Math.exp(-k * dt));
+const rr = Math.random;
+function criarGato(svg, reduzirMovimento, opcoes = {}) {
+    const repouso = opcoes.bocaRepouso ?? [SW, SW, SW];
+    const el = (nome) => svg.querySelector(`[data-gato="${nome}"]`);
+    const oE = el("oE"), oD = el("oD"), aE = el("aE"), aD = el("aD");
+    const bocas = [el("b0"), el("b1"), el("b2")];
+    const corpo = el("corpo");
+    const v = { lx: 0, ly: 0, aberto: 1, atento: 0, boca: 1, b: [...repouso], ox: 0, oy: 0, rot: 0 };
+    const alvo = { ...v, b: [...repouso] };
+    let estado = "idle";
+    let olhosAtual = "contente";
+    let olharManual = null;
+    let ocupado = false;
+    let proxFala = 0;
+    let raf = 0;
+    let vivo = true;
+    const timers = new Set();
+    const depois = (fn, ms) => {
+        const id = window.setTimeout(() => {
+            timers.delete(id);
+            if (vivo)
+                fn();
+        }, ms);
+        timers.add(id);
+    };
+    const set = (e, o) => {
+        for (const k in o)
+            e.setAttribute(k, String(o[k]));
+    };
+    function desenhar() {
+        const dx = v.lx * 0.5;
+        const dy = v.ly * 0.4;
+        const w = 0.6 + 0.5 * (1 - v.aberto);
+        const h = 1.5 * v.aberto + 0.5 * (1 - v.aberto);
+        [[oE, EXA[0]], [oD, EXA[1]]].forEach(([e, cx]) => set(e, { x: cx + dx - w / 2, y: EY + dy - h / 2, width: w, height: h, rx: Math.min(w, h) / 2, opacity: v.atento }));
+        [[aE, EXC[0]], [aD, EXC[1]]].forEach(([e, cx]) => {
+            const x = cx + dx * 0.8;
+            const yb = EY + 0.3 + dy * 0.4;
+            const yc = yb - 1.2 * v.aberto; // piscar achata o arco num traço
+            set(e, { d: `M${x - 0.8} ${yb}Q${x} ${yc} ${x + 0.8} ${yb}`, opacity: 1 - v.atento });
+        });
+        bocas.forEach((b, i) => {
+            const x = 7 + i;
+            set(b, { x: x - SW / 2, y: 10 - v.b[i] / 2, width: SW, height: v.b[i], rx: SW / 2, opacity: v.boca });
+        });
+        corpo.setAttribute("transform", `translate(${v.ox.toFixed(3)} ${v.oy.toFixed(3)}) rotate(${v.rot.toFixed(2)} 8 8)`);
+    }
+    function bocaAtual() {
+        return { idle: "quieta", falando: "falando", lendo: "falando", pensando: "pensando", escrevendo: "pensando" }[estado];
+    }
+    const carregando = () => estado === "pensando" || estado === "escrevendo";
+    function quadro(agora) {
+        if (!vivo)
+            return;
+        const dt = Math.min(0.05, (agora - ultimo) / 1000);
+        ultimo = agora;
+        const T = agora / 1000;
+        if (estado === "idle" && !opcoes.parado && !olharManual && !reduzirMovimento && ponteiro) {
+            // idle: os olhos seguem o mouse, com mais força quanto mais longe ele está (até um limite)
+            const r = svg.getBoundingClientRect();
+            const dx = ponteiro.x - (r.left + r.width / 2);
+            const dy = ponteiro.y - (r.top + r.height / 2);
+            const dist = Math.hypot(dx, dy) || 1;
+            const forca = Math.min(1, dist / 240);
+            alvoMouse.lx = suave(alvoMouse.lx, (dx / dist) * forca, 1.6, dt); // atraso: o alvo também chega devagar
+            alvoMouse.ly = suave(alvoMouse.ly, (dy / dist) * forca * 0.7, 1.6, dt);
+            alvo.lx = alvoMouse.lx;
+            alvo.ly = alvoMouse.ly;
+        }
+        if (carregando() && !olharManual && !reduzirMovimento) {
+            // loading: o olhar passeia devagar para cima e para os lados
+            alvo.lx = Math.sin(T * 1.2) * 0.8;
+            alvo.ly = -0.7 + Math.sin(T * 2) * 0.2;
+        }
+        // no idle os olhos seguem o mouse devagar, com um pouco de atraso; nos outros estados a resposta é rápida
+        const seguindo = estado === "idle" && !opcoes.parado && !olharManual;
+        const velOlhar = seguindo ? 2.2 : 10;
+        v.lx = suave(v.lx, alvo.lx, velOlhar, dt);
+        v.ly = suave(v.ly, alvo.ly, velOlhar, dt);
+        v.aberto = suave(v.aberto, alvo.aberto, 34, dt);
+        v.atento = suave(v.atento, alvo.atento, 40, dt);
+        const mexe = (estado === "falando" || estado === "lendo") && !reduzirMovimento;
+        // o gato só se mexe (balanço, giro) quando fala ou lê; parado e no loading ele fica estático e só os olhos e a boca mudam
+        const k = mexe ? 1 : opcoes.parado || carregando() ? 0 : 0.35;
+        const ox = reduzirMovimento ? 0 : Math.sin(T * 1.7) * 0.05 * k + (mexe ? Math.sin(T * 6.1) * 0.03 : 0);
+        const oy = reduzirMovimento ? 0 : Math.sin(T * 1.3) * 0.04 * k + (mexe ? -Math.abs(Math.sin(T * 5.3)) * 0.05 : 0);
+        const rot = reduzirMovimento ? 0 : Math.sin(T * 1.1) * 0.9 * k + (mexe ? Math.sin(T * 4.2) * 0.7 : 0);
+        v.ox = suave(v.ox, ox, 12, dt);
+        v.oy = suave(v.oy, oy, 12, dt);
+        v.rot = suave(v.rot, rot, 12, dt);
+        const boca = bocaAtual();
+        for (let i = 0; i < 3; i++)
+            v.b[i] = suave(v.b[i], alvo.b[i], boca === "falando" ? 22 : 12, dt);
+        if (boca === "falando" && agora > proxFala) {
+            alvo.b = [1 + rr() * 0.9, 1.3 + rr() * 1.4, 1 + rr() * 1.1];
+            const [a, b] = GATO_TEMPOS.falaTrocaMs;
+            proxFala = agora + a + rr() * (b - a);
+        }
+        if (boca === "pensando")
+            alvo.b = [0, 1, 2].map((i) => SW + 0.9 * Math.max(0, Math.sin(T * 5 - i * 1.1)));
+        desenhar();
+        raf = requestAnimationFrame(quadro);
+    }
+    let ultimo = performance.now();
+    let ponteiro = null;
+    const alvoMouse = { lx: 0, ly: 0 };
+    const aoMover = (ev) => {
+        ponteiro = { x: ev.clientX, y: ev.clientY };
+    };
+    if (!opcoes.parado)
+        window.addEventListener("pointermove", aoMover);
+    function piscar(meio) {
+        if (ocupado)
+            return;
+        ocupado = true;
+        alvo.aberto = 0;
+        depois(() => {
+            meio?.();
+            alvo.aberto = 1;
+            depois(() => {
+                ocupado = false;
+            }, 90);
+        }, GATO_TEMPOS.piscadaMs);
+    }
+    function olhosDesejados() {
+        return (estado === "idle" || (estado === "pensando" && opcoes.pensandoContente)) && !espiando && opcoes.olhosPadrao !== "atento" ? "contente" : "atento";
+    }
+    let espiando = false;
+    function aplicarOlhos() {
+        const d = olhosDesejados();
+        if (d === olhosAtual)
+            return;
+        const troca = () => {
+            olhosAtual = d;
+            alvo.atento = d === "atento" ? 1 : 0;
+        };
+        if (reduzirMovimento)
+            troca();
+        else if (!ocupado)
+            piscar(troca);
+        else
+            depois(aplicarOlhos, 160);
+    }
+    function aplicarBoca() {
+        if (bocaAtual() === "quieta")
+            alvo.b = [...repouso];
+        proxFala = 0;
+    }
+    // Passeia o olhar e pisca de tempos em tempos. Cada estado tem o seu jeito.
+    function laco() {
+        if (!reduzirMovimento && !(opcoes.parado && estado === "idle")) {
+            if (estado === "idle") {
+                // o idle é o ciclo de espiar (ver `cicloIdle`)
+            }
+            else if (carregando()) {
+                // pensando e escrevendo: olhos abertos, que piscam normalmente de vez em quando, como no lendo
+                if (rr() < 0.5)
+                    depois(() => piscar(), 400 + rr() * 1200);
+            }
+            else if (estado === "falando") {
+                if (!olharManual) {
+                    alvo.lx = (rr() - 0.5) * 0.6;
+                    alvo.ly = (rr() - 0.5) * 0.25;
+                }
+                if (rr() < 0.6)
+                    depois(() => piscar(), 300 + rr() * 900);
+            }
+            else if (estado === "lendo") {
+                if (rr() < 0.5)
+                    depois(() => piscar(), 400 + rr() * 1200);
+            }
+        }
+        const [a, b] = GATO_TEMPOS.intervaloMs;
+        depois(laco, a + rr() * (b - a));
+    }
+    /**
+     * O idle: o gato sorri com os olhos em arco e segue o mouse com os olhos. De tempos em tempos pisca, abre os olhos,
+     * pisca duas vezes e volta a sorrir. É a antiga "espiada", agora o jeito normal de ficar parado.
+     */
+    function cicloIdle() {
+        if (!reduzirMovimento && !opcoes.parado && estado === "idle" && !espiando) {
+            espiando = true;
+            aplicarOlhos();
+            depois(() => piscar(), 1300);
+            depois(() => piscar(), 1800);
+            depois(() => {
+                espiando = false;
+                aplicarOlhos();
+            }, 3700);
+        }
+        depois(cicloIdle, 8500 + rr() * 3000);
+    }
+    function aplicarOlhar() {
+        if (olharManual) {
+            alvo.lx = olharManual.x;
+            alvo.ly = olharManual.y;
+        }
+        else if (estado === "lendo") {
+            alvo.lx = 0.6;
+            alvo.ly = 0.1;
+        }
+        else if (carregando()) {
+            alvo.ly = -0.7;
+        }
+        else {
+            alvo.lx = 0;
+            alvo.ly = 0;
+        }
+    }
+    const controle = {
+        ir(novo) {
+            estado = novo;
+            aplicarOlhar();
+            aplicarOlhos();
+            aplicarBoca();
+        },
+        olhar(a) {
+            olharManual = a;
+            aplicarOlhar();
+        },
+        piscar: () => piscar(),
+        /** Piscada longa: troca os olhos felizes pelos olhos abertos por um tempo e volta. */
+        espiar(ms = 1600) {
+            if (espiando)
+                return;
+            espiando = true;
+            aplicarOlhos();
+            depois(() => {
+                espiando = false;
+                aplicarOlhos();
+            }, ms);
+        },
+        destruir() {
+            vivo = false;
+            window.removeEventListener("pointermove", aoMover);
+            cancelAnimationFrame(raf);
+            timers.forEach((id) => window.clearTimeout(id));
+            timers.clear();
+        },
+    };
+    desenhar();
+    if (!opcoes.parado)
+        depois(cicloIdle, 2500);
+    laco();
+    raf = requestAnimationFrame(quadro);
+    return controle;
+}
+
+
+const REDUZIR = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let n = 0;
+function desenhar(el) {
+  const id = 'm' + (++n);
+  el.innerHTML = '<svg viewBox="3 2.9 10 10" role="img" aria-label="Gato do TekaFlow"><defs><mask id="' + id + '" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16"><rect width="16" height="16" fill="#000"/><g transform="translate(0 .25)"><path d="' + CABECA_GATO + '" fill="#fff" stroke="#fff" stroke-width=".5" stroke-linejoin="round"/><path d="M4.95 5.8L5.05 4.8L6.15 5.4Z" fill="#000" stroke="#000" stroke-width=".25" stroke-linejoin="round"/><path d="M11.05 5.8L10.95 4.8L9.85 5.4Z" fill="#000" stroke="#000" stroke-width=".25" stroke-linejoin="round"/><rect data-gato="oE" fill="#000"/><rect data-gato="oD" fill="#000"/><path data-gato="aE" fill="none" stroke="#000" stroke-width=".55" stroke-linecap="round"/><path data-gato="aD" fill="none" stroke="#000" stroke-width=".55" stroke-linecap="round"/><rect data-gato="b0" fill="#000"/><rect data-gato="b1" fill="#000"/><rect data-gato="b2" fill="#000"/></g></mask></defs><g data-gato="corpo"><rect width="16" height="16" fill="currentColor" mask="url(#' + id + ')"/></g></svg>';
+  return el.firstElementChild;
+}
+const BOCA = [1, 1.7, 1];
+const estadoDe = (e) => e === 'parado' ? 'idle' : e;
+
+// cartões
+[["g0","idle",{'bocaRepouso': [1, 1.7, 1]}],["g1","idle",{'bocaRepouso': [1, 1.7, 1], 'parado': true}],["g2","falando",{'bocaRepouso': [1, 1.7, 1]}],["g3","lendo",{'bocaRepouso': [1, 1.7, 1]}],["g4","pensando",{'bocaRepouso': [1, 1.7, 1]}]].forEach(([id, e, op]) => {
+  const c = criarGato(desenhar(document.getElementById(id)), REDUZIR, op);
+  c.ir(e);
+});
+
+// palco interativo
+let ctrl, estado = 'idle';
+function montarPalco() {
+  if (ctrl) ctrl.destruir();
+  ctrl = criarGato(desenhar(document.getElementById('palco')), REDUZIR, { bocaRepouso: BOCA, parado: estado === 'parado' });
+  ctrl.ir(estadoDe(estado));
+}
+const TEXTOS = {
+  idle: '<b>Idle.</b> Sorri com os olhos em arco e segue o mouse devagar, com um pequeno atraso: mexa o cursor perto do gato. De tempos em tempos pisca, abre os olhos, pisca duas vezes e volta a sorrir. As ondas ficam lentas e fracas.',
+  parado: '<b>Parado.</b> Sorrindo, sem piscar nem respirar. As ondas ficam lentas e fracas.',
+  falando: '<b>Falando.</b> Olhos abertos e boca em risquinhos. As ondas aceleram e ficam mais presentes.',
+  lendo: '<b>Lendo.</b> Como falando, com o olhar indo para onde alguém escreve.',
+  pensando: '<b>Pensando e escrevendo.</b> O loading padrão. O gato fica estático, só os olhos e a boca se mexem. As ondas aceleram.'
+};
+function ir(e) {
+  const antesParado = estado === 'parado';
+  estado = e;
+  document.querySelectorAll('#estados button').forEach(b => b.classList.toggle('on', b.dataset.e === e));
+  document.getElementById('leitura').innerHTML = TEXTOS[e];
+  if ((e === 'parado') !== antesParado) montarPalco(); else ctrl.ir(estadoDe(e));
+}
+document.querySelectorAll('#estados button').forEach(b => b.onclick = () => ir(b.dataset.e));
+montarPalco(); ir('idle');
+
+// ondas em quadradinho, as mesmas do app
+const LIM = '#C5EF6B', AZ = '#5BC0FF', SUP = '#25262A';
+const mist = (a, b, k) => a + (b - a) * k;
+const hx = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+const cor = (a, b, k) => { const A = hx(a), B = hx(b); return 'rgb(' + A.map((v, i) => Math.round(mist(v, B[i], k))).join(' ') + ')'; };
+const svg = document.getElementById('ondas');
+const aneis = [];
+for (let i = 0; i < 6; i++) {
+  const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  r.setAttribute('x', -60); r.setAttribute('y', -60); r.setAttribute('width', 120); r.setAttribute('height', 120); r.setAttribute('rx', 34);
+  r.setAttribute('fill', 'none'); r.setAttribute('vector-effect', 'non-scaling-stroke'); r.setAttribute('opacity', 0);
+  svg.appendChild(r); aneis.push(r);
+}
+let fase = 0, vel = 1 / 16, forca = .5, antes = performance.now();
+(function quadro(agora) {
+  const dt = Math.min(.05, (agora - antes) / 1000); antes = agora;
+  const rapido = ['falando', 'lendo', 'pensando'].includes(estado);
+  vel += ((rapido ? 1 / 5.4 : 1 / 16) - vel) * (1 - Math.exp(-2.5 * dt));
+  forca += ((rapido ? 1.5 : .5) - forca) * (1 - Math.exp(-7 * dt));
+  fase += vel * dt;
+  aneis.forEach((el, i) => {
+    const p = (fase + i / 6) % 1;
+    const o = p < .1 ? mist(0, .09, p / .1) : p < .55 ? mist(.09, .05, (p - .1) / .45) : mist(.05, 0, (p - .55) / .45);
+    const c = p < .25 ? LIM : p < .6 ? cor(LIM, AZ, (p - .25) / .35) : cor(AZ, SUP, (p - .6) / .4);
+    el.setAttribute('transform', 'scale(' + mist(1, 9, p).toFixed(3) + ')');
+    el.setAttribute('opacity', (o * forca).toFixed(4));
+    el.setAttribute('stroke', c);
+    el.setAttribute('stroke-width', (p < .5 ? mist(2.5, 1.5, p / .5) : mist(1.5, .75, (p - .5) / .5)).toFixed(2));
+  });
+  if (!REDUZIR) requestAnimationFrame(quadro);
+})(antes);
+</script>
+</body></html>

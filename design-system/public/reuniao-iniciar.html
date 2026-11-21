@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TekaFlow, iniciar a reunião (interativo)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root{--bg:#1A1B1E;--surf:#25262A;--surf2:#34353A;--line:rgba(255,255,255,.15);--inp:rgba(255,255,255,.4);--fg:#F9FAFB;--mut:#A3A4A8;--br:#C5EF6B;--ok:#6DC799;--err:#E47C75;--warn:#EBBC63}
+*{box-sizing:border-box}body{margin:0;background:#111;color:var(--fg);font:14px/1.5 system-ui,sans-serif;padding:28px 24px}.w{max-width:1000px;margin:0 auto}
+h1{font-size:24px;font-weight:500;margin:0 0 8px}.l{color:var(--mut);max-width:760px;margin:0 0 14px}
+.ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 18px}.mini{font-size:12px;color:var(--mut)}
+.seg{display:inline-flex;background:var(--surf);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}.seg button{font:inherit;font-size:13px;border:0;background:none;color:var(--mut);padding:5px 14px;border-radius:999px;cursor:pointer}.seg button.on{background:var(--surf2);color:var(--fg);font-weight:600}
+.btn{font:inherit;font-size:13px;height:34px;padding:0 16px;border-radius:999px;border:1px solid var(--inp);background:transparent;color:var(--fg);cursor:pointer}.btn.p{background:var(--br);border-color:var(--br);color:#1F2B06;font-weight:600}.btn:disabled{opacity:.4;cursor:default}
+.cena{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.desk{width:520px;height:600px;background:#16171A;border:1px solid var(--line);border-radius:16px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}.desk h3{margin:0;font-family:Outfit,system-ui;font-weight:500;font-size:20px}.desk p{margin:0;color:var(--mut);font-size:13px;max-width:320px;text-align:center}
+.painel{width:360px;height:600px;background:var(--surf);border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column;gap:10px;padding:14px;position:relative}
+.top{display:flex;align-items:center;gap:6px}.tabs{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px;font-size:12px}.tabs span{padding:3px 10px;border-radius:999px;color:var(--mut)}.tabs .on{background:var(--surf2);color:var(--fg);font-weight:600}
+.ib{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--mut)}.parar{margin-left:auto;font-size:12px;border:1px solid rgba(228,124,117,.5);color:var(--err);border-radius:999px;padding:3px 10px;background:rgba(228,124,117,.1);display:flex;gap:4px;align-items:center}
+.est{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.chip{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--mut);display:inline-flex;gap:4px;align-items:center;white-space:nowrap}.chip.ok{color:var(--ok)}
+.barras{display:inline-flex;align-items:center;gap:2px;height:16px}.barras i{width:2.5px;background:var(--br);border-radius:2px;height:9px}.barras i:nth-child(2n){height:14px}.barras i:nth-child(3n){height:6px}
+.chat{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:4px;scrollbar-width:thin;scrollbar-color:rgba(197,239,107,.35) transparent;scroll-behavior:smooth}
+.rot{font-size:10px;letter-spacing:.06em;color:var(--mut);margin:0 2px 2px}.rot.d{text-align:right}
+.bol{border-radius:14px;padding:8px 12px;font-size:13px;max-width:90%;width:fit-content}.bol.e{background:var(--surf2)}.bol.v{background:var(--br);color:#1F2B06;margin-left:auto}
+.sg{display:flex;gap:8px;align-items:flex-start}.sg svg{width:22px;height:22px;flex:none;margin-top:14px}.sg .bol{background:#2b3321;border:1px solid rgba(197,239,107,.3)}
+.sg .mini,.bol .mini{margin-top:3px}
+.gato{display:flex;gap:10px;align-items:flex-end}.gato svg{width:38px;height:38px;flex:none}
+.baixo{position:relative;display:flex;flex-direction:column;gap:8px}
+.conf{background:var(--bg);border:1px solid var(--line);border-radius:12px}.lin{display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:12px;min-height:34px;cursor:pointer;position:relative}.lin+.lin{border-top:1px solid var(--line)}
+.lin b{font-weight:600;white-space:nowrap}.lin .v{flex:1;min-width:0;text-align:right;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lin .v.w{color:var(--warn)}.lin .v.e{color:var(--err)}
+.lin>i.ti-chevron-right{font-size:14px;color:var(--mut)}.lin.on>i.ti-chevron-right{transform:rotate(-90deg)}
+.si{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}.si.ok{background:rgba(109,199,153,.2);color:var(--ok)}.si.w{background:rgba(235,188,99,.22);color:var(--warn)}.si.e{background:rgba(228,124,117,.22);color:var(--err)}.si.r{background:var(--surf2);color:var(--mut)}.si.q{background:var(--surf2);color:var(--mut);opacity:.6}
+.sp{width:11px;height:11px;border:2px solid var(--mut);border-top-color:transparent;border-radius:50%;animation:g .8s linear infinite}@keyframes g{to{transform:rotate(360deg)}}
+.pop{position:absolute;left:0;right:0;bottom:100%;margin-bottom:6px;background:var(--surf2);border:1px solid var(--line);border-radius:12px;padding:5px;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:5;font-size:12px}.pop h4{margin:5px 8px 3px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:600}.pop div.o{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer}.pop div.o:hover{background:rgba(255,255,255,.06)}.pop div.o.on{background:rgba(197,239,107,.1)}.pop div.o.on:after{content:"✓";margin-left:auto;color:var(--br)}
+.cx{height:40px;border:1px solid var(--inp);border-radius:999px;display:flex;align-items:center;gap:6px;padding:0 6px 0 14px;font-size:12px;color:var(--mut)}.cx .go{margin-left:auto;width:28px;height:28px;border-radius:50%;background:var(--br);color:#1F2B06;display:flex;align-items:center;justify-content:center}
+.aviso{border-radius:12px;padding:9px 11px;font-size:12px;border:1px solid rgba(235,188,99,.5);background:rgba(235,188,99,.09)}.aviso.e{border-color:rgba(228,124,117,.5);background:rgba(228,124,117,.09)}.aviso b{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--warn)}.aviso.e b{color:var(--err)}.aviso span{color:var(--mut)}
+</style>
+</head>
+<body><div class="w">
+<h1>Iniciar a reunião: protótipo para clicar</h1>
+<p class="l">Clique em <b>Iniciar a reunião</b>. A conferência roda embaixo, no chat, e <b>você avança teste a teste</b> no botão "Próximo teste". Clique na seta de qualquer linha para trocar o microfone, a transcrição ou o modelo. Trocar o modelo manda uma mensagem. Escolha o cenário para ver o alerta e o erro.</p>
+<div class="ctl"><span class="mini">Cenário</span><div class="seg" id="cenario"><button class="on" data-v="ok">Tudo certo</button><button data-v="mic">Microfone sem som</button><button data-v="modelo">Modelo com erro</button></div><button class="btn" id="reset"><i class="ti ti-refresh"></i> Recomeçar</button></div>
+<div class="cena"><div class="desk" id="desk"><h3>Entrevista com a Acme</h3><p>Chamada aberta. O contexto da pasta já está carregado.</p><button class="btn p" id="iniciar" style="height:40px;padding:0 22px;font-size:14px"><i class="ti ti-player-play"></i> Iniciar a reunião</button></div>
+<div id="lado" style="display:none;flex-direction:column;gap:12px"><div class="painel" id="painel"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn p" id="prox">Próximo teste <i class="ti ti-arrow-right"></i></button><button class="btn" id="eles" disabled>Simular pergunta deles</button><button class="btn" id="voce" disabled>Simular a sua resposta</button></div></div></div>
+</div>
+<script>
+const GATO='<svg viewBox="0 0 44 44"><path d="M7 15L9 6L18 11H26L35 6L37 15V30A6 6 0 0 1 31 36H13A6 6 0 0 1 7 30Z" fill="#C5EF6B"/><path d="M13 23Q16 19 19 23" stroke="#1A1B1E" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M25 23Q28 19 31 23" stroke="#1A1B1E" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>';
+const OPCOES={
+ mic:{titulo:"Microfone",lista:["Padrão do sistema (QCY H3 Bluetooth)","Microfone do MacBook","Microfone USB"]},
+ trans:{titulo:"Transcrição",lista:["Apple Speech","Whisper Small","Whisper Large v3 Turbo"]},
+ ia:{titulo:"Modelo de análise",lista:["Claude Haiku 5.5","Claude Sonnet 5.5","Gemini 3.5 Flash"]}
+};
+let cenario="ok",S,fase;
+const $=id=>document.getElementById(id);
+function novo(){return {etapa:0,mic:{dev:OPCOES.mic.lista[0],st:"q"},trans:{dev:"Apple Speech",st:"q"},ia:{dev:"Claude Haiku 5.5",st:"q"},aberto:null,msgs:[],vivo:false,seg:0,eles:0,iv:null}}
+function reset(){clearInterval(S&&S.iv);S=novo();$("desk").style.display="flex";$("lado").style.display="none";$("prox").disabled=false;$("eles").disabled=true;$("voce").disabled=true;$("prox").innerHTML='Próximo teste <i class="ti ti-arrow-right"></i>'}
+function msg(h){S.msgs.push(h);draw();const c=document.querySelector(".chat");if(c)setTimeout(()=>c.scrollTo({top:c.scrollHeight}),30)}
+const gatoMsg=(t,d)=>'<div class="gato">'+GATO+'<div class="bol e"><b>'+t+'</b>'+(d?'<div class="mini">'+d+'</div>':'')+'</div></div>';
+const ELES=['Conta uma situação em que você discordou de uma decisão técnica do time.','Como você lida com prazo apertado?'];
+const SUG=[['Na migração do checkout, defendi manter a fila até medir a latência. Levei um teste de carga e o time revisou o plano.','briefing-vaga.md','0,9'],['Corto o escopo antes de cortar a qualidade e combino com o time o que fica para a próxima entrega.','notas-entrevista.txt','0,8']];
+// etapas: 0 espera clique; 1 testa microfone; 2 testa transcrição; 3 testa modelo
+function proximo(){
+ if(S.vivo)return;
+ if(S.etapa===0){S.etapa=1;S.mic.st="r";draw();return}
+ if(S.etapa===1){ // microfone captou?
+  if(cenario==="mic"){S.mic.st="w";S.trans.st="w";msg('<div class="aviso"><b><i class="ti ti-alert-triangle"></i> Não estamos captando som</b><span>O microfone não envia nada. Se você continuar assim, a reunião não será transcrita. Ela segue aberta e continua tentando.</span></div>');S.etapa=2;draw();$("prox").innerHTML='Continuar mesmo assim <i class="ti ti-arrow-right"></i>';return}
+  S.mic.st="ok";S.trans.st="r";S.etapa=2;msg('<div class="bol v">olá, tekaflow, tudo bem?</div>');draw();return}
+ if(S.etapa===2){
+  if(cenario==="mic"){ // continua sem som: a reunião não para
+   S.etapa=3;S.ia.st="r";draw();return}
+  S.trans.st="ok";S.ia.st="r";S.etapa=3;draw();return}
+ if(S.etapa===3){
+  if(cenario==="modelo"){S.ia.st="e";msg('<div class="aviso e"><b><i class="ti ti-alert-triangle"></i> O modelo não respondeu</b><span>Esse modelo não está mais disponível. Escolha outro. (código 404)</span></div>');draw();S.etapa=4;$("prox").innerHTML='Continuar mesmo assim <i class="ti ti-arrow-right"></i>';return}
+  S.ia.st="ok";draw();ficaVivo();return}
+ if(S.etapa===4){ficaVivo();return}
+}
+function ficaVivo(){
+ S.vivo=true;$("prox").disabled=true;$("eles").disabled=false;
+ const semSom=S.mic.st==="w"||S.mic.st==="e";
+ if(semSom)msg(gatoMsg("Gravando sem som","Vou continuar tentando transcrever. Se o som voltar, eu aviso."));
+ else msg(gatoMsg("Tá tudo certo!","Ouvi você, a fala virou texto e o modelo respondeu. Já estou gravando."));
+ draw();clearInterval(S.iv);S.iv=setInterval(()=>{S.seg++;const e=document.getElementById("tempo");if(e)e.textContent=tempo()},1000)}
+function tempo(){return String(Math.floor(S.seg/60)).padStart(2,"0")+":"+String(S.seg%60).padStart(2,"0")}
+$("eles").onclick=()=>{const k=S.eles%2;msg('<div><div class="rot">ELES</div><div class="bol e">'+ELES[k]+'</div></div>');const s=SUG[k];setTimeout(()=>msg('<div class="sg">'+GATO+'<div><div class="rot">SUGESTÃO</div><div class="bol">'+s[0]+'<div class="mini">'+s[1]+' · em '+s[2]+' s</div></div></div></div>'),500);S.eles++;$("voce").disabled=false};
+$("voce").onclick=()=>{msg('<div><div class="rot d">VOCÊ</div><div class="bol v">Teve sim. Na migração do checkout eu achava arriscado trocar a fila sem medir antes.</div></div>')};
+function escolher(k,v){
+ const antes=S[k].dev;S[k].dev=v;S.aberto=null;
+ if(antes===v){draw();return}
+ if(k==="mic"){
+  if(cenario==="mic"&&v!==OPCOES.mic.lista[0]&&(S.mic.st==="w"||S.mic.st==="e")){S.mic.st="ok";S.trans.st=S.etapa>=3?"ok":"r";msg(gatoMsg("Voltei a ouvir!","Troquei o microfone para "+v.replace("Padrão do sistema ","")+". A transcrição já está rodando."))}
+  else msg(gatoMsg("Troquei o microfone","Agora ouço pelo "+v.replace("Padrão do sistema ","")+"."));
+ }
+ if(k==="trans")msg(gatoMsg("Troquei a transcrição","Agora transcrevo com "+v+"."));
+ if(k==="ia"){S.ia.st=(cenario==="modelo"&&S.ia.st==="e")?"ok":S.ia.st;msg(gatoMsg("Troquei o modelo","Agora respondo com "+v+". Mandei a pergunta de teste.")); if(S.ia.st==="e"||S.etapa>=3)S.ia.st="ok"}
+ draw()}
+document.addEventListener("click",e=>{
+ const l=e.target.closest("[data-k]");
+ if(l&&!e.target.closest(".pop")){S.aberto=S.aberto===l.dataset.k?null:l.dataset.k;draw();return}
+ const o=e.target.closest("[data-o]");
+ if(o){const [k,i]=o.dataset.o.split("|");escolher(k,OPCOES[k].lista[+i]);return}
+ if(S&&S.aberto&&!e.target.closest(".pop")){S.aberto=null;draw()}
+});
+$("iniciar").onclick=()=>{$("desk").style.display="none";$("lado").style.display="flex";draw()};
+$("reset").onclick=reset;
+$("prox").onclick=proximo;
+document.querySelectorAll("#cenario button").forEach(b=>b.onclick=()=>{cenario=b.dataset.v;document.querySelectorAll("#cenario button").forEach(x=>x.classList.toggle("on",x===b));reset()});
+const si=st=>st==="ok"?'<span class="si ok"><i class="ti ti-check"></i></span>':st==="w"?'<span class="si w"><i class="ti ti-alert-triangle"></i></span>':st==="e"?'<span class="si e"><i class="ti ti-alert-triangle"></i></span>':st==="r"?'<span class="si r"><i class="sp"></i></span>':'<span class="si q"><i class="ti ti-point"></i></span>';
+function nomeCurto(k,v){return k==="mic"?v.replace("Padrão do sistema ",""):v}
+function linha(k,rot,icone,extra){
+ const x=S[k];const cls=x.st==="w"?"w":x.st==="e"?"e":"";
+ const txt=x.st==="w"?(k==="mic"?"sem som":"sem fala"):x.st==="e"?"erro":nomeCurto(k,x.dev);
+ return '<div class="lin '+(S.aberto===k?"on":"")+'" data-k="'+k+'">'+si(x.st)+'<i class="ti '+icone+'" style="font-size:15px;color:var(--mut)"></i><b>'+rot+':</b><span class="v '+cls+'">'+txt+'</span><i class="ti ti-chevron-right"></i></div>'}
+function pop(){
+ if(!S.aberto)return"";const k=S.aberto,o=OPCOES[k];
+ return '<div class="pop"><h4>'+o.titulo+'</h4>'+o.lista.map((v,i)=>'<div class="o '+(S[k].dev===v?"on":"")+'" data-o="'+k+'|'+i+'"><i class="ti '+(k==="mic"?"ti-microphone":k==="trans"?"ti-file-text":"ti-sparkles")+'"></i>'+v+'</div>').join("")+'</div>'}
+function draw(){
+ const p=$("painel");if(!p)return;
+ const mod=S.ia.dev;
+ const est=S.vivo?'<span class="chip ok">● Ouvindo <span id="tempo">'+tempo()+'</span></span><span class="barras"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="chip"><i class="ti ti-folder"></i> Entrevista Acme · 3 arquivos</span><span class="chip"><i class="ti ti-sparkles"></i> '+mod+'</span>':'<span class="chip"><i class="ti ti-folder"></i> Entrevista Acme · 3 arquivos</span><span class="chip"><i class="ti ti-sparkles"></i> '+mod+'</span><span class="mini">'+(S.etapa===0?"Pronto para conferir":"Conferindo antes de gravar…")+'</span>';
+ const conf=S.vivo?"":'<div class="conf">'+linha("mic","Microfone","ti-microphone")+linha("trans","Transcrição","ti-file-text")+linha("ia","Modelo","ti-sparkles")+'</div>';
+ const antigo=p.querySelector(".chat");const rolo=antigo?antigo.scrollTop:0;
+ p.innerHTML='<div class="top"><div class="tabs"><span class="on">Transcrição</span><span>Resumo</span></div><span class="ib"><i class="ti ti-ghost"></i></span><span class="ib"><i class="ti ti-minus"></i></span><span class="parar"><i class="ti ti-player-stop"></i> Parar</span></div><div class="est">'+est+'</div><div class="chat">'+S.msgs.join("")+'</div><div class="baixo">'+conf+pop()+'<div class="cx">Pergunte algo à IA<span class="go"><i class="ti ti-arrow-up"></i></span></div></div>';
+ const novoC=p.querySelector(".chat");if(novoC)novoC.scrollTop=rolo}
+reset();
+</script></body></html>

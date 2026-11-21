@@ -1,0 +1,1249 @@
+{
+  "gerado": "2026-11-20",
+  "gerador": "ds-harness/component-audit",
+  "origemDaConfig": ".harness.json",
+  "designSystem": {
+    "id": "teka",
+    "root": ".",
+    "version": null
+  },
+  "systemComponentDirs": [
+    "src/components"
+  ],
+  "arquivos": [
+    {
+      "arquivo": "src/components/conversa.tsx",
+      "mtimeMs": 1795195362872.284
+    },
+    {
+      "arquivo": "src/components/envoltorio.tsx",
+      "mtimeMs": 1795206954413.588
+    },
+    {
+      "arquivo": "src/components/gato-animado.tsx",
+      "mtimeMs": 1795203807536.681
+    },
+    {
+      "arquivo": "src/components/marcas.tsx",
+      "mtimeMs": 1795192795222.1477
+    },
+    {
+      "arquivo": "src/components/model-row.tsx",
+      "mtimeMs": 1795210419408.2551
+    },
+    {
+      "arquivo": "src/components/onboarding-frame.tsx",
+      "mtimeMs": 1795212506606.9595
+    },
+    {
+      "arquivo": "src/components/theme-provider.tsx",
+      "mtimeMs": 1795189212958.1555
+    },
+    {
+      "arquivo": "src/components/ui/alert-dialog.tsx",
+      "mtimeMs": 1795199278903.1648
+    },
+    {
+      "arquivo": "src/components/ui/attachment.tsx",
+      "mtimeMs": 1795189917632.1562
+    },
+    {
+      "arquivo": "src/components/ui/avatar.tsx",
+      "mtimeMs": 1795189266811.066
+    },
+    {
+      "arquivo": "src/components/ui/badge.tsx",
+      "mtimeMs": 1795195823108.7668
+    },
+    {
+      "arquivo": "src/components/ui/bubble.tsx",
+      "mtimeMs": 1795197879507.7947
+    },
+    {
+      "arquivo": "src/components/ui/button.tsx",
+      "mtimeMs": 1795189266812.3083
+    },
+    {
+      "arquivo": "src/components/ui/card.tsx",
+      "mtimeMs": 1795197547533.5942
+    },
+    {
+      "arquivo": "src/components/ui/checkbox.tsx",
+      "mtimeMs": 1795189300366.8853
+    },
+    {
+      "arquivo": "src/components/ui/collapsible.tsx",
+      "mtimeMs": 1795189887092.6362
+    },
+    {
+      "arquivo": "src/components/ui/dialog.tsx",
+      "mtimeMs": 1795199278902.9905
+    },
+    {
+      "arquivo": "src/components/ui/dropdown-menu.tsx",
+      "mtimeMs": 1795210054401.5771
+    },
+    {
+      "arquivo": "src/components/ui/empty.tsx",
+      "mtimeMs": 1795210987998.459
+    },
+    {
+      "arquivo": "src/components/ui/input-group.tsx",
+      "mtimeMs": 1795189917667.0684
+    },
+    {
+      "arquivo": "src/components/ui/input.tsx",
+      "mtimeMs": 1795189266812.9944
+    },
+    {
+      "arquivo": "src/components/ui/item.tsx",
+      "mtimeMs": 1795210987998.5593
+    },
+    {
+      "arquivo": "src/components/ui/kbd.tsx",
+      "mtimeMs": 1795189236257.6345
+    },
+    {
+      "arquivo": "src/components/ui/message-scroller.tsx",
+      "mtimeMs": 1795189983032.4329
+    },
+    {
+      "arquivo": "src/components/ui/message.tsx",
+      "mtimeMs": 1795189917636.1277
+    },
+    {
+      "arquivo": "src/components/ui/progress.tsx",
+      "mtimeMs": 1795195823108.9849
+    },
+    {
+      "arquivo": "src/components/ui/radio-group.tsx",
+      "mtimeMs": 1795189236242.787
+    },
+    {
+      "arquivo": "src/components/ui/scroll-area.tsx",
+      "mtimeMs": 1795189266813.66
+    },
+    {
+      "arquivo": "src/components/ui/select.tsx",
+      "mtimeMs": 1795197456445.2893
+    },
+    {
+      "arquivo": "src/components/ui/separator.tsx",
+      "mtimeMs": 1795189236253.2666
+    },
+    {
+      "arquivo": "src/components/ui/sheet.tsx",
+      "mtimeMs": 1795189983032.7227
+    },
+    {
+      "arquivo": "src/components/ui/sidebar.tsx",
+      "mtimeMs": 1795190004850.0527
+    },
+    {
+      "arquivo": "src/components/ui/skeleton.tsx",
+      "mtimeMs": 1795189887100.0415
+    },
+    {
+      "arquivo": "src/components/ui/spinner.tsx",
+      "mtimeMs": 1795189983032.5903
+    },
+    {
+      "arquivo": "src/components/ui/switch.tsx",
+      "mtimeMs": 1795189300367.5374
+    },
+    {
+      "arquivo": "src/components/ui/tabs.tsx",
+      "mtimeMs": 1795189917666.895
+    },
+    {
+      "arquivo": "src/components/ui/textarea.tsx",
+      "mtimeMs": 1795189902805.1843
+    },
+    {
+      "arquivo": "src/components/ui/tooltip.tsx",
+      "mtimeMs": 1795189369732.998
+    }
+  ],
+  "total": 38,
+  "componentes": [
+    {
+      "nome": "Conversa",
+      "arquivo": "src/components/conversa.tsx",
+      "exports": [
+        "Fala",
+        "Palavras",
+        "Pontos"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "classe",
+        "texto"
+      ],
+      "espalha": false,
+      "herdaDeFora": false,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 31,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Envoltorio",
+      "arquivo": "src/components/envoltorio.tsx",
+      "exports": [
+        "Envoltorio"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "children",
+        "modo"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 10,
+      "apareceNoSandbox": false
+    },
+    {
+      "nome": "GatoAnimado",
+      "arquivo": "src/components/gato-animado.tsx",
+      "exports": [
+        "GatoAnimado"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "bocaRepouso",
+        "className",
+        "espiarSinal",
+        "estado",
+        "olhar",
+        "olhosPadrao",
+        "parado",
+        "pensandoContente"
+      ],
+      "espalha": false,
+      "herdaDeFora": false,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 80,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Marcas",
+      "arquivo": "src/components/marcas.tsx",
+      "exports": [
+        "LogoClaude",
+        "LogoGemini",
+        "LogoOllama",
+        "LogoOpenai"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [],
+      "espalha": false,
+      "herdaDeFora": false,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 19,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "ModelRow",
+      "arquivo": "src/components/model-row.tsx",
+      "exports": [
+        "ACAO_LARGURA",
+        "Baixando",
+        "ModelRow"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "action",
+        "badges",
+        "description",
+        "detail",
+        "icon",
+        "name",
+        "nome",
+        "selected",
+        "tone",
+        "valor"
+      ],
+      "espalha": false,
+      "herdaDeFora": false,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 58,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "OnboardingFrame",
+      "arquivo": "src/components/onboarding-frame.tsx",
+      "exports": [
+        "OnboardingFrame"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "children",
+        "description",
+        "nextLabel",
+        "onBack",
+        "onNext",
+        "onSkip",
+        "skipLabel",
+        "step",
+        "title",
+        "total"
+      ],
+      "espalha": false,
+      "herdaDeFora": false,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 92,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "ThemeProvider",
+      "arquivo": "src/components/theme-provider.tsx",
+      "exports": [
+        "ThemeProvider",
+        "useTheme"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "children",
+        "defaultTheme",
+        "disableTransitionOnChange",
+        "lockedTheme",
+        "storageKey"
+      ],
+      "espalha": true,
+      "herdaDeFora": false,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 249,
+      "apareceNoSandbox": false
+    },
+    {
+      "nome": "AlertDialog",
+      "arquivo": "src/components/ui/alert-dialog.tsx",
+      "exports": [
+        "AlertDialog",
+        "AlertDialogAction",
+        "AlertDialogCancel",
+        "AlertDialogContent",
+        "AlertDialogDescription",
+        "AlertDialogFooter",
+        "AlertDialogHeader",
+        "AlertDialogMedia",
+        "AlertDialogOverlay",
+        "AlertDialogPortal",
+        "AlertDialogTitle",
+        "AlertDialogTrigger"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className",
+        "size",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 198,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Attachment",
+      "arquivo": "src/components/ui/attachment.tsx",
+      "exports": [
+        "Attachment",
+        "AttachmentAction",
+        "AttachmentActions",
+        "AttachmentContent",
+        "AttachmentDescription",
+        "AttachmentGroup",
+        "AttachmentMedia",
+        "AttachmentTitle",
+        "AttachmentTrigger"
+      ],
+      "variantes": {
+        "size": [
+          "default",
+          "sm",
+          "xs"
+        ],
+        "orientation": [
+          "horizontal",
+          "vertical"
+        ]
+      },
+      "padroes": {},
+      "props": [
+        "asChild",
+        "className",
+        "orientation",
+        "size",
+        "state",
+        "type",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 205,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Avatar",
+      "arquivo": "src/components/ui/avatar.tsx",
+      "exports": [
+        "Avatar",
+        "AvatarBadge",
+        "AvatarFallback",
+        "AvatarGroup",
+        "AvatarGroupCount",
+        "AvatarImage"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className",
+        "size"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 112,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Badge",
+      "arquivo": "src/components/ui/badge.tsx",
+      "exports": [
+        "Badge",
+        "badgeVariants"
+      ],
+      "variantes": {
+        "variant": [
+          "default",
+          "secondary",
+          "destructive",
+          "outline",
+          "ghost",
+          "link",
+          "success",
+          "warning",
+          "soft",
+          "muted"
+        ]
+      },
+      "padroes": {
+        "variant": "default"
+      },
+      "props": [
+        "asChild",
+        "className",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 53,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Bubble",
+      "arquivo": "src/components/ui/bubble.tsx",
+      "exports": [
+        "Bubble",
+        "BubbleContent",
+        "BubbleGroup",
+        "BubbleReactions"
+      ],
+      "variantes": {
+        "variant": [
+          "default",
+          "secondary",
+          "muted",
+          "tinted",
+          "outline",
+          "ghost",
+          "destructive"
+        ]
+      },
+      "padroes": {
+        "variant": "default"
+      },
+      "props": [
+        "align",
+        "asChild",
+        "className",
+        "side",
+        "size",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 128,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Button",
+      "arquivo": "src/components/ui/button.tsx",
+      "exports": [
+        "Button",
+        "buttonVariants"
+      ],
+      "variantes": {
+        "variant": [
+          "default",
+          "outline",
+          "secondary",
+          "ghost",
+          "destructive",
+          "link"
+        ],
+        "size": [
+          "default",
+          "xs",
+          "sm",
+          "lg",
+          "icon",
+          "icon-xs",
+          "icon-sm",
+          "icon-lg"
+        ]
+      },
+      "padroes": {
+        "variant": "default",
+        "size": "default"
+      },
+      "props": [
+        "asChild",
+        "className",
+        "size",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 65,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Card",
+      "arquivo": "src/components/ui/card.tsx",
+      "exports": [
+        "Card",
+        "CardAction",
+        "CardContent",
+        "CardDescription",
+        "CardFooter",
+        "CardHeader",
+        "CardTitle"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className",
+        "padding",
+        "size",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 110,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Checkbox",
+      "arquivo": "src/components/ui/checkbox.tsx",
+      "exports": [
+        "Checkbox"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 33,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Collapsible",
+      "arquivo": "src/components/ui/collapsible.tsx",
+      "exports": [
+        "Collapsible",
+        "CollapsibleContent",
+        "CollapsibleTrigger"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 32,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Dialog",
+      "arquivo": "src/components/ui/dialog.tsx",
+      "exports": [
+        "Dialog",
+        "DialogClose",
+        "DialogContent",
+        "DialogDescription",
+        "DialogFooter",
+        "DialogHeader",
+        "DialogOverlay",
+        "DialogPortal",
+        "DialogTitle",
+        "DialogTrigger"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "children",
+        "className",
+        "showCloseButton"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 167,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "DropdownMenu",
+      "arquivo": "src/components/ui/dropdown-menu.tsx",
+      "exports": [
+        "DropdownMenu",
+        "DropdownMenuContent",
+        "DropdownMenuItem",
+        "DropdownMenuTrigger"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "align",
+        "className",
+        "sideOffset",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 39,
+      "apareceNoSandbox": false
+    },
+    {
+      "nome": "Empty",
+      "arquivo": "src/components/ui/empty.tsx",
+      "exports": [
+        "Empty",
+        "EmptyContent",
+        "EmptyDescription",
+        "EmptyHeader",
+        "EmptyMedia",
+        "EmptyTitle"
+      ],
+      "variantes": {
+        "variant": [
+          "default",
+          "icon"
+        ]
+      },
+      "padroes": {
+        "variant": "default"
+      },
+      "props": [
+        "className",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 104,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "InputGroup",
+      "arquivo": "src/components/ui/input-group.tsx",
+      "exports": [
+        "InputGroup",
+        "InputGroupAddon",
+        "InputGroupButton",
+        "InputGroupInput",
+        "InputGroupText",
+        "InputGroupTextarea"
+      ],
+      "variantes": {
+        "align": [
+          "inline-start",
+          "inline-end",
+          "block-start",
+          "block-end"
+        ]
+      },
+      "padroes": {
+        "align": "inline-start"
+      },
+      "props": [
+        "align",
+        "className",
+        "size",
+        "type",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 154,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Input",
+      "arquivo": "src/components/ui/input.tsx",
+      "exports": [
+        "Input"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className",
+        "type"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 19,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Item",
+      "arquivo": "src/components/ui/item.tsx",
+      "exports": [
+        "Item",
+        "ItemActions",
+        "ItemContent",
+        "ItemDescription",
+        "ItemFooter",
+        "ItemGroup",
+        "ItemHeader",
+        "ItemMedia",
+        "ItemSeparator",
+        "ItemTitle"
+      ],
+      "variantes": {
+        "variant": [
+          "default",
+          "outline",
+          "muted"
+        ],
+        "size": [
+          "default",
+          "sm",
+          "xs"
+        ]
+      },
+      "padroes": {
+        "variant": "default",
+        "size": "default"
+      },
+      "props": [
+        "asChild",
+        "className",
+        "size",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 198,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Kbd",
+      "arquivo": "src/components/ui/kbd.tsx",
+      "exports": [
+        "Kbd",
+        "KbdGroup"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 27,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "MessageScroller",
+      "arquivo": "src/components/ui/message-scroller.tsx",
+      "exports": [
+        "MessageScroller",
+        "MessageScrollerButton",
+        "MessageScrollerContent",
+        "MessageScrollerItem",
+        "MessageScrollerProvider",
+        "MessageScrollerViewport",
+        "useMessageScroller",
+        "useMessageScrollerScrollable",
+        "useMessageScrollerVisibility"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "children",
+        "className",
+        "direction",
+        "render",
+        "scrollAnchor",
+        "size",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 130,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Message",
+      "arquivo": "src/components/ui/message.tsx",
+      "exports": [
+        "Message",
+        "MessageAvatar",
+        "MessageContent",
+        "MessageFooter",
+        "MessageGroup",
+        "MessageHeader"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "align",
+        "className"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 92,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Progress",
+      "arquivo": "src/components/ui/progress.tsx",
+      "exports": [
+        "Progress"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className",
+        "size",
+        "value"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 31,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "RadioGroup",
+      "arquivo": "src/components/ui/radio-group.tsx",
+      "exports": [
+        "RadioGroup",
+        "RadioGroupItem"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 42,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "ScrollArea",
+      "arquivo": "src/components/ui/scroll-area.tsx",
+      "exports": [
+        "ScrollArea",
+        "ScrollBar"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "children",
+        "className"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 53,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Select",
+      "arquivo": "src/components/ui/select.tsx",
+      "exports": [
+        "Select",
+        "SelectContent",
+        "SelectGroup",
+        "SelectItem",
+        "SelectLabel",
+        "SelectScrollDownButton",
+        "SelectScrollUpButton",
+        "SelectSeparator",
+        "SelectTrigger",
+        "SelectValue"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "align",
+        "children",
+        "className",
+        "position",
+        "size"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 195,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Separator",
+      "arquivo": "src/components/ui/separator.tsx",
+      "exports": [
+        "Separator"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className",
+        "decorative",
+        "orientation"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 28,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Sheet",
+      "arquivo": "src/components/ui/sheet.tsx",
+      "exports": [
+        "Sheet",
+        "SheetClose",
+        "SheetContent",
+        "SheetDescription",
+        "SheetFooter",
+        "SheetHeader",
+        "SheetTitle",
+        "SheetTrigger"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "children",
+        "className",
+        "showCloseButton",
+        "side"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 148,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Sidebar",
+      "arquivo": "src/components/ui/sidebar.tsx",
+      "exports": [
+        "Sidebar",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarGroup",
+        "SidebarGroupAction",
+        "SidebarGroupContent",
+        "SidebarGroupLabel",
+        "SidebarHeader",
+        "SidebarInput",
+        "SidebarInset",
+        "SidebarMenu",
+        "SidebarMenuAction",
+        "SidebarMenuBadge",
+        "SidebarMenuButton",
+        "SidebarMenuItem",
+        "SidebarMenuSkeleton",
+        "SidebarMenuSub",
+        "SidebarMenuSubButton",
+        "SidebarMenuSubItem",
+        "SidebarProvider",
+        "SidebarRail",
+        "SidebarSeparator",
+        "SidebarTrigger",
+        "useSidebar"
+      ],
+      "variantes": {
+        "variant": [
+          "default",
+          "outline"
+        ],
+        "size": [
+          "default",
+          "sm",
+          "lg"
+        ]
+      },
+      "padroes": {
+        "variant": "default",
+        "size": "default"
+      },
+      "props": [
+        "asChild",
+        "children",
+        "className",
+        "collapsible",
+        "defaultOpen",
+        "dir",
+        "isActive",
+        "isMobile",
+        "onClick",
+        "onOpenChange",
+        "open",
+        "openMobile",
+        "setOpen",
+        "setOpenMobile",
+        "showIcon",
+        "showOnHover",
+        "side",
+        "size",
+        "state",
+        "style",
+        "toggleSidebar",
+        "tooltip",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 706,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Skeleton",
+      "arquivo": "src/components/ui/skeleton.tsx",
+      "exports": [
+        "Skeleton"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 14,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Spinner",
+      "arquivo": "src/components/ui/spinner.tsx",
+      "exports": [
+        "Spinner"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 11,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Switch",
+      "arquivo": "src/components/ui/switch.tsx",
+      "exports": [
+        "Switch"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className",
+        "size"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 33,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Tabs",
+      "arquivo": "src/components/ui/tabs.tsx",
+      "exports": [
+        "Tabs",
+        "TabsContent",
+        "TabsList",
+        "TabsTrigger",
+        "tabsListVariants"
+      ],
+      "variantes": {
+        "variant": [
+          "default",
+          "line"
+        ]
+      },
+      "padroes": {
+        "variant": "default"
+      },
+      "props": [
+        "className",
+        "orientation",
+        "variant"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": true,
+      "linhas": 88,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Textarea",
+      "arquivo": "src/components/ui/textarea.tsx",
+      "exports": [
+        "Textarea"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "className"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 18,
+      "apareceNoSandbox": true
+    },
+    {
+      "nome": "Tooltip",
+      "arquivo": "src/components/ui/tooltip.tsx",
+      "exports": [
+        "Tooltip",
+        "TooltipContent",
+        "TooltipProvider",
+        "TooltipTrigger"
+      ],
+      "variantes": {},
+      "padroes": {},
+      "props": [
+        "children",
+        "className",
+        "delayDuration",
+        "sideOffset"
+      ],
+      "espalha": true,
+      "herdaDeFora": true,
+      "primitiva": null,
+      "primitivas": [],
+      "usaCva": false,
+      "linhas": 55,
+      "apareceNoSandbox": true
+    }
+  ]
+}

@@ -1,10 +1,18 @@
 node_modules/
 dist/
-*.log
+dist-app/
+release/
+renderer/
 .DS_Store
+*.log
+.env
+.env.*
+robert-openperssua/
+referencias/
+prototipos/
+# app para Windows (raiz)
 whisper-bin/
 *.db
 *.db-wal
 *.db-shm
-release/
 screenshot*.png

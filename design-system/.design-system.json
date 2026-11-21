@@ -1,0 +1,9 @@
+{
+  "id": "teka",
+  "root": ".",
+  "tokensFile": "src/index.css",
+  "systemComponentDirs": [
+    "src/components"
+  ],
+  "sandboxDir": "src/style-guide"
+}
